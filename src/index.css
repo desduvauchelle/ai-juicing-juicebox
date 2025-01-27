@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+
+@tailwind utilities;
+
+/* Add any custom styles here */
+
+
+button, a {
+	@apply cursor-pointer transition-all duration-200 ease-in-out;
+}
+
+.btn {
+	@apply font-bold py-2 px-4 rounded border border-transparent cursor-pointer;
+}
+
+.btn-primary{
+	@apply bg-blue-500 text-white border-blue-500 hover:bg-blue-600;
+}
+
+.btn-secondary{
+	@apply bg-orange-500 text-white border-orange-500;
+}
+
+.btn-danger {
+	@apply bg-red-500 text-white border-red-500 hover:bg-red-600;
+}
+
+.btn-success {
+	@apply bg-green-500 text-white border-green-500 hover:bg-green-600;
+}
+
+.btn-warning {
+	@apply bg-yellow-500 text-white border-yellow-500 hover:bg-yellow-600;
+}
+
+.btn-info {
+	@apply bg-teal-500 text-white border-teal-500 hover:bg-teal-600;
+}
+
+.btn-dark {
+	@apply bg-gray-800 text-white border-gray-800 hover:bg-gray-900;
+}
+
+.btn-light {
+	@apply bg-gray-200 text-black border-gray-200 hover:bg-gray-300;
+}
+
+.btn-link {
+	@apply bg-transparent text-blue-500 underline;
+}
+
+.btn-ghost {
+	@apply bg-transparent text-gray-600 dark:text-white hover:bg-slate-400/30;
+}
+
+.btn-outline {
+	@apply bg-transparent text-gray-600 dark:text-white;
+}
+
+
+.btn.btn-sm{
+	@apply py-1 px-2 text-sm;
+}
+
+.btn.btn-lg{
+	@apply py-3 px-6 text-lg;
+}
+
+.link-primary {
+	@apply text-blue-500 hover:text-blue-600;
+}
+
+.link-secondary {
+	@apply text-orange-500 hover:text-orange-600;
+}
+
+.link-danger {
+	@apply text-red-500 hover:text-red-600;
+}
+
+.link-success {
+	@apply text-green-500 hover:text-green-600;
+}
+
+.link-warning {
+	@apply text-yellow-500 hover:text-yellow-600;
+}
+
+.link-info {
+	@apply text-teal-500 hover:text-teal-600;
+}
+
+.link-dark {
+	@apply text-gray-800 hover:text-gray-900;
+}
+
+.link-light {
+	@apply text-gray-200 hover:text-gray-300;
+}
+
+.link-link {
+	@apply text-blue-500 underline;
+}
+
+.link-ghost {
+	@apply text-gray-600 dark:text-white;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
