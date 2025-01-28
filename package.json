@@ -1,7 +1,7 @@
 {
 	"name": "ai-juicing-juicebox",
 	"private": true,
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "A local AI juicing application",
 	"author": "Denis Duvauchelle <desduvauchelle@gmail.com>",
 	"type": "module",
