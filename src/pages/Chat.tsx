@@ -3,13 +3,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Button, { MyLink } from '../components/Button'
-import FileExplorer from './app/file-explorer/FileExplorer'
-import ChatViewNew from './app/ChatViews/ChatViewNew'
-import ChatViewBasic from './app/ChatViews/ChatViewBasic'
+import FileExplorer from './chat/file-explorer/FileExplorer'
+import ChatViewNew from './chat/ChatViews/ChatViewNew'
 import { FileExplorerProvider } from '../context/FileExplorerContext'
+import { ConversationProvider } from '../context/ConversationContext'
+import ChatViewWrapper from './chat/ChatViewWrapper'
 
 const Chat: React.FC = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(true)
+
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen)
@@ -44,7 +46,7 @@ const Chat: React.FC = () => {
 
 					<Routes>
 						<Route path="new" element={<ChatViewNew />} />
-						<Route path=":chatId" element={<ChatViewBasic />} />
+						<Route path=":chatId" element={<ChatViewWrapper />} />
 					</Routes>
 				</div>
 			</div>
@@ -54,7 +56,9 @@ const Chat: React.FC = () => {
 
 const ChatWrapper: React.FC = () => {
 	return <FileExplorerProvider>
-		<Chat />
+		<ConversationProvider>
+			<Chat />
+		</ConversationProvider>
 	</FileExplorerProvider>
 }
 

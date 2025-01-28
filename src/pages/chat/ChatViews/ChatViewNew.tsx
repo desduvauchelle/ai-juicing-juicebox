@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { IConversation, IConversationTypes } from '../../../../types/IConversation'
 import { useFileExplorer } from '../../../context/FileExplorerContext'
+import Button from '../../../components/Button'
 
 const chatViewsList: {
 	id: number
@@ -52,14 +53,14 @@ const ChatViewNew: React.FC = () => {
 		<h2 className="text-xl">NEW CHAT</h2>
 		<div className="w-1/2 mt-4">
 			{chatViewsList.map((view) => (
-				<div key={view.id} className="bg-white p-4 rounded-lg mb-4 flex items-center justify-between">
+				<div key={view.id} className="bg-slate-600 p-4 rounded-lg mb-4 flex items-center justify-between">
 					<div>
 						<h3 className="text-lg">{view.name}</h3>
-						<p className="text-sm text-gray-600">{view.description}</p>
+						<p className="text-sm ">{view.description}</p>
 					</div>
-					<button className="btn" onClick={() => {
+					<Button theme="dark" onClick={() => {
 						createChat(view.id)
-					}}>Use</button>
+					}}>Use</Button>
 				</div>
 			))}
 		</div>

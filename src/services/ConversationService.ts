@@ -4,19 +4,19 @@ import { IConversation } from '../../types/IConversation'
 class ConversationService {
 	private static dbService: IndexedDBService<IConversation> = new IndexedDBService<IConversation>('conversations')
 
-	static createChat(chat: IConversation): Promise<IConversation & { id: IDBValidKey }> {
+	static create(chat: IConversation): Promise<IConversation & { id: IDBValidKey }> {
 		return this.dbService.create(chat)
 	}
 
-	static updateChat(id: IDBValidKey, updatedChat: Partial<IConversation>): Promise<void> {
+	static update(id: IDBValidKey, updatedChat: Partial<IConversation>): Promise<void> {
 		return this.dbService.update(id, updatedChat)
 	}
 
-	static deleteChat(id: IDBValidKey): Promise<void> {
+	static delete(id: IDBValidKey): Promise<void> {
 		return this.dbService.delete(id)
 	}
 
-	static getAllChats(): Promise<Array<IConversation & { id: IDBValidKey }>> {
+	static getAll(): Promise<Array<IConversation & { id: IDBValidKey }>> {
 		return this.dbService.getAll()
 	}
 
@@ -24,11 +24,11 @@ class ConversationService {
 		return this.dbService.getAll()
 	}
 
-	static getChatById(id: IDBValidKey): Promise<IConversation & { id: IDBValidKey }> {
+	static getById(id: IDBValidKey): Promise<IConversation & { id: IDBValidKey }> {
 		return this.dbService.getById(id)
 	}
 
-	static searchChats(query: string, page: number = 1, limit: number = 10): Promise<Array<IConversation & { id: IDBValidKey }>> {
+	static search(query: string, page: number = 1, limit: number = 10): Promise<Array<IConversation & { id: IDBValidKey }>> {
 		return this.dbService.search(query, page, limit)
 	}
 

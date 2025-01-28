@@ -66,8 +66,9 @@ const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 		return 'Untitled'
 	}, [item])
 
-	return <div
+	return <a
 		ref={(node) => drag(drop(node))}
+		href={`#chat/${item.id}`}
 		className={`relative flex items-center py-1 hover:bg-slate-100/5 cursor-pointer group
 		${isDragging ? 'opacity-50 bg-slate-400/30' : ''} ${isOver ? 'bg-blue-50' : ''}`}
 		style={{ paddingLeft: `${paddingLeft}px` }}>
@@ -100,7 +101,8 @@ const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 			{!isRenaming && <>
 				<span
 					className="flex-1 pr-6 border border-transparent line-clamp-1"
-					onDoubleClick={handleDoubleClick}	>
+					onClick={() => { }}
+					onDoubleClick={handleDoubleClick}>
 					{fileName}
 				</span>
 			</>}
@@ -121,7 +123,7 @@ const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 			<FontAwesomeIcon icon={faTrash} />
 		</button>}
 
-	</div>
+	</a>
 
 }
 

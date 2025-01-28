@@ -86,7 +86,7 @@ export const FileExplorerProvider = ({ children }: { children: React.ReactNode }
 	const folderDelete = async (id: number) => {
 		const conversationsInThatFolder = conversations.filter(conversation => conversation.folderId === id)
 		await Promise.all(conversationsInThatFolder.map(conversation => {
-			return ConversationService.deleteChat(conversation.id)
+			return ConversationService.delete(conversation.id)
 		}))
 		setConversations(prev => {
 			return prev.filter(conversation => conversation.folderId !== id)
@@ -138,7 +138,7 @@ export const FileExplorerProvider = ({ children }: { children: React.ReactNode }
 	}
 
 	const conversationCreate = async (conversation: IConversation) => {
-		const newConversation = await ConversationService.createChat(conversation)
+		const newConversation = await ConversationService.create(conversation)
 		setConversations(prev => {
 			return [
 				newConversation,
@@ -149,7 +149,7 @@ export const FileExplorerProvider = ({ children }: { children: React.ReactNode }
 	}
 
 	const conversationRename = async (id: number, newName: string) => {
-		await ConversationService.updateChat(id, { name: newName })
+		await ConversationService.update(id, { name: newName })
 		setConversations(prev => {
 			return prev.map(conversation => {
 				if (conversation.id === id) {
@@ -165,14 +165,14 @@ export const FileExplorerProvider = ({ children }: { children: React.ReactNode }
 	}
 
 	const conversationDelete = async (id: number) => {
-		await ConversationService.deleteChat(id)
+		await ConversationService.delete(id)
 		setConversations(prev => {
 			return prev.filter(conversation => conversation.id !== id)
 		})
 	}
 
 	const folderAddConversation = async (conversationId: number, folderId: number) => {
-		await ConversationService.updateChat(conversationId, { folderId })
+		await ConversationService.update(conversationId, { folderId })
 		setConversations(prev => {
 			return prev.map(conversation => {
 				if (conversation.id === conversationId) {
