@@ -23,9 +23,9 @@ function createWindow() {
 		callback({
 			responseHeaders: {
 				...details.responseHeaders,
-				'Content-Security-Policy': [
-					"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
-				],
+				// 'Content-Security-Policy': [
+				// 	"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+				// ],
 			},
 		});
 	});

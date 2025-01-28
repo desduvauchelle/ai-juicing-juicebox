@@ -55,7 +55,7 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 			conversationId: chat.conversationId || conversation.id,
 			createdAt: chat.createdAt || Date.now(),
 			id: 0,
-			role: "user",
+			role: chat.role || "user",
 			text: chat.text || ""
 		}
 		if (!chat.conversationId) {

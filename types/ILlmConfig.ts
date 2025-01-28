@@ -7,3 +7,10 @@ export interface ILlmConfig {
 	model: string
 	isDefault?: boolean
 }
+
+
+export type OllamaModel = {
+	model: string,
+	name: string,
+	size: number
+}

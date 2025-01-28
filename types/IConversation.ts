@@ -5,7 +5,7 @@ export type IConversationTypes = typeof chatTypes[number]
 
 export type IConversationChat = {
 	id: number
-	role: "user" | "system" | "agent"
+	role: "user" | "system" | "assistant"
 	text: string
 	createdAt: number
 	conversationId: number

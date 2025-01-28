@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { ILlmConfig } from '../../types/ILlmConfig'
+import { ILlmConfig, OllamaModel } from '../../types/ILlmConfig'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import LlmConfigurationService from '../services/llmConfigurationService'
+import Select from '../components/Select'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faRefresh } from '@fortawesome/free-solid-svg-icons'
+import useAi from '../hooks/useAi'
 
 interface LlmConfigFormProps {
 	initialValues?: ILlmConfig
@@ -18,6 +22,10 @@ const LlmConfigForm: React.FC<LlmConfigFormProps> = ({ initialValues, configId, 
 		url: '',
 		model: ''
 	})
+	const [models, setModels] = useState<OllamaModel[]>([])
+	const [isLoadingModels, setIsLoadingModels] = useState(false)
+	const [loadingModelsError, setLoadingModelsError] = useState<string | null>(null)
+	const ai = useAi()
 
 	useEffect(() => {
 		if (!configId) return
@@ -52,6 +60,21 @@ const LlmConfigForm: React.FC<LlmConfigFormProps> = ({ initialValues, configId, 
 		}
 	}
 
+	const loadModels = async () => {
+		if (isLoadingModels) return
+		setIsLoadingModels(true)
+		setLoadingModelsError(null)
+		const response = await ai.actions.fetchModels({ config: formData })
+		setIsLoadingModels(false)
+		if (response.models) {
+			setModels(response.models)
+		}
+		if (!response.success) {
+			setLoadingModelsError(response.message)
+		}
+	}
+
+
 	return (
 		<form onSubmit={handleSubmit} className="max-w-sm mx-auto p-4 bg-white rounded shadow space-y-4 text-left">
 			<Input
@@ -69,12 +92,42 @@ const LlmConfigForm: React.FC<LlmConfigFormProps> = ({ initialValues, configId, 
 				placeholder='Ex: http://localhost:11434'
 				value={formData.url}
 				onChange={handleChange} />
-			<Input
-				label="Model"
-				name="model"
-				type="text"
-				value={formData.model}
-				onChange={handleChange} />
+
+			<div className="flex flex-row items-center gap-2">
+				<Select
+					label={`Model (${formData.model || "None"})`}
+					onChange={(e) => {
+						setFormData({ ...formData, model: e.target.value })
+					}}
+					options={[
+						{ label: 'Select model...', value: '' },
+						...models.map(m => {
+							return { label: m.name, value: m.name }
+						})
+					]} />
+				<Button theme="dark"
+					isLoading={isLoadingModels}
+					className='mt-6'
+					onClick={(e) => {
+						e.preventDefault()
+						loadModels()
+					}}>
+					<FontAwesomeIcon icon={faRefresh} />
+				</Button>
+			</div>
+
+			{loadingModelsError && <p className='text-red-500'>{loadingModelsError}</p>}
+
+			{/* isDefault */}
+			<label className="block w-full">
+				<input
+					type="checkbox"
+					name="isDefault"
+					checked={formData.isDefault}
+					onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
+				/>
+				<span className='ml-2 text-slate-800'>Default</span>
+			</label>
 
 			<Button type="submit" theme="primary">
 				Save
