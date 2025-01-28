@@ -2,7 +2,7 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { MyLink } from '../../../components/Button'
+import Button, { MyLink } from '../../../components/Button'
 import { useMemo, useState } from 'react'
 import FileExplorerConversationItem from './FileExplorerConversationItem'
 import FileExplorerFolderItem from './FileExplorerFolderItem'
@@ -53,14 +53,14 @@ const FileExplorer: React.FC = () => {
 				onClick={() => {
 					setShowNewFolder(!showNewFolder)
 				}}
-				className="pl-8 w-full text-left py-2 hover:bg-gray-100/15 opacity-30 hover:opacity-100 rounded">
+				className="pl-8 w-full text-left py-2 hover:bg-base-100/15 opacity-30 hover:opacity-100 rounded">
 				{showNewFolder && <>Cancel</>}
 				{!showNewFolder && <>
 					<FontAwesomeIcon icon={faPlus} /> Folder
 				</>}
 			</button>
 			{showNewFolder && <form onSubmit={handleNewFolder}
-				className='overflow-hidden bg-slate-400/30 rounded-xl mx-2'>
+				className='overflow-hidden bg-base-200/30 rounded-xl mx-2'>
 				<input
 					aria-label='New folder name'
 					placeholder='New folder name...'
@@ -68,13 +68,14 @@ const FileExplorer: React.FC = () => {
 					autoFocus
 					value={newItemName}
 					onChange={(e) => setNewItemName(e.target.value)}
-					className="p-2 w-full"
+					className="p-2 w-full rounded-t-xl"
 				/>
-				<button
+				<Button
+					theme="primary"
 					type="submit"
-					className="p-2 w-full bg-blue-500 text-white">
+					className="w-full ">
 					Create folder
-				</button>
+				</Button>
 			</form>}
 			<div className="px-3 border-b border-slate-700 pb-2 pt-4">Recent</div>
 			{noFolderConversations.map((conversation => {

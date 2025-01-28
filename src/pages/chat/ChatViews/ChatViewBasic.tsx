@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../../../components/Button'
 import { IConversation, IConversationChat } from '../../../../types/IConversation'
 import { useConversation } from '../../../context/ConversationContext'
@@ -17,7 +17,7 @@ const ChatMessage: React.FC<{
 	chat: IConversationChat
 }> = ({ chat }) => {
 	const conversationContext = useConversation()
-	console.log(chat)
+
 	const from = chat.role === 'user' ? 'You' : 'Assistant'
 	return <div className={`${maxWidth} py-4 group`}>
 		<div className="flex flex-row gap-2 w-full">
@@ -128,11 +128,11 @@ const ChatViewBasic: React.FC<{
 		<div className="flex flex-col h-full">
 			<div className="flex-1 overflow-y-auto space-y-1" ref={wrapperRef}>
 				{chats.map((chat) => {
-					return <div key={chat.id} className={`${maxWidth} ${chat.role === "user" ? "" : "bg-slate-500"}`}>
+					return <div key={chat.id} className={`${maxWidth} ${chat.role === "user" ? "" : "bg-base-300"}`}>
 						<ChatMessage chat={chat} />
 					</div>
 				})}
-				{incomingMessage && <div className={`${maxWidth} bg-slate-500`}>
+				{incomingMessage && <div className={`${maxWidth} bg-base-300`}>
 					<ChatMessage chat={{
 						id: -1,
 						role: "assistant",
@@ -146,7 +146,7 @@ const ChatViewBasic: React.FC<{
 				</p>}
 			</div>
 
-			<form onSubmit={handleSubmit} className=" p-4 bg-slate-400">
+			<form onSubmit={handleSubmit} className=" p-4 bg-base-200">
 				<div className={`${maxWidth} flex gap-2`}>
 					<Textarea
 						id="chat-input"

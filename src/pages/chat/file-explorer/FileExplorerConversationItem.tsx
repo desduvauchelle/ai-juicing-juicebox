@@ -70,7 +70,7 @@ const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 		ref={(node) => drag(drop(node))}
 		href={`#chat/${item.id}`}
 		className={`relative flex items-center py-1 hover:bg-slate-100/5 cursor-pointer group
-		${isDragging ? 'opacity-50 bg-slate-400/30' : ''} ${isOver ? 'bg-blue-50' : ''}`}
+		${isDragging ? 'opacity-50 bg-slate-100/30' : ''} ${isOver ? 'bg-base-200' : ''}`}
 		style={{ paddingLeft: `${paddingLeft}px` }}>
 		<div className="flex items-center flex-1 py-1">
 			<span

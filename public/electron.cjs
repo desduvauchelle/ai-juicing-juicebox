@@ -5,13 +5,11 @@ function createWindow() {
 	const mainWindow = new BrowserWindow({
 		width: 1200,
 		height: 800,
+		titleBarStyle: 'hidden',
 		// transparent: true,
 		// frame: false,
-		// webPreferences: {
-		// 	nodeIntegration: true,
-		// 	contextIsolation: false
-		// },
-		backgroundColor: '#00ffffff',  // Fully transparent
+		// visualEffectsEnabled: true,
+		// blur: true,
 		webPreferences: {
 			preload: path.join(__dirname, '../dist/preload.js'), // Ensure this path is correct
 			contextIsolation: true,

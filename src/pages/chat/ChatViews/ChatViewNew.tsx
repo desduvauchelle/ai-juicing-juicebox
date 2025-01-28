@@ -53,7 +53,7 @@ const ChatViewNew: React.FC = () => {
 		<h2 className="text-xl">NEW CHAT</h2>
 		<div className="w-1/2 mt-4">
 			{chatViewsList.map((view) => (
-				<div key={view.id} className="bg-slate-600 p-4 rounded-lg mb-4 flex items-center justify-between">
+				<div key={view.id} className="bg-base-200 p-4 rounded-lg mb-4 flex items-center justify-between">
 					<div>
 						<h3 className="text-lg">{view.name}</h3>
 						<p className="text-sm ">{view.description}</p>

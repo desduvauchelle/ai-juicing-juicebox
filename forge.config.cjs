@@ -5,15 +5,22 @@ const path = require('path');
 module.exports = {
 	packagerConfig: {
 		asar: true,
-		icon: path.join(__dirname, 'public', 'logo'), // Ensure this path is correct
+		icon: path.join(__dirname, 'public', 'icons', 'icon'), // Ensure this path is correct
 	},
 	rebuildConfig: {},
 	makers: [
 		{
+			name: '@electron-forge/maker-dmg',
+			config: {
+				icon: './public/icons/icon.icns',
+				format: 'ULFO'
+			}
+		},
+		{
 			name: '@electron-forge/maker-squirrel',
 			config: {
-				iconUrl: path.join(__dirname, 'public', 'logo.ico'), // Ensure this path is correct
-				setupIcon: path.join(__dirname, 'public', 'logo.ico'), // Ensure this path is correct
+				iconUrl: path.join(__dirname, 'public', 'icons', 'logo.ico'), // Ensure this path is correct
+				setupIcon: path.join(__dirname, 'public', 'icons', 'logo.ico'), // Ensure this path is correct
 			},
 		},
 		{

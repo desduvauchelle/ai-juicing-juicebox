@@ -3,8 +3,21 @@
 
 @tailwind utilities;
 
-/* Add any custom styles here */
-
+.bg-window{
+	@apply bg-white dark:bg-gray-900 text-slate-900 dark:text-slate-200;
+}
+.bg-base {
+	@apply bg-gray-100 dark:bg-gray-800;
+}
+.bg-base-100 {
+	@apply bg-gray-100 dark:bg-gray-800;
+}
+.bg-base-200 {
+	@apply bg-gray-200 dark:bg-gray-700;
+}
+.bg-base-300 {
+	@apply bg-gray-300 dark:bg-gray-600;
+}
 
 button, a {
 	@apply cursor-pointer transition-all duration-200 ease-in-out;
@@ -17,33 +30,57 @@ button, a {
 .btn-primary{
 	@apply bg-blue-500 text-white border-blue-500 hover:bg-blue-600;
 }
+.btn-primary.btn-outline{
+	@apply bg-transparent text-blue-500 border-blue-500 hover:bg-blue-600;
+}
 
 .btn-secondary{
 	@apply bg-orange-500 text-white border-orange-500;
+}
+.btn-secondary.btn-outline{
+	@apply bg-transparent text-orange-500 border-orange-500 hover:bg-orange-600;
 }
 
 .btn-danger {
 	@apply bg-red-500 text-white border-red-500 hover:bg-red-600;
 }
+.btn-danger.btn-outline {
+	@apply bg-transparent text-red-500 border-red-500 hover:bg-red-600;
+}
 
 .btn-success {
 	@apply bg-green-500 text-white border-green-500 hover:bg-green-600;
+}
+.btn-success.btn-outline {
+	@apply bg-transparent text-green-500 border-green-500 hover:bg-green-600;
 }
 
 .btn-warning {
 	@apply bg-yellow-500 text-white border-yellow-500 hover:bg-yellow-600;
 }
+.btn-warning.btn-outline {
+	@apply bg-transparent text-yellow-500 border-yellow-500 hover:bg-yellow-600;
+}
 
 .btn-info {
 	@apply bg-teal-500 text-white border-teal-500 hover:bg-teal-600;
+}
+.btn-info.btn-outline {
+	@apply bg-transparent text-teal-500 border-teal-500 hover:bg-teal-600;
 }
 
 .btn-dark {
 	@apply bg-gray-800 text-white border-gray-800 hover:bg-gray-900;
 }
+.btn-dark.btn-outline {
+	@apply bg-transparent text-gray-800 border-gray-800 hover:bg-gray-900 dark:text-gray-400 dark:border-gray-400 dark:hover:border-gray-500;
+}
 
 .btn-light {
 	@apply bg-gray-200 text-black border-gray-200 hover:bg-gray-300;
+}
+.btn-light.btn-outline {
+	@apply bg-transparent text-gray-200 border-gray-200 hover:bg-gray-300;
 }
 
 .btn-link {
@@ -107,6 +144,11 @@ button, a {
 	@apply text-gray-600 dark:text-white;
 }
 
+
+
+#app-drag-region {
+	@apply fixed top-0 left-0 w-full h-14;
+}
 /* width */
 ::-webkit-scrollbar {
     width: 10px;

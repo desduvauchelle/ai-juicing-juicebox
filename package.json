@@ -15,7 +15,8 @@
 		"electron-dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && ELECTRON_START_URL=http://localhost:5173 electron .\"",
 		"start": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && ELECTRON_START_URL=http://localhost:5173 electron .\"",
 		"package": "npm run build && electron-forge package",
-		"make": "electron-forge make"
+		"make": "electron-forge make",
+		"make-icon": "electron-icon-maker --input=public/logo.png --output=public/icons"
 	},
 	"build": {
 		"appId": "com.ai-juicing.local",
@@ -26,8 +27,7 @@
 		"directories": {
 			"buildResources": "assets",
 			"output": "package"
-		},
-		"icon": "public/logo.png"
+		}
 	},
 	"dependencies": {
 		"@dnd-kit/core": "^6.3.1",
@@ -52,6 +52,7 @@
 	"devDependencies": {
 		"@electron-forge/cli": "^7.6.1",
 		"@electron-forge/maker-deb": "^7.6.1",
+		"@electron-forge/maker-dmg": "^7.6.1",
 		"@electron-forge/maker-rpm": "^7.6.1",
 		"@electron-forge/maker-squirrel": "^7.6.1",
 		"@electron-forge/maker-zip": "^7.6.1",
@@ -65,6 +66,7 @@
 		"concurrently": "^9.1.2",
 		"daisyui": "^4.12.23",
 		"electron": "^34.0.1",
+		"electron-icon-maker": "^0.0.5",
 		"eslint": "^9.17.0",
 		"eslint-plugin-react-hooks": "^5.0.0",
 		"eslint-plugin-react-refresh": "^0.4.16",

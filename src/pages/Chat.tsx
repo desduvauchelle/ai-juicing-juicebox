@@ -18,9 +18,9 @@ const Chat: React.FC = () => {
 	}
 
 	return (
-		<div className="h-screen bg-slate-800 relative flex overflow-hidden">
+		<div className="h-screen relative flex overflow-hidden">
 			<div className={`absolute h-full w-64 transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} flex flex-col`}>
-				<div className="flex justify-between items-center mt-4">
+				<div className="flex justify-between items-center mt-6">
 					<h2 className="text-xl pl-4">Chats</h2>
 					<Button aria-label="Hide menu" theme="custom"
 						className='btn'
@@ -37,7 +37,7 @@ const Chat: React.FC = () => {
 			</div>
 			<div
 				className={`flex-1 transition-all duration-300 p-4 pl-0 ${isMenuOpen ? 'ml-64' : 'ml-0 pl-4'}`}>
-				<div className="bg-slate-500 h-full rounded-xl overflow-hidden relative">
+				<div className="bg-base-100 h-full rounded-xl overflow-hidden relative">
 
 					{/* Chat content */}
 					{!isMenuOpen && <Button aria-label="Hide menu" onClick={toggleMenu} theme="ghost" className='absolute top-4 left-4'>

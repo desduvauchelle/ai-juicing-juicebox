@@ -76,7 +76,7 @@ const LlmConfigForm: React.FC<LlmConfigFormProps> = ({ initialValues, configId, 
 
 
 	return (
-		<form onSubmit={handleSubmit} className="max-w-sm mx-auto p-4 bg-white rounded shadow space-y-4 text-left">
+		<form onSubmit={handleSubmit} className="max-w-sm mx-auto p-4 bg-base-100 rounded space-y-4 text-left">
 			<Input
 				label="Name"
 				name="name"
