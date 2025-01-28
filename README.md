@@ -7,3 +7,9 @@ This is an electron apps that will either install and run Ollama on your compute
 ## Getting Started
 
 To get started, you can either download the app from the releases page or you can clone this repository and run the app locally.
+
+[Download the app](https://github.com/desduvauchelle/ai-juicing-juicebox/releases)
+
+### Prerequisites
+
+We don't install Ollama for you yet. But you can add the Ollama server URL from your current computer or from a remote URL.
