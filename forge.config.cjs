@@ -13,15 +13,24 @@ module.exports = {
 			name: '@electron-forge/maker-dmg',
 			config: {
 				icon: './public/icons/icon.icns',
-				format: 'ULFO'
+				format: 'ULFO',
+				name: 'JuiceBox AI',
+				overwrite: true,
+
 			}
 		},
 		{
 			name: '@electron-forge/maker-squirrel',
 			config: {
-				iconUrl: path.join(__dirname, 'public', 'icons', 'logo.ico'), // Ensure this path is correct
-				setupIcon: path.join(__dirname, 'public', 'icons', 'logo.ico'), // Ensure this path is correct
-			},
+				name: 'ai-juicing-juicebox',
+				authors: 'Denis Duvauchelle',
+				exe: 'ai-juicing-juicebox.exe',
+				setupIcon: path.join(__dirname, 'public', 'icons', 'icon.ico'),
+				iconUrl: 'https://raw.githubusercontent.com/desduvauchelle/ai-juicing-juicebox/main/public/icons/icon.ico',
+				loadingGif: path.join(__dirname, 'public', 'icons', 'loading.gif'),
+				setupExe: 'AI-Juicing-JuiceBox-Setup.exe',
+				noMsi: true
+			}
 		},
 		{
 			name: '@electron-forge/maker-zip',
@@ -33,7 +42,12 @@ module.exports = {
 		},
 		{
 			name: '@electron-forge/maker-rpm',
-			config: {},
+			config: {
+				license: 'MIT',
+				options: {
+					license: 'MIT'
+				}
+			}
 		},
 	],
 	plugins: [

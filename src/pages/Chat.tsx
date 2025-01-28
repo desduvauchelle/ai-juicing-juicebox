@@ -31,8 +31,8 @@ const Chat: React.FC = () => {
 				<div className=" flex-grow w-full overflow-y-auto overflow-x-hidden">
 					<FileExplorer />
 				</div>
-				<MyLink href="#configs" theme="ghost" isButton>
-					<FontAwesomeIcon icon={faCog} className='mr-1' /> Configs
+				<MyLink href="/settings" theme="ghost" isButton>
+					<FontAwesomeIcon icon={faCog} className='mr-1' /> Settings
 				</MyLink>
 			</div>
 			<div

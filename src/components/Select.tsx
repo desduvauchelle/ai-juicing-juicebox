@@ -9,11 +9,11 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 const Select: React.FC<SelectProps> = ({ label, options, description, className, ...props }) => {
 	return (
 		<div className='w-full'>
-			<label className="block text-gray-700 text-sm font-bold mb-2">
+			<label className="block text-sm font-bold mb-2">
 				{label}
 			</label>
 			<select
-				className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${className}`}
+				className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ${className}`}
 				{...props}>
 				{options.map((option) => (
 					<option key={option.value} value={option.value}>
@@ -22,7 +22,7 @@ const Select: React.FC<SelectProps> = ({ label, options, description, className,
 				))}
 			</select>
 			{description && (
-				<p className="text-gray-600 text-xs italic mt-2">{description}</p>
+				<p className="opacity-70 text-xs italic mt-2">{description}</p>
 			)}
 		</div>
 	)

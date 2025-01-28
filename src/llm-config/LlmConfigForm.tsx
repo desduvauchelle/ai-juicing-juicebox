@@ -126,7 +126,7 @@ const LlmConfigForm: React.FC<LlmConfigFormProps> = ({ initialValues, configId, 
 					checked={formData.isDefault}
 					onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
 				/>
-				<span className='ml-2 text-slate-800'>Default</span>
+				<span className='ml-2 font-bold'>Default</span>
 			</label>
 
 			<Button type="submit" theme="primary">

@@ -6,6 +6,7 @@
 	"author": "Denis Duvauchelle <desduvauchelle@gmail.com>",
 	"type": "module",
 	"main": "public/electron.cjs",
+	"license": "MIT",
 	"engines": {
 		"node": ">=20.0.0",
 		"npm": ">=10.0.0"

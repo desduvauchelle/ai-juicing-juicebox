@@ -1,6 +1,7 @@
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { AnchorHTMLAttributes, ButtonHTMLAttributes, FC, ReactNode, useMemo } from "react"
+import { Link, LinkProps } from "react-router-dom"
 
 
 type ButtonThemes = "primary" | "secondary" | "danger" | "success" | "warning" | "info" | "dark" | "light" | "link" | "custom" | "ghost"
@@ -175,9 +176,9 @@ export const MyLink: FC<AnchorHTMLAttributes<HTMLAnchorElement> & { theme?: Butt
 		return themeClassName
 	}, [isOutline, theme, className, isBig, isButton])
 
-	const attributes: AnchorHTMLAttributes<HTMLAnchorElement> & { href: string } = {
+	const attributes: LinkProps = {
 		...rest,
-		href: href || "#",
+		to: href || "#",
 		className: customClassName
 	}
 
@@ -185,5 +186,5 @@ export const MyLink: FC<AnchorHTMLAttributes<HTMLAnchorElement> & { theme?: Butt
 		attributes["aria-disabled"] = true
 	}
 
-	return <a {...attributes}>{children}</a>
+	return <Link {...attributes}>{children}</Link>
 }

@@ -1,11 +1,11 @@
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react'
-import LlmConfigurationService from '../services/llmConfigurationService'
-import { ILlmConfig } from '../../types/ILlmConfig'
-import LlmConfigForm from '../llm-config/LlmConfigForm'
-import Button, { MyLink } from '../components/Button'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Input from '../components/Input'
+import { ILlmConfig } from '../../../types/ILlmConfig'
+import Button, { MyLink } from '../../components/Button'
+import Input from '../../components/Input'
+import LlmConfigForm from '../../llm-config/LlmConfigForm'
+import LlmConfigurationService from '../../services/llmConfigurationService'
 
 const LlmConfigs: React.FC = () => {
 	const [configs, setConfigs] = useState<Array<ILlmConfig & { id: IDBValidKey }>>([])
@@ -48,45 +48,34 @@ const LlmConfigs: React.FC = () => {
 	return <div className="w-full max-w-2xl mx-auto px-4 space-y-8">
 
 		<div className="flex flex-row gap-2 items-center pt-8">
-			<MyLink href="/chats" aria-label="Back" isButton theme="ghost">
-				<FontAwesomeIcon icon={faArrowLeft} />
-			</MyLink>
-			<h1 className="text-2xl font-bold">LLM Configurations</h1>
-		</div>
-		<form className="flex flex-row gap-2 w-full" onSubmit={handleSearch}>
-			<Input
-				aria-label="Search LLM configs"
-				type="text"
-				placeholder="Search..."
-				value={searchQuery}
-				onChange={(e) => setSearchQuery(e.target.value)}
-				className="w-full flex-grow"
-			/>
-			<Button onClick={handleSearch} theme="primary">Search</Button>
-			<Button onClick={() => setIsCreating(true)} theme="success" className='flex-shrink-0'>Create New Config</Button>
 
-		</form>
+			<h1 className="text-2xl font-bold flex-grow">LLM Configurations</h1>
+			<Button onClick={() => setIsCreating(true)} theme="primary" className='flex-shrink-0'>Create New Config</Button>
+
+		</div>
 
 		<div className="">
 			{isCreating && (
 				<div className="mt-4">
-					<h2 className="text-xl font-bold">Create New Config</h2>
+					<h2 className="text-xl font-bold text-center">New Config</h2>
 					<LlmConfigForm onSubmit={handleFormSubmit} />
 				</div>
 			)}
 		</div>
 		{editingConfig && (
 			<div className="">
-				<h2 className="text-xl font-bold">Edit Config</h2>
+				<h2 className="text-xl font-bold text-center">Edit Config</h2>
 				<LlmConfigForm initialValues={editingConfig} configId={editingConfig.id} onSubmit={handleFormSubmit} />
 			</div>
 		)}
-		<ul>
+		<ul className="space-y-4">
 			{configs.map(config => (
-				<li key={config.id} className="border p-2 mb-2">
-					<div>{config.name}</div>
-					<Button onClick={() => setEditingConfig(config)} theme="warning">Edit</Button>
-					<Button onClick={() => handleDelete(config.id)} theme="danger">Delete</Button>
+				<li key={config.id} className="bg-base-200 p-4 rounded-xl flex flex-col gap-4">
+					<p className='text-xl font-black'>{config.name}</p>
+					<div className="flex flex-row gap-2 items-center">
+						<Button onClick={() => setEditingConfig(config)} theme="primary" isOutline>Edit</Button>
+						<Button onClick={() => handleDelete(config.id)} theme="danger" isOutline>Delete</Button>
+					</div>
 				</li>
 			))}
 		</ul>

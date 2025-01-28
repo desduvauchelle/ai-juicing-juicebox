@@ -20,7 +20,7 @@ const ChatMessage: React.FC<{
 
 	const from = chat.role === 'user' ? 'You' : 'Assistant'
 	return <div className={`${maxWidth} py-4 group`}>
-		<div className="flex flex-row gap-2 w-full">
+		<div className="flex flex-row gap-2 w-full break-words">
 			<p className="font-bold flex-grow w-full">{from}</p>
 			<Button
 				theme="danger"
@@ -128,11 +128,11 @@ const ChatViewBasic: React.FC<{
 		<div className="flex flex-col h-full">
 			<div className="flex-1 overflow-y-auto space-y-1" ref={wrapperRef}>
 				{chats.map((chat) => {
-					return <div key={chat.id} className={`${maxWidth} ${chat.role === "user" ? "" : "bg-base-300"}`}>
+					return <div key={chat.id} className={`${chat.role === "user" ? "" : "bg-base-300"}`}>
 						<ChatMessage chat={chat} />
 					</div>
 				})}
-				{incomingMessage && <div className={`${maxWidth} bg-base-300`}>
+				{incomingMessage && <div className={`bg-base-300`}>
 					<ChatMessage chat={{
 						id: -1,
 						role: "assistant",

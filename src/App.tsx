@@ -2,7 +2,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import Welcome from './pages/Welcome'
 import Chat from './pages/Chat'
 import Init from './pages/Init'
-import LlmConfigs from './pages/LlmConfigs'
+import Settings from './pages/Settings'
 
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
 				<Route path="/" element={<Init />} />
 				<Route path="/chat/*" element={<Chat />} />
 				<Route path="/welcome" element={<Welcome />} />
-				<Route path="/configs" element={<LlmConfigs />} />
+				<Route path="/settings/*" element={<Settings />} />
 				{/* Add more routes as needed */}
 				<Route path="*" element={<Init />} /> {/* Catch-all route */}
 			</Routes>

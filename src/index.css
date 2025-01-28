@@ -18,6 +18,24 @@
 .bg-base-300 {
 	@apply bg-gray-300 dark:bg-gray-600;
 }
+.bg-base-400 {
+	@apply bg-gray-400 dark:bg-gray-500;
+}
+.hover\:bg-base {
+	@apply hover:bg-gray-100 dark:hover:bg-gray-800;
+}
+.hover\:bg-base-100 {
+	@apply hover:bg-gray-100 dark:hover:bg-gray-800;
+}
+.hover\:bg-base-200 {
+	@apply hover:bg-gray-200 dark:hover:bg-gray-700;
+}
+.hover\:bg-base-300 {
+	@apply hover:bg-gray-300 dark:hover:bg-gray-600;
+}
+.hover\:bg-base-400 {
+	@apply hover:bg-gray-400 dark:hover:bg-gray-500;
+}
 
 button, a {
 	@apply cursor-pointer transition-all duration-200 ease-in-out;
@@ -147,7 +165,7 @@ button, a {
 
 
 #app-drag-region {
-	@apply fixed top-0 left-0 w-full h-14;
+	@apply fixed top-0 left-0 w-full h-8 hover:bg-red-500/10;
 }
 /* width */
 ::-webkit-scrollbar {
