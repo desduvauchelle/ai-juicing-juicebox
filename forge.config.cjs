@@ -22,7 +22,7 @@ module.exports = {
 		{
 			name: '@electron-forge/maker-squirrel',
 			config: {
-				name: 'ai-juicing-juicebox',
+				name: 'Juicebox AI',
 				authors: 'Denis Duvauchelle',
 				exe: 'ai-juicing-juicebox.exe',
 				setupIcon: path.join(__dirname, 'public', 'icons', 'icon.ico'),

@@ -9,7 +9,9 @@ export default defineConfig({
 		tailwindcss()
 	],
 	base: './', // Add this line
+	publicDir: 'public',
 	build: {
 		outDir: 'dist',
+		assetsDir: '.',
 	},
 })

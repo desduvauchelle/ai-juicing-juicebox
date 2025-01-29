@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Button from '../../../components/Button'
 import { IConversationChat } from '../../../../types/IConversation'
 import { useConversation } from '../../../context/ConversationContext'
@@ -16,6 +16,38 @@ const ChatMessage: React.FC<{
 }> = ({ chat }) => {
 	const conversationContext = useConversation()
 
+	const parsedText = useMemo<{ thinking?: string, response?: string }>(() => {
+		if (!chat.text) {
+			return {
+				response: ''
+			}
+		}
+		if (!chat.text.includes("<think>")) {
+			return {
+				response: chat.text
+			}
+		}
+
+		if (chat.text.includes("<think>") && chat.text.includes("</think>")) {
+			const [_, thinking, response] = chat.text.match(/<think>(.*?)<\/think>(.*)/s) || []
+			return {
+				thinking: thinking,
+				response: response
+			}
+		}
+
+		if (chat.text.includes("<think>")) {
+			const [_, thinking] = chat.text.match(/<think>(.*)$/s) || []
+			return {
+				thinking: thinking
+			}
+		}
+
+		return {
+			response: chat.text
+		}
+	}, [chat.text])
+
 	const from = chat.role === 'user' ? 'You' : 'Assistant'
 	return <div className={`${maxWidth} py-4 group px-4 lg:px-0`}>
 		<div className="flex flex-row gap-2 w-full break-words">
@@ -29,7 +61,14 @@ const ChatMessage: React.FC<{
 				<FontAwesomeIcon icon={faTrash} />
 			</Button>
 		</div>
-		<Markdown>{chat.text}</Markdown>
+		{parsedText.thinking && (
+			<div className="opacity-50 mb-6">
+				<Markdown>
+					{parsedText.thinking}
+				</Markdown>
+			</div>
+		)}
+		{parsedText.response && <Markdown>{parsedText.response}</Markdown>}
 	</div>
 }
 const ChatViewBasic: React.FC = () => {
