@@ -1,15 +1,22 @@
-import { createContext, useCallback, useContext, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { IConversation, IConversationChat } from "../../types/IConversation"
 import ConversationService from "../services/ConversationService"
 import ChatService from "../services/ChatService"
+import { ILlmConfig } from "../../types/ILlmConfig"
+import LlmConfigurationService from "../services/llmConfigurationService"
+import { UseConfigChecker, useConfigChecker } from "../hooks/useConfigChecker"
 
 
 interface ConversationContextProps {
 	conversation?: IConversation | null,
 	chats: IConversationChat[],
+	configs: ILlmConfig[],
+	selectedConfig?: ILlmConfig,
 	isLoading: boolean,
+	configChecker: UseConfigChecker,
 	actions: {
 		getByConversationId: (id: number) => Promise<void>,
+		update: (override: Partial<IConversation>) => Promise<void>,
 		chat: {
 			add: (chat: Partial<IConversationChat>) => Promise<IConversationChat | undefined>
 			delete: (id: number) => Promise<void>
@@ -24,6 +31,7 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 	const [conversation, setConversation] = useState<IConversation | null>(null)
 	const [chats, setChats] = useState<IConversationChat[]>([])
 	const [isLoading, setIsLoading] = useState(false)
+	const [configs, setConfigs] = useState<ILlmConfig[]>([])
 
 	const getByConversationId = useCallback(async (id: number) => {
 
@@ -43,6 +51,39 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 		setChats(foundChats || [])
 		setIsLoading(false)
 	}, [isLoading])
+
+	useEffect(() => {
+		const fetchConfig = async () => {
+			if (!conversation?.llmConfigId) return
+			const allConfigs = await LlmConfigurationService.getAllConfigs()
+			if (!allConfigs) return
+			setConfigs(allConfigs)
+		}
+		fetchConfig()
+	}, [conversation])
+
+	const selectedConfig = useMemo(() => {
+		if (!conversation?.llmConfigId) return undefined
+		return configs.find(c => c.id === conversation.llmConfigId)
+	}, [configs, conversation?.llmConfigId])
+	const configChecker = useConfigChecker({ config: selectedConfig })
+
+
+	const update = useCallback(async (override: Partial<IConversation>) => {
+		if (!conversation) {
+			console.warn('No conversation found')
+			return
+		}
+		await ConversationService.update(conversation.id, override)
+
+		setConversation(prev => {
+			if (!prev) return null
+			return {
+				...prev,
+				...override
+			}
+		})
+	}, [conversation])
 
 	const chatAdd = useCallback(async (chat: Partial<IConversationChat>) => {
 		if (!conversation) {
@@ -87,8 +128,12 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 		conversation,
 		chats,
 		isLoading,
+		configs,
+		selectedConfig,
+		configChecker,
 		actions: {
 			getByConversationId,
+			update,
 			chat: {
 				add: chatAdd,
 				delete: chatRemove

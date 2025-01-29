@@ -56,14 +56,16 @@ const Chat: React.FC = () => {
 		</div>
 		<div
 			className={`flex-1 transition-all duration-300 p-4 pl-0 ${isMenuOpen ? 'ml-64' : 'ml-0 pl-4'} relative`}>
-			<div className="bg-base-100 h-full rounded-xl overflow-hidden relative pt-8">
+			<div className="bg-base-100 h-full rounded-xl overflow-hidden relative">
 
 				<Routes>
 					<Route path="new" element={<ChatViewNew />} />
-					<Route path=":chatId" element={<ChatViewWrapper />} />
+					<Route path=":chatId" element={<ChatViewWrapper
+						toggleMenu={toggleMenu}
+						isMenuOpen={isMenuOpen} />} />
 				</Routes>
 
-				<div className="absolute top-0 left-0 w-full flex flex-row gap-2 items-center">
+				<div className="absolute top-0 left-0 flex flex-row gap-2 items-center ">
 					{!isMenuOpen && <Button aria-label="Hide menu" onClick={toggleMenu} theme="ghost">
 						<FontAwesomeIcon icon={faSquareCaretDown} className='rotate-90' />
 					</Button>}

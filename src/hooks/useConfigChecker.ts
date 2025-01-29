@@ -5,7 +5,7 @@ import { bridgeApi } from '../tools/bridgeApi'
 const localServers = ["localhost", "0.0.0.0", "127.0.0.1"]
 
 interface UseConfigCheckerProps {
-	config?: ILlmConfig & { id: IDBValidKey }
+	config?: ILlmConfig
 }
 
 export const useConfigChecker = ({ config }: UseConfigCheckerProps = {}) => {

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { MyLink } from '../components/Button'
 import LlmConfigForm from '../llm-config/LlmConfigForm'
 import { useNavigate } from 'react-router-dom'
+import { bridgeApi } from '../tools/bridgeApi'
 
 const Welcome: React.FC = () => {
 	const [ollamaInstalled, setOllamaInstalled] = useState(true)
@@ -10,10 +11,13 @@ const Welcome: React.FC = () => {
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		setIsChecking(true)
-		const installed = window.electron?.checkOllamaInstalled?.() ?? true
-		setOllamaInstalled(installed)
-		setIsChecking(false)
+		const check = async () => {
+			setIsChecking(true)
+			const installed = await bridgeApi.ollamaInstallCheck()
+			setOllamaInstalled(installed)
+			setIsChecking(false)
+		}
+		check()
 	}, [])
 
 	return (

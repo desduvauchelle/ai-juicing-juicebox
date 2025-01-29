@@ -20,7 +20,7 @@
 		"electron-dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && ELECTRON_START_URL=http://localhost:5173 electron .\"",
 		"start": "cp public/preload.cjs dist/ && concurrently \"npm run dev\" \"wait-on http://localhost:5173 && ELECTRON_START_URL=http://localhost:5173 electron .\"",
 		"package": "npm run build && electron-forge package",
-		"make": "electron-forge make",
+		"make": "npm run build && electron-forge make",
 		"make-icon": "electron-icon-maker --input=public/logo.png --output=public/icons"
 	},
 	"build": {

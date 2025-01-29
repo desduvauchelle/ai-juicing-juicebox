@@ -6,8 +6,6 @@ import Textarea from '../../../components/Textarea'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useAi from '../../../hooks/useAi'
-import LlmConfigurationService from '../../../services/llmConfigurationService'
-import { ILlmConfig } from '../../../../types/ILlmConfig'
 import Markdown from '../../../components/Markdown'
 
 const maxWidth = 'max-w-3xl mx-auto'
@@ -19,7 +17,7 @@ const ChatMessage: React.FC<{
 	const conversationContext = useConversation()
 
 	const from = chat.role === 'user' ? 'You' : 'Assistant'
-	return <div className={`${maxWidth} py-4 group`}>
+	return <div className={`${maxWidth} py-4 group px-4 lg:px-0`}>
 		<div className="flex flex-row gap-2 w-full break-words">
 			<p className="font-bold flex-grow w-full">{from}</p>
 			<Button
@@ -43,19 +41,9 @@ const ChatViewBasic: React.FC<{
 	const wrapperRef = React.useRef<HTMLDivElement>(null)
 	const ai = useAi()
 
-	const [config, setConfig] = useState<ILlmConfig | undefined>(undefined)
 	const [incomingMessage, setIncomingMessage] = useState<string | undefined>(undefined)
 
-	useEffect(() => {
-		const fetchConfig = async () => {
-			if (!conversation?.llmConfigId) return
-			const allConfigs = await LlmConfigurationService.getAllConfigs()
-			if (!allConfigs) return
-			const foundConfig = allConfigs.find(c => c.id === conversation?.llmConfigId)
-			setConfig(foundConfig)
-		}
-		fetchConfig()
-	}, [conversation])
+
 
 	const [newMessage, setNewMessage] = useState('')
 
@@ -85,14 +73,14 @@ const ChatViewBasic: React.FC<{
 			alert("Invalid conversation")
 			return
 		}
-		if (!config) {
+		if (!conversationContext.selectedConfig) {
 			alert("Invalid config")
 			return
 		}
 		try {
 			const response = await ai.actions.generate({
 				conversation: conversation,
-				config: config,
+				config: conversationContext.selectedConfig,
 				chats: [
 					...chats,
 					fullMessage
@@ -127,6 +115,7 @@ const ChatViewBasic: React.FC<{
 	return <div className="w-full h-full">
 		<div className="flex flex-col h-full">
 			<div className="flex-1 overflow-y-auto space-y-1" ref={wrapperRef}>
+				<div className="h-8"></div>
 				{chats.map((chat) => {
 					return <div key={chat.id} className={`${chat.role === "user" ? "" : "bg-base-300"}`}>
 						<ChatMessage chat={chat} />
@@ -141,7 +130,7 @@ const ChatViewBasic: React.FC<{
 						conversationId: conversation?.id || 0
 					}} />
 				</div>}
-				{!config && <p className='text-red-500'>
+				{!conversationContext.selectedConfig && <p className='text-red-500'>
 					No config
 				</p>}
 			</div>

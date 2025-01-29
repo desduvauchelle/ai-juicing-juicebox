@@ -21,17 +21,6 @@ function createWindow() {
 		},
 	});
 
-	mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-		callback({
-			responseHeaders: {
-				...details.responseHeaders,
-				// 'Content-Security-Policy': [
-				// 	"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
-				// ],
-			},
-		});
-	});
-
 	const startUrl = process.env.ELECTRON_START_URL || `file://${path.join(__dirname, '../dist/index.html')}`;
 	mainWindow.loadURL(startUrl);
 }

@@ -4,7 +4,7 @@ import { ILlmConfig } from '../../types/ILlmConfig'
 class LlmConfigurationService {
 	private static dbService: IndexedDBService<ILlmConfig> = new IndexedDBService<ILlmConfig>('llm-configs')
 
-	static async createConfig(config: ILlmConfig): Promise<ILlmConfig & { id: IDBValidKey }> {
+	static async createConfig(config: ILlmConfig): Promise<ILlmConfig> {
 		return this.dbService.create(config)
 	}
 
@@ -16,15 +16,15 @@ class LlmConfigurationService {
 		return this.dbService.delete(id)
 	}
 
-	static async getAllConfigs(): Promise<Array<ILlmConfig & { id: IDBValidKey }>> {
+	static async getAllConfigs(): Promise<Array<ILlmConfig>> {
 		return this.dbService.getAll()
 	}
 
-	static async getConfigById(id: IDBValidKey): Promise<ILlmConfig & { id: IDBValidKey }> {
+	static async getConfigById(id: IDBValidKey): Promise<ILlmConfig> {
 		return this.dbService.getById(id)
 	}
 
-	static async searchConfigs(query: string, page: number = 1, limit: number = 10): Promise<Array<ILlmConfig & { id: IDBValidKey }>> {
+	static async searchConfigs(query: string, page: number = 1, limit: number = 10): Promise<Array<ILlmConfig>> {
 		return this.dbService.search(query, page, limit)
 	}
 }
