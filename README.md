@@ -1,8 +1,19 @@
-# AI Juicing - Juicebox
+<div align="center">
+  <img alt="Promptery" src="public/logo.png" width="200" />
+</div>
 
-This is an open source project to experiment with AI interfaces to accomplish tasks that you might need. I really hope that the future of AI is open source and private. This project is a step in that direction.
+# AI Juicebox
 
-This is an electron apps that will either install and run Ollama on your computer or you can use a remote version of Ollama. It is installed like an application on your computer. You can check the console and network tab in the developer tools to see that is to no interaction with any server other than the AI one. Nothing is stored in the cloud either, all your chats are stored on the app storage (IndexedDB).
+A collection of local AI tools to get things done. If chat is useful but not enough, check out our other tools.
+
+## Features
+
+- Chat with an AI
+- Search for documents
+- Search the web
+- Co-author text
+- Prompt sequences
+- And more
 
 ## Getting Started
 
@@ -10,6 +21,22 @@ To get started, you can either download the app from the releases page or you ca
 
 [Download the app](https://github.com/desduvauchelle/ai-juicing-juicebox/releases)
 
+## Why AI Juicebox?
+
+An extendable experimentation of using AI to accomplish tasks. From the chat interface that you probably already know, to document searching, web searching, co-authoring text, prompt sequences, and more. All this using local models, keeping the information private and secure on your computer.
+
+I really hope that the future of AI is open source and private. This project is a step in that direction.
+
+This is an electron app that will either install and run Ollama on your computer or you can use a remote version of Ollama. It is installed like an application on your computer. You can check the console and network tab in the developer tools to see that is to no interaction with any server other than the AI one. Nothing is stored in the cloud either, all your chats are stored on the app storage (IndexedDB).
+
 ### Prerequisites
 
 We don't install Ollama for you yet. But you can add the Ollama server URL from your current computer or from a remote URL.
+
+## Development status
+
+This project is in early development. It is not ready for production use. It is not ready for general use. It is not ready for any use. It is not ready for anything. It is not ready.
+
+## Contributing
+
+Community contributions are welcome, especially in testing and packaging. Contribute via issues and pull requests.

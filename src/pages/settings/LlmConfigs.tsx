@@ -1,15 +1,12 @@
-import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react'
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ILlmConfig } from '../../../types/ILlmConfig'
-import Button, { MyLink } from '../../components/Button'
-import Input from '../../components/Input'
+import Button from '../../components/Button'
 import LlmConfigForm from '../../llm-config/LlmConfigForm'
 import LlmConfigurationService from '../../services/llmConfigurationService'
 
 const LlmConfigs: React.FC = () => {
 	const [configs, setConfigs] = useState<Array<ILlmConfig & { id: IDBValidKey }>>([])
-	const [searchQuery, setSearchQuery] = useState<string>('')
+	// const [searchQuery] = useState<string>('')
 	const [editingConfig, setEditingConfig] = useState<ILlmConfig & { id: IDBValidKey } | null>(null)
 	const [isCreating, setIsCreating] = useState<boolean>(false)
 	const isFetching = useRef<boolean>(false)
@@ -27,11 +24,11 @@ const LlmConfigs: React.FC = () => {
 		fetchConfigs()
 	}, [fetchConfigs])
 
-	const handleSearch = async (e?: FormEvent) => {
-		if (e) e.preventDefault()
-		const results = await LlmConfigurationService.searchConfigs(searchQuery)
-		setConfigs(results)
-	}
+	// const handleSearch = async (e?: FormEvent) => {
+	// 	if (e) e.preventDefault()
+	// 	const results = await LlmConfigurationService.searchConfigs(searchQuery)
+	// 	setConfigs(results)
+	// }
 
 	const handleFormSubmit = async (config: ILlmConfig) => {
 		console.log(config)

@@ -4,6 +4,7 @@ import { MyLink } from '../components/Button'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LlmConfigs from './settings/LlmConfigs'
+import OllamaPage from './settings/OllamaPage'
 
 const Settings: React.FC = () => {
 	return <div className="flex h-screen">
@@ -43,7 +44,7 @@ const Settings: React.FC = () => {
 				<Route path="/theme" element={<>Theme</>} />
 				<Route path="/llm-configs" element={<LlmConfigs />} />
 				<Route path="/import-export" element={<>Import/Export Page</>} />
-				<Route path="/ollama" element={<>Ollama Page</>} />
+				<Route path="/ollama" element={<OllamaPage />} />
 			</Routes>
 		</main>
 	</div>

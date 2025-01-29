@@ -2,7 +2,7 @@ import React from 'react'
 
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 	label: string
-	options: { value: string; label: string }[]
+	options: { value: string; label: string, disabled?: boolean }[]
 	description?: string
 }
 
@@ -16,7 +16,9 @@ const Select: React.FC<SelectProps> = ({ label, options, description, className,
 				className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ${className}`}
 				{...props}>
 				{options.map((option) => (
-					<option key={option.value} value={option.value}>
+					<option key={option.value}
+						value={option.value}
+						disabled={option.disabled}>
 						{option.label}
 					</option>
 				))}

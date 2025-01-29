@@ -2,6 +2,10 @@ import { useNavigate } from 'react-router-dom'
 import { IConversation, IConversationTypes } from '../../../../types/IConversation'
 import { useFileExplorer } from '../../../context/FileExplorerContext'
 import Button from '../../../components/Button'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { ILlmConfig } from '../../../../types/ILlmConfig'
+import LlmConfigurationService from '../../../services/llmConfigurationService'
+import Select from '../../../components/Select'
 
 const chatViewsList: {
 	id: number
@@ -20,6 +24,29 @@ const chatViewsList: {
 const ChatViewNew: React.FC = () => {
 	const navigate = useNavigate()
 	const fileExplorer = useFileExplorer()
+	const [configs, setConfigs] = useState<Array<ILlmConfig>>([])
+	const [selectedConfig, setSelectedConfig] = useState<number | null>(null)
+	const isFetching = useRef<boolean>(false)
+
+
+	const fetchConfigs = useCallback(async () => {
+		if (isFetching.current) return
+		isFetching.current = true
+
+		const allConfigs = await LlmConfigurationService.getAllConfigs()
+		setConfigs(allConfigs)
+		if (allConfigs.length > 0) {
+			if (!selectedConfig) {
+				setSelectedConfig(allConfigs[0].id)
+			}
+		}
+		isFetching.current = false
+	}, [selectedConfig])
+
+	useEffect(() => {
+		fetchConfigs()
+	}, [fetchConfigs])
+
 
 	const createChat = async (id: number) => {
 		const current = chatViewsList.find((view) => view.id === id)
@@ -27,10 +54,14 @@ const ChatViewNew: React.FC = () => {
 			alert("Invalid chat view")
 			return
 		}
+		if (!selectedConfig) {
+			alert("Please select a configuration")
+			return
+		}
 		const newChat: IConversation = {
 			id: 0,
 			name: "",
-			llmConfigId: 1,
+			llmConfigId: selectedConfig,
 			instruction: "You are a helpful assistant",
 			type: current.type,
 			createdAt: Date.now(),
@@ -51,7 +82,24 @@ const ChatViewNew: React.FC = () => {
 
 	return <div className="w-full h-full flex flex-col items-center justify-center">
 		<h2 className="text-xl">NEW CHAT</h2>
-		<div className="w-1/2 mt-4">
+		<div className="w-1/2 mt-4 space-y-4">
+			<Select
+				label='Select LLM Configuration'
+				value={selectedConfig?.toString() || ''}
+				onChange={(e) => setSelectedConfig(parseInt(e.target.value))}
+				options={[
+					{
+						value: "",
+						label: 'Select LLM Configuration',
+						disabled: true
+					},
+					...configs.map(c => {
+						return {
+							value: c.id.toString(),
+							label: c.name
+						}
+					})
+				]} />
 			{chatViewsList.map((view) => (
 				<div key={view.id} className="bg-base-200 p-4 rounded-lg mb-4 flex items-center justify-between">
 					<div>

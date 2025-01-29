@@ -34,7 +34,7 @@ const FileExplorer: React.FC = () => {
 
 		<div className="w-full block px-3">
 			<MyLink
-				href="#chat/new"
+				href="/chat/new"
 				theme="primary"
 				isButton
 				className="block w-full text-center">

@@ -151,11 +151,14 @@ const ChatViewBasic: React.FC<{
 					<Textarea
 						id="chat-input"
 						autoFocus
-						disabled={!config || incomingMessage !== undefined}
+						disabled={incomingMessage !== undefined}
 						maxRows={6}
 						value={newMessage}
-						onChange={(e) => setNewMessage(e.target.value)}
-						className="flex-1 px-3 py-2 border-transparent"
+						onChange={(e) => {
+							if (incomingMessage !== undefined) return
+							setNewMessage(e.target.value)
+						}}
+						className={`flex-1 px-3 py-2 border-transparent ${incomingMessage !== undefined ? "opacity-50" : ""}`}
 						placeholder="Type a message..."
 					/>
 					<Button
