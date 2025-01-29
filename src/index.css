@@ -261,6 +261,19 @@ input:disabled, textarea:disabled {
 }
 
 
+
+.logo {
+	  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(
+    45deg,
+    #ffd700,  /* yellow */
+    #32cd32,  /* lime green */
+    #87ceeb,  /* sky blue */
+    #ff69b4,  /* pink */
+    #9370db   /* purple */
+  );
+}
+
 /* Add all the styling for the markdown */
 .markdown{
 	@apply break-words;

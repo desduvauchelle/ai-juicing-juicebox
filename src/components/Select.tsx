@@ -1,7 +1,8 @@
 import React from 'react'
 
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-	label: string
+	label?: string
+	ariaLabel?: string
 	options: { value: string; label: string, disabled?: boolean }[]
 	description?: string
 }
@@ -9,9 +10,9 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 const Select: React.FC<SelectProps> = ({ label, options, description, className, ...props }) => {
 	return (
 		<div className='w-full'>
-			<label className="block text-sm font-bold mb-2">
+			{label && <label className="block text-sm font-bold mb-2">
 				{label}
-			</label>
+			</label>}
 			<select
 				className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ${className}`}
 				{...props}>

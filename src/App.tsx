@@ -10,7 +10,8 @@ function App() {
 		<Router>
 			<Routes>
 				<Route path="/" element={<Init />} />
-				<Route path="/chat/*" element={<Chat />} />
+				<Route path="/chat" element={<Chat />} />
+				<Route path="/chat/:conversationId" element={<Chat />} />
 				<Route path="/welcome" element={<Welcome />} />
 				<Route path="/settings/*" element={<Settings />} />
 				{/* Add more routes as needed */}

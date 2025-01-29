@@ -47,7 +47,6 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 		setConversation(foundConversation)
 
 		const foundChats = await ChatService.getByConversationId(id)
-		console.log(foundChats)
 		setChats(foundChats || [])
 		setIsLoading(false)
 	}, [isLoading])
@@ -94,7 +93,7 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 		const fullChat: IConversationChat = {
 			...chat,
 			conversationId: chat.conversationId || conversation.id,
-			createdAt: chat.createdAt || Date.now(),
+			createdAt: Date.now(),
 			id: 0,
 			role: chat.role || "user",
 			text: chat.text || ""

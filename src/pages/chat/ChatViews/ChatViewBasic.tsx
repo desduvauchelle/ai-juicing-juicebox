@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Button from '../../../components/Button'
-import { IConversation, IConversationChat } from '../../../../types/IConversation'
+import { IConversationChat } from '../../../../types/IConversation'
 import { useConversation } from '../../../context/ConversationContext'
 import Textarea from '../../../components/Textarea'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useAi from '../../../hooks/useAi'
 import Markdown from '../../../components/Markdown'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const maxWidth = 'max-w-3xl mx-auto'
-
 
 const ChatMessage: React.FC<{
 	chat: IConversationChat
@@ -32,18 +32,19 @@ const ChatMessage: React.FC<{
 		<Markdown>{chat.text}</Markdown>
 	</div>
 }
-const ChatViewBasic: React.FC<{
-	conversation?: IConversation
-}> = () => {
+const ChatViewBasic: React.FC = () => {
+	const location = useLocation()
+	const navigate = useNavigate()
 	const conversationContext = useConversation()
 	const conversation = conversationContext?.conversation
 	const chats = conversationContext?.chats
 	const wrapperRef = React.useRef<HTMLDivElement>(null)
 	const ai = useAi()
+	const [isTyping, setIsTyping] = useState(false)
+	const isTypingRef = React.useRef(false)
 
 	const [incomingMessage, setIncomingMessage] = useState<string | undefined>(undefined)
-
-
+	const initialMessageSent = React.useRef(false)
 
 	const [newMessage, setNewMessage] = useState('')
 
@@ -56,14 +57,19 @@ const ChatViewBasic: React.FC<{
 		})
 	}, [conversationContext?.chats, incomingMessage])
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
+	const streamCallback = useCallback((text: string) => {
+		setIncomingMessage(text)
+	}, [])
 
-		if (!newMessage.trim()) return
+	const send = useCallback(async (messageOverride?: string) => {
+		if (isTyping) return
+		if (isTypingRef.current) return
+		const messageToSend = messageOverride || newMessage
+		if (!messageToSend.trim()) return
 
 		const fullMessage = await conversationContext?.actions.chat.add({
 			role: "user",
-			text: newMessage
+			text: messageToSend
 		})
 		if (!fullMessage) {
 			alert("Failed to send message")
@@ -78,6 +84,8 @@ const ChatViewBasic: React.FC<{
 			return
 		}
 		try {
+			setIsTyping(true)
+			isTypingRef.current = true
 			const response = await ai.actions.generate({
 				conversation: conversation,
 				config: conversationContext.selectedConfig,
@@ -85,10 +93,10 @@ const ChatViewBasic: React.FC<{
 					...chats,
 					fullMessage
 				],
-				streamCallback: (text) => {
-					setIncomingMessage(text)
-				}
+				streamCallback: streamCallback
 			})
+			setIsTyping(false)
+			isTypingRef.current = false
 			setIncomingMessage(undefined)
 			// Add the assistant message to the chat
 			if (response.aiMessage) {
@@ -104,13 +112,33 @@ const ChatViewBasic: React.FC<{
 			if (!input) return
 			input.focus()
 		} catch (error) {
+			setIsTyping(false)
+			isTypingRef.current = false
 			console.error("Failed to generate AI response", error)
 			alert("Failed to generate AI response")
 		}
+	}, [isTyping, newMessage, conversationContext?.actions.chat, conversationContext.selectedConfig, conversation, ai.actions, chats, streamCallback])
 
+	useEffect(() => {
+		if (!conversation) return
+		if (conversationContext.isLoading) return
+		if (!location.state?.initialMessage) return
+		if (initialMessageSent.current) return
+		if (isTypingRef.current) return
+		// Get the ID from the URL
+		const urlConversationId = parseInt(location.pathname.split('/').pop() || '0')
+		if (urlConversationId !== conversation.id) return
+		initialMessageSent.current = true
+		navigate(location.pathname, { replace: true })
+		send(location.state.initialMessage)
 
+	}, [conversation, conversationContext.isLoading, location.pathname, location.state, navigate, send])
 
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault()
+		await send()
 	}
+
 
 	return <div className="w-full h-full">
 		<div className="flex flex-col h-full">
@@ -140,18 +168,18 @@ const ChatViewBasic: React.FC<{
 					<Textarea
 						id="chat-input"
 						autoFocus
-						disabled={incomingMessage !== undefined}
+						disabled={isTyping}
 						maxRows={6}
 						value={newMessage}
 						onChange={(e) => {
-							if (incomingMessage !== undefined) return
+							if (isTyping) return
 							setNewMessage(e.target.value)
 						}}
-						className={`flex-1 px-3 py-2 border-transparent ${incomingMessage !== undefined ? "opacity-50" : ""}`}
+						className={`flex-1 px-3 py-2 border-transparent ${isTyping ? "opacity-50" : ""}`}
 						placeholder="Type a message..."
 					/>
 					<Button
-						isLoading={incomingMessage !== undefined}
+						isLoading={isTyping}
 						type="submit"
 						theme="primary">
 						Send

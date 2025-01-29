@@ -5,10 +5,12 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LlmConfigs from './settings/LlmConfigs'
 import OllamaPage from './settings/OllamaPage'
+import Logo from '../components/Logo'
 
 const Settings: React.FC = () => {
 	return <div className="flex h-screen">
 		<nav className="w-1/5 bg-base-200 pt-8 flex flex-col gap-8">
+			<Logo />
 			<MyLink href="/chat" theme="ghost" isButton className='w-full'>
 				<FontAwesomeIcon icon={faArrowLeft} className='mr-1' /> Back to Chat
 			</MyLink>

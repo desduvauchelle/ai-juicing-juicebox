@@ -9,7 +9,7 @@ import FileExplorerFolderItem from './FileExplorerFolderItem'
 import { useFileExplorer } from '../../../context/FileExplorerContext'
 
 
-const FileExplorer: React.FC = () => {
+const FileExplorer: React.FC<{ conversationId?: string }> = ({ conversationId }) => {
 	const [showNewFolder, setShowNewFolder] = useState(false)
 	const [newItemName, setNewItemName] = useState('')
 	const fileExplorer = useFileExplorer()
@@ -32,9 +32,9 @@ const FileExplorer: React.FC = () => {
 
 	return <DndProvider backend={HTML5Backend}>
 
-		<div className="w-full block px-3">
+		<div className="w-full block px-3 pb-2">
 			<MyLink
-				href="/chat/new"
+				href="/chat"
 				theme="primary"
 				isButton
 				className="block w-full text-center">
@@ -45,6 +45,7 @@ const FileExplorer: React.FC = () => {
 		<div className="overflow-auto">
 			{fileExplorer.folders.map(folder => {
 				return <FileExplorerFolderItem
+					activeConversationId={conversationId}
 					key={folder.id}
 					folder={folder}
 					depth={0} />
@@ -77,9 +78,10 @@ const FileExplorer: React.FC = () => {
 					Create folder
 				</Button>
 			</form>}
-			<div className="px-3 border-b border-slate-700 pb-2 pt-4">Recent</div>
+			<div className="px-3 border-b border-slate-700 pb-3 mb-3 pt-6">Recent</div>
 			{noFolderConversations.map((conversation => {
 				return <FileExplorerConversationItem
+					isActive={conversation.id.toString() === conversationId}
 					key={conversation.id}
 					item={conversation}
 					depth={0} />

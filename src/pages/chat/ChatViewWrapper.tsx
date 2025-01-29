@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom"
 import ChatViewBasic from './ChatViews/ChatViewBasic'
 import { useConversation } from "../../context/ConversationContext"
 import { useEffect, useRef, useState } from "react"
@@ -10,12 +9,13 @@ import Select from "../../components/Select"
 
 const ChatViewWrapper: React.FC<{
 	toggleMenu: () => void,
-	isMenuOpen: boolean
+	isMenuOpen: boolean,
+	conversationId: string
 }> = ({
 	toggleMenu,
-	isMenuOpen
+	isMenuOpen,
+	conversationId
 }) => {
-		const { chatId } = useParams<{ chatId: string }>()
 		const conversationContext = useConversation()
 		const conversation = conversationContext?.conversation
 		const isInitiated = useRef<number | undefined>(undefined)
@@ -23,12 +23,12 @@ const ChatViewWrapper: React.FC<{
 
 
 		useEffect(() => {
-			if (!chatId) return
+			if (!conversationId) return
 			if (conversationContext?.isLoading) return
-			if (isInitiated.current === parseInt(chatId)) return
-			conversationContext?.actions.getByConversationId(parseInt(chatId))
-			isInitiated.current = parseInt(chatId)
-		}, [chatId, conversationContext?.actions, conversationContext?.isLoading])
+			if (isInitiated.current === parseInt(conversationId)) return
+			conversationContext?.actions.getByConversationId(parseInt(conversationId))
+			isInitiated.current = parseInt(conversationId)
+		}, [conversationId, conversationContext?.actions, conversationContext?.isLoading])
 
 		// Check the ping of the config on change of the selectedConfig and every 10 seconds
 		useEffect(() => {

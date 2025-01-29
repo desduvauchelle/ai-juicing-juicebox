@@ -9,12 +9,14 @@ import { useFileExplorer } from "../../../context/FileExplorerContext"
 
 export interface FileExplorerItemProps {
 	folder: IFileExplorerFolder
-	depth: number
+	depth: number,
+	activeConversationId?: string
 }
 
 const FileExplorerFolderItem: React.FC<FileExplorerItemProps> = ({
 	folder,
-	depth
+	depth,
+	activeConversationId
 }) => {
 	const [isRenaming, setIsRenaming] = useState(false)
 	const [newName, setNewName] = useState(folder.name)
@@ -133,6 +135,7 @@ const FileExplorerFolderItem: React.FC<FileExplorerItemProps> = ({
 		{(!isDragging && folder.isOpen) && <>
 			{conversations.map(conversation => {
 				return <FileExplorerConversationItem
+					isActive={conversation.id.toString() === activeConversationId}
 					key={conversation.id}
 					item={conversation}
 					depth={1} />

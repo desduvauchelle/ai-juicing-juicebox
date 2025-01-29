@@ -6,16 +6,20 @@ import { useDrag, useDrop } from "react-dnd"
 import { IConversation } from "../../../../types/IConversation"
 import { formatDistanceToNow } from 'date-fns'
 import { useFileExplorer } from "../../../context/FileExplorerContext"
+import { useNavigate } from "react-router-dom"
 
 export interface FileExplorerItemProps {
 	item: IConversation
 	depth: number
+	isActive: boolean
 }
 
 const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 	item,
-	depth
+	depth,
+	isActive
 }) => {
+	const navigate = useNavigate()
 	const [isRenaming, setIsRenaming] = useState(false)
 	const [newName, setNewName] = useState(item.name)
 	const inputRef = useRef<HTMLInputElement>(null)
@@ -70,6 +74,7 @@ const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 		ref={(node) => drag(drop(node))}
 		href={`#chat/${item.id}`}
 		className={`relative flex items-center py-1 hover:bg-slate-100/5 cursor-pointer group
+			${isActive ? 'bg-base-200' : ''}
 		${isDragging ? 'opacity-50 bg-slate-100/30' : ''} ${isOver ? 'bg-base-200' : ''}`}
 		style={{ paddingLeft: `${paddingLeft}px` }}>
 		<div className="flex items-center flex-1 py-1">
@@ -112,12 +117,16 @@ const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 
 		{!isRenaming && <button
 			aria-label='Delete item'
-			onClick={(e) => {
+			onClick={async (e) => {
 				e.stopPropagation()
 				e.preventDefault()
 				const conf = confirm('Are you sure you want to delete this item?')
 				if (!conf) return
-				fileExplorer.actions.conversation.delete(item.id)
+				await fileExplorer.actions.conversation.delete(item.id)
+				// If it's active, I should useNavigate
+				if (isActive) {
+					navigate('/chat')
+				}
 			}}
 			className="absolute right-2 text-red-700 hover:text-red-500 opacity-0 group-hover:opacity-100">
 			<FontAwesomeIcon icon={faTrash} />
