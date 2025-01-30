@@ -21,6 +21,12 @@ const chatViewsList: IChatView[] = [
 		name: "Chat",
 		description: "Normal chat view",
 		type: "chat"
+	},
+	{
+		id: 2,
+		name: "Co-authoring",
+		description: "Collaborative document editing",
+		type: "co-authoring"
 	}
 ]
 
@@ -40,19 +46,22 @@ const ChatViewNew: React.FC = () => {
 		if (isFetching.current) return
 		isFetching.current = true
 
-		const allConfigs = await LlmConfigurationService.getAllConfigs()
-		setConfigs(allConfigs)
-		if (allConfigs.length > 0) {
-			if (!selectedConfig) {
-				const defaultConfig = allConfigs.find((config) => config.isDefault)
-				if (defaultConfig) {
-					setSelectedConfig(defaultConfig?.id)
-					return
+		try {
+			const allConfigs = await LlmConfigurationService.getAllConfigs()
+			setConfigs(allConfigs)
+			if (allConfigs.length > 0) {
+				if (!selectedConfig) {
+					const defaultConfig = allConfigs.find((config) => config.isDefault)
+					if (defaultConfig) {
+						setSelectedConfig(defaultConfig?.id)
+					}
 				}
-				setSelectedConfig(allConfigs[0].id)
 			}
+		} catch (error) {
+			console.error('Error fetching configs:', error)
+		} finally {
+			isFetching.current = false
 		}
-		isFetching.current = false
 	}, [selectedConfig])
 
 	useEffect(() => {
@@ -100,6 +109,23 @@ const ChatViewNew: React.FC = () => {
 		}
 	}
 
+	const handleSetDefault = async (configId: IDBValidKey, e: React.MouseEvent) => {
+		e.stopPropagation()
+		try {
+			await LlmConfigurationService.setDefaultConfig(configId)
+			// Force update the configs state directly
+			const updatedConfigs = configs.map(config => ({
+				...config,
+				isDefault: config.id === configId
+			}))
+			setConfigs(updatedConfigs)
+			// Then fetch fresh data
+			await fetchConfigs()
+		} catch (error) {
+			console.error('Error setting default config:', error)
+		}
+	}
+
 	return <div className="w-full h-full flex flex-col items-center justify-center">
 		<div className="max-w-2xl w-full mx-auto text-center space-y-6">
 			<h2 className="text-2xl logo font-bold">What can I help with?</h2>
@@ -110,12 +136,10 @@ const ChatViewNew: React.FC = () => {
 					className='w-full'
 					placeholder='Start typing here...'
 					value={text}
-					tabIndex={1}
 					onChange={(e) => setText(e.target.value)} />
 				<div className="flex flex-row gap-4 items-center">
 
 					<Button theme="custom"
-						tabIndex={3}
 						onClick={(e) => {
 							e.preventDefault()
 							setShowConfigs(!showConfigs)
@@ -132,7 +156,6 @@ const ChatViewNew: React.FC = () => {
 					</Button>
 
 					<Button theme="custom"
-						tabIndex={4}
 						onClick={(e) => {
 							e.preventDefault()
 							setShowChatViews(!showChatViews)
@@ -149,7 +172,6 @@ const ChatViewNew: React.FC = () => {
 
 					<div className="flex-grow"></div>
 					<Button theme="light"
-						tabIndex={2}
 						type="submit">
 						<FontAwesomeIcon icon={faArrowRight} />
 					</Button>
@@ -168,9 +190,10 @@ const ChatViewNew: React.FC = () => {
 				</div>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 					{configs.map((config) => (
-						<button
+						<div
+							tabIndex={-1}
 							key={config.id}
-							className="bg-base-200 hover:bg-base-300 p-4 rounded-lg flex flex-col items-start cursor-pointer"
+							className="bg-base-200 hover:bg-base-300 p-4 rounded-lg flex flex-col items-start cursor-pointer relative"
 							onClick={() => {
 								setSelectedConfig(config.id)
 								setShowConfigs(false)
@@ -179,7 +202,16 @@ const ChatViewNew: React.FC = () => {
 							<h3 className="text-lg font-bold">{config.name}</h3>
 							<p className="text-sm opacity-50 line-clamp-1">URL: {config.url}</p>
 							<p className="text-sm opacity-50 line-clamp-1">Model: {config.model}</p>
-						</button>
+							<button
+								onClick={(e) => handleSetDefault(config.id, e)}
+								className={`mt-2 text-xs px-2 py-1 rounded ${config.isDefault
+									? 'bg-primary text-primary-content'
+									: 'bg-base-300 hover:bg-base-100'
+									}`}
+							>
+								{config.isDefault ? 'Default' : 'Set as Default'}
+							</button>
+						</div>
 					))}
 					<MyLink theme="custom"
 						href="/settings/llm-configs"

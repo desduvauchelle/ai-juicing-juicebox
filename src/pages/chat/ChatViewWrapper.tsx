@@ -5,6 +5,7 @@ import { faRobot, faSquareCaretDown } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Button from "../../components/Button"
 import Select from "../../components/Select"
+import ChatViewCanvas from './ChatViews/ChatViewCanvas'
 
 
 const ChatViewWrapper: React.FC<{
@@ -116,6 +117,9 @@ const ChatViewWrapper: React.FC<{
 
 			{conversation.type === "chat" && <>
 				<ChatViewBasic />
+			</>}
+			{conversation.type === "co-authoring" && <>
+				<ChatViewCanvas />
 			</>}
 		</>
 

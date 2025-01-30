@@ -27,6 +27,23 @@ class LlmConfigurationService {
 	static async searchConfigs(query: string, page: number = 1, limit: number = 10): Promise<Array<ILlmConfig>> {
 		return this.dbService.search(query, page, limit)
 	}
+
+	static async setDefaultConfig(id: IDBValidKey): Promise<void> {
+		const allConfigs = await this.getAllConfigs()
+
+		const configsToUpdate: Array<ILlmConfig> = []
+		allConfigs.forEach((config) => {
+			if (config.id === id) {
+				configsToUpdate.push({ ...config, isDefault: true })
+			} else {
+				configsToUpdate.push({ ...config, isDefault: false })
+			}
+		})
+
+		// Update them all
+		await Promise.all(configsToUpdate.map((config) => this.updateConfig(config.id, { isDefault: config.isDefault })))
+
+	}
 }
 
 export default LlmConfigurationService

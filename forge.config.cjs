@@ -6,6 +6,8 @@ module.exports = {
 	packagerConfig: {
 		asar: true,
 		icon: path.join(__dirname, 'public', 'icons', 'icon'), // Ensure this path is correct
+		name: 'Juicebox AI',
+		executableName: 'Juicebox AI',
 	},
 	rebuildConfig: {},
 	makers: [
@@ -14,7 +16,7 @@ module.exports = {
 			config: {
 				icon: './public/icons/icon.icns',
 				format: 'ULFO',
-				name: 'JuiceBox AI',
+				name: 'Juicebox AI',
 				overwrite: true,
 
 			}
@@ -24,11 +26,11 @@ module.exports = {
 			config: {
 				name: 'Juicebox AI',
 				authors: 'Denis Duvauchelle',
-				exe: 'ai-juicing-juicebox.exe',
+				exe: 'Juicebox AI.exe',
 				setupIcon: path.join(__dirname, 'public', 'icons', 'icon.ico'),
 				iconUrl: 'https://raw.githubusercontent.com/desduvauchelle/ai-juicing-juicebox/main/public/icons/icon.ico',
 				loadingGif: path.join(__dirname, 'public', 'icons', 'loading.gif'),
-				setupExe: 'AI-Juicing-JuiceBox-Setup.exe',
+				setupExe: 'Juicebox-AI-Setup.exe',
 				noMsi: true
 			}
 		},

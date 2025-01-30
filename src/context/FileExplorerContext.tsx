@@ -8,6 +8,7 @@ interface FileExplorerContextProps {
 	folders: IFileExplorerFolder[]
 	conversations: IConversation[]
 	actions: {
+		refresh: () => Promise<void>
 		folder: {
 			toggle: (id: number) => Promise<void>
 			rename: (folderId: number, newName: string) => Promise<void>
@@ -41,14 +42,15 @@ export const FileExplorerProvider = ({ children }: { children: React.ReactNode }
 		fetchChats()
 	}, [fetchChats])
 
-	useEffect(() => {
-		const fetchFolders = async () => {
-			const folders = await FolderService.getAllFolders()
-			const sortedFolders = folders.sort((a, b) => a.order - b.order)
-			setFolders(sortedFolders)
-		}
-		fetchFolders()
+	const fetchFolders = useCallback(async () => {
+		const folders = await FolderService.getAllFolders()
+		const sortedFolders = folders.sort((a, b) => a.order - b.order)
+		setFolders(sortedFolders)
 	}, [])
+
+	useEffect(() => {
+		fetchFolders()
+	}, [fetchFolders])
 
 	const folderToggle = async (id: number) => {
 		const item = await FolderService.getFolderById(id)
@@ -186,10 +188,16 @@ export const FileExplorerProvider = ({ children }: { children: React.ReactNode }
 		})
 	}
 
+	const refresh = useCallback(async () => {
+		await fetchFolders()
+		await fetchChats()
+	}, [fetchChats, fetchFolders])
+
 	const value: FileExplorerContextProps = {
 		folders,
 		conversations,
 		actions: {
+			refresh,
 			folder: {
 				toggle: folderToggle,
 				rename: folderRename,

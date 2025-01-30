@@ -312,10 +312,10 @@ input:disabled, textarea:disabled {
 	@apply border-l-4 border-gray-300 pl-2 my-2;
 }
 .markdown pre {
-	@apply bg-gray-800 text-white p-2 my-2;
+	@apply bg-gray-900 text-white p-2 my-2;
 }
 .markdown code {
-	@apply bg-slate-400 p-1;
+	@apply  p-1 break-words overflow-x-scroll;
 }
 .markdown a {
 	@apply text-blue-500 underline;

@@ -3,6 +3,8 @@ const { execSync, spawn } = require('child_process');
 const path = require('path');
 const si = require('systeminformation');
 const { JSDOM } = require('jsdom');
+const { autoUpdater } = require('electron-updater');
+const { createMenu } = require('./menu.cjs');
 
 let ollamaProcess = null;
 
@@ -23,6 +25,45 @@ function createWindow() {
 
 	const startUrl = process.env.ELECTRON_START_URL || `file://${path.join(__dirname, '../dist/index.html')}`;
 	mainWindow.loadURL(startUrl);
+
+	// Create the application menu
+	createMenu(mainWindow);
+
+	// Setup auto-updater events
+	autoUpdater.autoDownload = true;
+	autoUpdater.autoInstallOnAppQuit = true;
+
+	autoUpdater.on('checking-for-update', () => {
+		mainWindow.webContents.send('update-status', 'checking');
+	});
+
+	autoUpdater.on('update-available', (info) => {
+		mainWindow.webContents.send('update-status', 'available', info);
+	});
+
+	autoUpdater.on('update-not-available', (info) => {
+		mainWindow.webContents.send('update-status', 'not-available', info);
+	});
+
+	autoUpdater.on('download-progress', (progressObj) => {
+		mainWindow.webContents.send('update-status', 'progress', progressObj);
+	});
+
+	autoUpdater.on('update-downloaded', (info) => {
+		mainWindow.webContents.send('update-status', 'downloaded', info);
+	});
+
+	autoUpdater.on('error', (err) => {
+		mainWindow.webContents.send('update-status', 'error', err);
+	});
+
+	// Check for updates immediately
+	autoUpdater.checkForUpdates();
+
+	// Check for updates every hour
+	setInterval(() => {
+		autoUpdater.checkForUpdates();
+	}, 60 * 60 * 1000);
 }
 
 app.on('ready', createWindow);
@@ -185,6 +226,15 @@ ipcMain.handle('ollama-model-remote', async () => {
 		console.error('Error fetching remote models:', error);
 		return [];
 	}
+});
+
+// Add these IPC handlers after the existing ones
+ipcMain.handle('check-for-updates', () => {
+	autoUpdater.checkForUpdates();
+});
+
+ipcMain.handle('quit-and-install', () => {
+	autoUpdater.quitAndInstall();
 });
 
 // Clean up when app quits

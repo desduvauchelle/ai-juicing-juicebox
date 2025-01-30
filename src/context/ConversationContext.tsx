@@ -1,10 +1,12 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { IConversation, IConversationChat } from "../../types/IConversation"
 import ConversationService from "../services/ConversationService"
 import ChatService from "../services/ChatService"
 import { ILlmConfig } from "../../types/ILlmConfig"
 import LlmConfigurationService from "../services/llmConfigurationService"
 import { UseConfigChecker, useConfigChecker } from "../hooks/useConfigChecker"
+import useAi from "../hooks/useAi"
+import { useFileExplorer } from "./FileExplorerContext"
 
 
 interface ConversationContextProps {
@@ -32,6 +34,9 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 	const [chats, setChats] = useState<IConversationChat[]>([])
 	const [isLoading, setIsLoading] = useState(false)
 	const [configs, setConfigs] = useState<ILlmConfig[]>([])
+	const ai = useAi()
+	const isGeneratingTitleRef = useRef(false)
+	const fileExplorer = useFileExplorer()
 
 	const getByConversationId = useCallback(async (id: number) => {
 
@@ -73,8 +78,8 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 			console.warn('No conversation found')
 			return
 		}
-		await ConversationService.update(conversation.id, override)
-
+		await ConversationService.update(override?.id || conversation.id, override)
+		fileExplorer.actions.refresh()
 		setConversation(prev => {
 			if (!prev) return null
 			return {
@@ -82,7 +87,46 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 				...override
 			}
 		})
-	}, [conversation])
+	}, [conversation, fileExplorer.actions])
+
+	useEffect(() => {
+		if (isGeneratingTitleRef.current) return
+		if (conversation?.aiGeneratedTitle) return
+		if (chats.length < 2) return
+
+		if (!conversation?.llmConfigId) return
+		if (!selectedConfig) return
+		const generateTitle = async () => {
+
+			if (isGeneratingTitleRef.current) return
+			isGeneratingTitleRef.current = true
+			const titleResponse = await ai.actions.generate({
+				conversation,
+				config: selectedConfig,
+				chats: [
+					{ role: "system", text: "You are an expert at finding titles for conversations", id: 0, conversationId: conversation.id, createdAt: Date.now() },
+					{ role: "user", text: `I need a title for this conversation, it needs to concise and descriptive. <chats>${chats.map(c => { return `<chat><from>${c.role}</from><messages>${c.text}</message></chat>` })}</chats>  Just give me the title and nothing else. No quotes, no mention of "Title", just the title. Be strict with yourself.`, id: 1, conversationId: conversation.id, createdAt: Date.now() },
+				]
+			})
+			isGeneratingTitleRef.current = false
+			if (titleResponse.aiMessage) {
+				const title = titleResponse.aiMessage.content
+					.replace(/<think>[\s\S]*?<\/think>/g, '')
+					.trim()
+					.replace(/["']/g, '')
+					.replace(/[*_`#]/g, '')
+					.trim()
+				if (!title) return
+				await update({
+					id: conversation.id,
+					name: title,
+					aiGeneratedTitle: true
+				})
+			}
+		}
+
+		generateTitle()
+	}, [conversation, selectedConfig, chats, update, ai.actions])
 
 	const chatAdd = useCallback(async (chat: Partial<IConversationChat>) => {
 		if (!conversation) {

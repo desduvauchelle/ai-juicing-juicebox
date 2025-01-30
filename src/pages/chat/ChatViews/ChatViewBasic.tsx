@@ -1,76 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Button from '../../../components/Button'
-import { IConversationChat } from '../../../../types/IConversation'
 import { useConversation } from '../../../context/ConversationContext'
 import Textarea from '../../../components/Textarea'
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import useAi from '../../../hooks/useAi'
-import Markdown from '../../../components/Markdown'
 import { useLocation, useNavigate } from 'react-router-dom'
+import ChatMessage from './components/ChatMessage'
 
 const maxWidth = 'max-w-3xl mx-auto'
 
-const ChatMessage: React.FC<{
-	chat: IConversationChat
-}> = ({ chat }) => {
-	const conversationContext = useConversation()
-
-	const parsedText = useMemo<{ thinking?: string, response?: string }>(() => {
-		if (!chat.text) {
-			return {
-				response: ''
-			}
-		}
-		if (!chat.text.includes("<think>")) {
-			return {
-				response: chat.text
-			}
-		}
-
-		if (chat.text.includes("<think>") && chat.text.includes("</think>")) {
-			const [_, thinking, response] = chat.text.match(/<think>(.*?)<\/think>(.*)/s) || []
-			return {
-				thinking: thinking,
-				response: response
-			}
-		}
-
-		if (chat.text.includes("<think>")) {
-			const [_, thinking] = chat.text.match(/<think>(.*)$/s) || []
-			return {
-				thinking: thinking
-			}
-		}
-
-		return {
-			response: chat.text
-		}
-	}, [chat.text])
-
-	const from = chat.role === 'user' ? 'You' : 'Assistant'
-	return <div className={`${maxWidth} py-4 group px-4 lg:px-0`}>
-		<div className="flex flex-row gap-2 w-full break-words">
-			<p className="font-bold flex-grow w-full">{from}</p>
-			<Button
-				theme="danger"
-				isOutline
-				isSmall
-				className="opacity-0 group-hover:opacity-100"
-				onClick={() => conversationContext?.actions.chat.delete(chat.id)}>
-				<FontAwesomeIcon icon={faTrash} />
-			</Button>
-		</div>
-		{parsedText.thinking && (
-			<div className="opacity-50 mb-6">
-				<Markdown>
-					{parsedText.thinking}
-				</Markdown>
-			</div>
-		)}
-		{parsedText.response && <Markdown>{parsedText.response}</Markdown>}
-	</div>
-}
 const ChatViewBasic: React.FC = () => {
 	const location = useLocation()
 	const navigate = useNavigate()
@@ -184,18 +121,20 @@ const ChatViewBasic: React.FC = () => {
 			<div className="flex-1 overflow-y-auto space-y-1" ref={wrapperRef}>
 				<div className="h-8"></div>
 				{chats.map((chat) => {
-					return <div key={chat.id} className={`${chat.role === "user" ? "" : "bg-base-300"}`}>
-						<ChatMessage chat={chat} />
+					return <div key={chat.id} className={`${chat.role === "user" ? "bg-base-200 bg-opacity-70" : ""}`}>
+						<ChatMessage chat={chat} maxWidth={maxWidth} />
 					</div>
 				})}
-				{incomingMessage && <div className={`bg-base-300`}>
-					<ChatMessage chat={{
-						id: -1,
-						role: "assistant",
-						text: incomingMessage,
-						createdAt: Date.now(),
-						conversationId: conversation?.id || 0
-					}} />
+				{incomingMessage && <div className={`bg-base-200 bg-opacity-70`}>
+					<ChatMessage
+						maxWidth={maxWidth}
+						chat={{
+							id: -1,
+							role: "assistant",
+							text: incomingMessage,
+							createdAt: Date.now(),
+							conversationId: conversation?.id || 0
+						}} />
 				</div>}
 				{!conversationContext.selectedConfig && <p className='text-red-500'>
 					No config

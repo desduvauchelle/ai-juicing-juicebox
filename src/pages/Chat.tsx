@@ -1,4 +1,4 @@
-import { faCog, faSquareCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faCog, faPlus, faSquareCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -47,6 +47,16 @@ const Chat: React.FC = () => {
 					onClick={toggleMenu}>
 					<FontAwesomeIcon icon={faSquareCaretDown} className='rotate-90' />
 				</Button>
+			</div>
+			<div className="w-full block px-3 pb-2">
+				<MyLink
+					href="/chat"
+					theme="primary"
+					isOutline
+					isButton
+					className="block w-full text-center">
+					<FontAwesomeIcon icon={faPlus} /> Chat
+				</MyLink>
 			</div>
 			<div className=" flex-grow w-full overflow-y-auto overflow-x-hidden">
 				<FileExplorer conversationId={conversationId} />

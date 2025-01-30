@@ -1,5 +1,6 @@
 {
-	"name": "ai-juicing-juicebox",
+	"name": "juicebox-ai",
+	"productName": "Juicebox AI",
 	"private": true,
 	"version": "0.0.1",
 	"description": "A local AI juicing application",
@@ -24,7 +25,31 @@
 		"make-icon": "electron-icon-maker --input=public/logo.png --output=public/icons"
 	},
 	"build": {
-		"appId": "com.ai-juicing.local",
+		"appId": "com.ai-juicing.juicebox",
+		"productName": "Juicebox AI",
+		"publish": {
+			"provider": "github",
+			"owner": "desduvauchelle",
+			"repo": "ai-juicing-juicebox",
+			"private": false
+		},
+		"mac": {
+			"category": "public.app-category.developer-tools",
+			"target": [
+				"dmg",
+				"zip"
+			]
+		},
+		"win": {
+			"target": [
+				"nsis"
+			]
+		},
+		"linux": {
+			"target": [
+				"AppImage"
+			]
+		},
 		"files": [
 			"dist/**/*",
 			"public/**/*"
@@ -46,6 +71,7 @@
 		"cheerio": "^1.0.0",
 		"date-fns": "^4.1.0",
 		"electron-squirrel-startup": "^1.0.1",
+		"electron-updater": "^6.3.9",
 		"jsdom": "^26.0.0",
 		"react": "^18.3.1",
 		"react-dnd": "^16.0.1",

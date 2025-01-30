@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LlmConfigs from './settings/LlmConfigs'
 import OllamaPage from './settings/OllamaPage'
 import Logo from '../components/Logo'
+import SettingsConfig from './settings/SettingsConfig'
 
 const Settings: React.FC = () => {
 	return <div className="flex h-screen">
@@ -22,8 +23,8 @@ const Settings: React.FC = () => {
 							text: "Theme"
 						},
 						{
-							href: "/settings/import-export",
-							text: "Import/Export"
+							href: "/settings/settings",
+							text: "Settings"
 						},
 						{
 							href: "/settings/ollama",
@@ -45,7 +46,7 @@ const Settings: React.FC = () => {
 			<Routes>
 				<Route path="/theme" element={<>Theme</>} />
 				<Route path="/llm-configs" element={<LlmConfigs />} />
-				<Route path="/import-export" element={<>Import/Export Page</>} />
+				<Route path="/settings" element={<SettingsConfig />} />
 				<Route path="/ollama" element={<OllamaPage />} />
 			</Routes>
 		</main>

@@ -2,7 +2,7 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import Button, { MyLink } from '../../../components/Button'
+import Button from '../../../components/Button'
 import { useMemo, useState } from 'react'
 import FileExplorerConversationItem from './FileExplorerConversationItem'
 import FileExplorerFolderItem from './FileExplorerFolderItem'
@@ -32,15 +32,7 @@ const FileExplorer: React.FC<{ conversationId?: string }> = ({ conversationId })
 
 	return <DndProvider backend={HTML5Backend}>
 
-		<div className="w-full block px-3 pb-2">
-			<MyLink
-				href="/chat"
-				theme="primary"
-				isButton
-				className="block w-full text-center">
-				<FontAwesomeIcon icon={faPlus} /> Chat
-			</MyLink>
-		</div>
+
 
 		<div className="overflow-auto">
 			{fileExplorer.folders.map(folder => {
