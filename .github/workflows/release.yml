@@ -22,10 +22,10 @@ jobs:
           node-version: 20
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
 
       - name: Build and Make
-        run: npm run make
+        run: yarn make
 
       - name: Create Release
         uses: softprops/action-gh-release@v1

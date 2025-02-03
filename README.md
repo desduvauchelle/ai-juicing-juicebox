@@ -37,6 +37,22 @@ We don't install Ollama for you yet. But you can add the Ollama server URL from 
 
 This project is in early development. It is not ready for production use. It is not ready for general use. It is not ready for any use. It is not ready for anything. It is not ready.
 
+## Self build
+
+To build the app yourself, you can clone the repository and run the following commands:
+
+```bash
+# Clone the repository
+yarn install
+yarn start
+```
+
+## Built With
+
+```bash
+yarn package
+```
+
 ## Contributing
 
 Community contributions are welcome, especially in testing and packaging. Contribute via issues and pull requests.
