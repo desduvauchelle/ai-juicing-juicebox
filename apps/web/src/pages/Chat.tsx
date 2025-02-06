@@ -1,4 +1,4 @@
-import { faCaretLeft, faChevronLeft, faChevronRight, faCog, faPlus, faSquareCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faCaretLeft, faChevronLeft, faChevronRight, faCog, faExclamation, faPlus, faSquareCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -65,6 +65,11 @@ const Chat: React.FC = () => {
 				<li>
 					<MyLink href="/settings" theme="custom" className="">
 						<FontAwesomeIcon icon={faCog} /> Settings
+					</MyLink>
+				</li>
+				<li>
+					<MyLink href="/welcome" theme="custom" className="">
+						<FontAwesomeIcon icon={faExclamation} /> Onboarding
 					</MyLink>
 				</li>
 			</ul>

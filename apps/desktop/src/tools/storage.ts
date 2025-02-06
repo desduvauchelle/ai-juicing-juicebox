@@ -1,72 +1,83 @@
 import { app } from 'electron'
-import { promises as fs } from 'fs'
+import * as fs from 'fs/promises'
 import * as path from 'path'
 
-// Define the path to the storage file safely within the userData folder
-const storagePath = path.join(app.getPath('userData'))
-
-
-
-
-const get = async <T>({
-	fileName,
-	relativeLocation = "",
-	defaultData
-}: {
+interface StorageOptions {
 	fileName: string
-	relativeLocation?: string
-	defaultData: T
-}): Promise<T> => {
-
-	try {
-		const filePath = path.join(storagePath, relativeLocation, `${fileName}.json`)
-		const data = await fs.readFile(filePath, 'utf-8')
-		return {
-			...defaultData,
-			...JSON.parse(data)
-		}
-	} catch {
-		return defaultData
-	}
+	partialData?: any
+	defaultData?: any
 }
-const save = async <T>({
-	fileName,
-	relativeLocation = "",
-	partialData
-}: {
-	fileName: string
-	relativeLocation?: string
-	partialData: T
-}): Promise<T> => {
 
-	try {
-		const savedData = await get({
-			fileName,
-			relativeLocation,
-			defaultData: {}
-		})
-		const fileBasePath = path.join(storagePath, relativeLocation, fileName)
-		const newStorage = { ...savedData, ...partialData }
-		const data = JSON.stringify(newStorage, null, 2)
-		const tempPath = storagePath + '.tmp'
-		await fs.writeFile(tempPath, data, 'utf-8')
-		await fs.rename(tempPath, storagePath)
-		return newStorage
-	} catch (error) {
-		console.error('Error saving storage:', error)
-		// Cleanup the temporary file if it exists
+class Storage {
+	private getFilePath(fileName: string): string {
+		// Ensure the filename has .json extension
+		const fullPath = path.join(app.getPath('userData'), fileName)
+		console.log('Storage path =======>', fullPath)
+		return fullPath
+	}
+
+	private async ensureDirectory(filePath: string): Promise<void> {
+		const dir = path.dirname(filePath)
 		try {
-			await fs.unlink(storagePath + '.tmp')
-
-		} catch {
-			/* ignore cleanup errors */
+			await fs.mkdir(dir, { recursive: true })
+		} catch (error) {
+			console.warn('Error creating directory:', error)
+			throw error
 		}
-		throw error
+	}
+
+	async save({ fileName, partialData }: StorageOptions): Promise<void> {
+		try {
+			const filePath = this.getFilePath(fileName)
+			const tempPath = this.getFilePath(`${fileName}.tmp`)
+
+			// Ensure directories exist for both paths
+			await this.ensureDirectory(filePath)
+			await this.ensureDirectory(tempPath)
+
+			let newData = partialData
+
+			try {
+				await fs.access(filePath)
+				const fileContent = await fs.readFile(filePath, 'utf-8')
+				const existingData = JSON.parse(fileContent)
+				newData = { ...existingData, ...partialData }
+			} catch (error) {
+				// File doesn't exist, use partialData as is
+			}
+
+			try {
+				// Write to temp file first
+				await fs.writeFile(tempPath, JSON.stringify(newData, null, 2))
+				// Try atomic rename
+				await fs.rename(tempPath, filePath)
+			} catch (error) {
+				console.warn('Error during save operation:', error)
+				// Direct write fallback
+				await fs.writeFile(filePath, JSON.stringify(newData, null, 2))
+			} finally {
+				try {
+					await fs.unlink(tempPath)
+				} catch {
+					// Ignore cleanup errors
+				}
+			}
+		} catch (error) {
+			console.error('Fatal error in storage save:', error)
+			throw error
+		}
+	}
+
+	async get({ fileName, defaultData = {} }: StorageOptions): Promise<any> {
+		try {
+			const filePath = this.getFilePath(fileName)
+			const fileContent = await fs.readFile(filePath, 'utf-8')
+			return JSON.parse(fileContent)
+		} catch (error) {
+			// Return default data if file doesn't exist or is corrupt
+			return defaultData
+		}
 	}
 }
-const storage = {
-	get,
-	save
-}
 
-export default storage
+export default new Storage()

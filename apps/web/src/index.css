@@ -4,5 +4,6 @@
   root: ":root";
   themes: all;
 }
+/* @import "./style/daisyui-temp.css"; */
 @import "./style/markdown.css";
 @import "./style/base.css";

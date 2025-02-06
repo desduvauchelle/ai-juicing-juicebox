@@ -26,5 +26,7 @@
  * ```
  */
 
+// This file is required by forge.config.ts but can be empty
+// It runs in the renderer process
 
 console.log('👋 This message is being logged by "renderer.js", included via webpack')

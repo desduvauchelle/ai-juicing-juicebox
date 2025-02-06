@@ -12,6 +12,10 @@ import { mainConfig } from './webpack.main.config'
 import { rendererConfig } from './webpack.renderer.config'
 import path from 'path'
 
+// Determine HTML path based on environment
+const isDev = process.env.NODE_ENV === 'development'
+const htmlPath = isDev ? '../web/index.html' : './src/dist-web/index.html'
+
 const config: ForgeConfig = {
 	packagerConfig: {
 		asar: true,
@@ -30,7 +34,7 @@ const config: ForgeConfig = {
 				config: rendererConfig,
 				entryPoints: [
 					{
-						html: './src/dist-web/index.html',
+						html: htmlPath,
 						js: './src/renderer.ts',
 						name: 'main_window',
 						preload: {
@@ -52,6 +56,19 @@ const config: ForgeConfig = {
 			[FuseV1Options.OnlyLoadAppFromAsar]: true,
 		}),
 	],
+	publishers: [
+		{
+			name: '@electron-forge/publisher-github',
+			config: {
+				repository: {
+					owner: 'desduvauchelle',
+					name: 'ai-juicing-juicebox'
+				},
+				prerelease: true,
+				generateReleaseNotes: true
+			}
+		}
+	]
 }
 
 export default config

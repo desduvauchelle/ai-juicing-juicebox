@@ -1,8 +1,8 @@
 {
 	"name": "desktop",
-	"productName": "desktop",
+	"productName": "AI Juicing Juicebox",
 	"version": "1.0.0",
-	"description": "My Electron application description",
+	"description": "AI interactions Open source",
 	"main": ".webpack/main",
 	"scripts": {
 		"start": "electron-forge start",
@@ -21,6 +21,7 @@
 		"@electron-forge/plugin-auto-unpack-natives": "^7.6.1",
 		"@electron-forge/plugin-fuses": "^7.6.1",
 		"@electron-forge/plugin-webpack": "^7.6.1",
+		"@electron-forge/publisher-github": "^7.6.1",
 		"@electron-forge/shared-types": "^7.2.0",
 		"@electron/fuses": "^1.8.0",
 		"@typescript-eslint/eslint-plugin": "^5.0.0",
@@ -36,7 +37,8 @@
 		"style-loader": "^3.0.0",
 		"ts-loader": "^9.2.2",
 		"ts-node": "^10.0.0",
-		"typescript": "^5.7.3"
+		"typescript": "^5.7.3",
+		"update-electron-app": "^3.1.1"
 	},
 	"keywords": [],
 	"author": {

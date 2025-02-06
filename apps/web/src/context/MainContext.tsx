@@ -5,6 +5,7 @@ import { ILlmConfig } from "../../types/ILlmConfig"
 import { UserSettingsService } from "../services/UserSettingsService"
 import createMainContextActionsLlmConfigs, { MainContextActionsLlmConfigs } from "./actions/mainContextActionsLlmConfigs"
 import createMainContextActionsSettings, { MainContextActionsSettings, MainContextUserSettings } from "./actions/mainContextActionsSettings"
+import { bridgeApi } from "../tools/bridgeApi"
 
 
 
@@ -40,6 +41,8 @@ const setUserTheme = (theme: string) => {
 }
 
 
+
+
 const MainContext = createContext<IMainContext>(defaultMainContext)
 
 export const MainContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -52,6 +55,7 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 	// INIT LOAD
 	//
 	useEffect(() => {
+		if (initCompleteRef.current) return
 		UserSettingsService.get()
 			.then((settings) => {
 				initCompleteRef.current = true
@@ -65,6 +69,8 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 			})
 	}, [])
 
+
+
 	useEffect(() => {
 		if (!initCompleteRef.current) return
 		if (userSettings?.theme) setUserTheme(userSettings.theme || "dim")
@@ -74,7 +80,6 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 	// SAVE TO STORAGE ON CHANGE
 	//
 	useEffect(() => {
-		console.log("Saving user settings", userSettings)
 		if (!initCompleteRef.current) return
 		if (!userSettings) return
 		UserSettingsService.save(userSettings)

@@ -5,8 +5,10 @@ export interface UserSettings {
 	language?: string
 	notificationsEnabled?: boolean
 	windowSize?: {
-		width: number
-		height: number
+		x?: number
+		y?: number
+		width?: number
+		height?: number
 	},
 	llmConfigs?: ILlmConfig[]
 	folders?: IFileExplorerFolder[]

@@ -37,6 +37,11 @@ class FolderService {
 	static async getAllFolders(): Promise<Array<IFileExplorerFolder & { id: number }>> {
 		return this.getFolders()
 	}
+
+	static async getFolderById(id: number): Promise<(IFileExplorerFolder & { id: number }) | null> {
+		const folders = await this.getFolders()
+		return folders.find(f => f.id === id) || null
+	}
 }
 
 export default FolderService

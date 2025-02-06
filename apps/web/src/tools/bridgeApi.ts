@@ -1,8 +1,9 @@
 import { ElectronAPI, OllamaRemoteModel, SystemInfo } from "../../types/Electron"
+import { UserSettings } from "../../types/UserSettings"
 
 const electron = window.electron as ElectronAPI
 
-export const bridgeApi = {
+export const bridgeApi: ElectronAPI = {
 	ollamaInstallCheck: async (): Promise<boolean> => {
 		return electron?.ollamaInstallCheck() ?? false
 	},
@@ -19,11 +20,24 @@ export const bridgeApi = {
 		return electron?.ollamaModelRemove(modelId) ?? 'Error: Electron bridge not available'
 	},
 
-	systemInfoGet: async (): Promise<SystemInfo | null> => {
-		return electron?.systemInfoGet() ?? null
+	systemInfoGet: async (): Promise<SystemInfo> => {
+		const info = await electron?.systemInfoGet()
+		if (!info) {
+			throw new Error('SystemInfo not available')
+		}
+		return info
 	},
 
 	ollamaModelRemote: async (): Promise<OllamaRemoteModel[]> => {
 		return electron?.ollamaModelRemote() ?? []
+	},
+	generalSettingsGet: function (): Promise<UserSettings> {
+		throw new Error("Function not implemented.")
+	},
+	generalSettingsSave: function (userSettings: Partial<UserSettings>): Promise<UserSettings> {
+		throw new Error("Function not implemented.")
+	},
+	generalSettingsClear: function (): Promise<void> {
+		throw new Error("Function not implemented.")
 	}
 }

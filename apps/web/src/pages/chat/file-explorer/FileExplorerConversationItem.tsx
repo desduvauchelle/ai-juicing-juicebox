@@ -130,7 +130,7 @@ const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 						navigate('/chat')
 					}
 				}}
-				className="absolute right-0 h-full px-3 hover:text-red-500 opacity-0 group-hover:opacity-30 hover:opacity-100 translate-x-full group-hover:translate-x-0">
+				className="absolute top-0 right-0 h-full px-3 hover:text-red-500 opacity-0 group-hover:opacity-30 hover:opacity-100 translate-x-full group-hover:translate-x-0">
 				<FontAwesomeIcon icon={faTimes} />
 			</button>}
 

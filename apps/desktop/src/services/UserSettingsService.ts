@@ -1,11 +1,11 @@
 import { UserSettings } from 'types/UserSettings'
 import storage from '../tools/storage'
 
-const STORAGE_FILE = "general-settings"
+const STORAGE_FILE = "user-settings.json"
 
 
 
-class GeneralService {
+class UserSettingsService {
 	// Save settings using the storage tool as a static method.
 	static async save(settings: Partial<UserSettings>): Promise<void> {
 		await storage.save({
@@ -31,4 +31,4 @@ class GeneralService {
 	}
 }
 
-export { GeneralService }
+export { UserSettingsService }

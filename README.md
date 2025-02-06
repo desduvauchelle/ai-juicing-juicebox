@@ -68,6 +68,7 @@ Community contributions are welcome, especially in testing and packaging. Contri
 - [ ] Add a document to answer
 - [ ] Add an auto-updater
 - [ ] Set up and connect remote server
+- [x] Theme manager
 
 ## Wishlist
 

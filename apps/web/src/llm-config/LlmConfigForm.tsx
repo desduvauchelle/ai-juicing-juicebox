@@ -123,15 +123,6 @@ const LlmConfigForm: React.FC<LlmConfigFormProps> = ({ initialValues, configId, 
 
 				{loadingModelsError && <p className='text-red-500'>{loadingModelsError}</p>}
 
-				<label className="block w-full">
-					<input
-						type="checkbox"
-						name="isDefault"
-						checked={formData.isDefault}
-						onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
-					/>
-					<span className='ml-2 font-bold'>Default</span>
-				</label>
 
 				<Button type="submit" theme="primary">
 					Save

@@ -133,10 +133,11 @@ const ChatViewNew: React.FC = () => {
 				<ChatInputBox
 					ref={textareaRef}
 					autoFocus
-					className='w-full'
+					className='w-full border-transparent bg-base-100 text-lg'
 					placeholder='Start typing here...'
 					value={text}
 					tabIndex={1}
+					startingRows={2}
 					onChange={(e) => setText(e.target.value)}
 					onSubmit={createChat}
 				/>
