@@ -3,13 +3,24 @@ import React from 'react'
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	label?: string
 	description?: string
+	topRight?: React.ReactNode
 }
 
-const Input: React.FC<InputProps> = ({ label, description, className, ...props }) => {
+const Input: React.FC<InputProps> = ({
+	label,
+	description,
+	className,
+	topRight,
+	...props }) => {
 	return <div className={className || ""}>
-		<label className="block text-sm font-bold mb-2">
-			{label}
-		</label>
+		<div className="flex flex-row w-full items-center items-center mb-1">
+			<label className="flex-grow text-sm font-bold">
+				{label}
+			</label>
+			{topRight && <>
+				{topRight}
+			</>}
+		</div>
 		<input
 			className="input input-bordered w-full"
 			{...props}

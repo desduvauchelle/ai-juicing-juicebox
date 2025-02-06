@@ -1,9 +1,10 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { MyLink } from '../components/Button'
 import LlmConfigForm from '../llm-config/LlmConfigForm'
 import { useNavigate } from 'react-router-dom'
 import { bridgeApi } from '../tools/bridgeApi'
+import Logo from '../components/Logo'
+import { InlineAlert } from '../components/InlineAlert'
 
 const Welcome: React.FC = () => {
 	const [ollamaInstalled, setOllamaInstalled] = useState(true)
@@ -21,13 +22,15 @@ const Welcome: React.FC = () => {
 	}, [])
 
 	return (
-		<div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
-			<div className="text-center p-10 bg-white rounded-lg shadow-lg space-y-4">
-				<h1 className="text-5xl font-bold text-gray-800 mb-4">AI Juicing - Juicebox</h1>
-				<p>Your interface with LLMs models, particularly local ones.</p>
+		<div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-yellow-500 to-green-600">
+			<div className="p-10 bg-base-200 rounded-lg shadow-lg space-y-4 max-w-md w-full">
+				<div className="flex items-center justify-center">
+					<Logo />
+				</div>
+				<p>Free open source AI interaction software. Experience powerful AI tools. On the cloud or in the privacy of your computer.</p>
 
 				{isChecking && (
-					<p>Checking Ollama installation...</p>
+					<InlineAlert type="info">Checking Ollama installation...</InlineAlert>
 				)}
 				{!isChecking && !ollamaInstalled && (
 					<div className="mb-4">
@@ -36,11 +39,11 @@ const Welcome: React.FC = () => {
 					</div>
 				)}
 				{!isChecking && ollamaInstalled && (
-					<p className="mb-4 text-green-600">Congrats! You already have Ollama installed.</p>
+					<InlineAlert type="success">Congrats! You already have Ollama installed.</InlineAlert>
 				)}
 
 				<div>
-					<p>Setup your first AI</p>
+					<p className='text-xl text-center font-medium mb-2'>Setup your first AI</p>
 					<LlmConfigForm
 						onSubmit={() => {
 							// Nav
@@ -48,9 +51,7 @@ const Welcome: React.FC = () => {
 						}} />
 				</div>
 
-				<MyLink href="#chat" theme="primary" isButton>
-					Get started
-				</MyLink>
+
 			</div>
 		</div>
 	)

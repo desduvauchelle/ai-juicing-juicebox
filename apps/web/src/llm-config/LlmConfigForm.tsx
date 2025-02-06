@@ -76,59 +76,68 @@ const LlmConfigForm: React.FC<LlmConfigFormProps> = ({ initialValues, configId, 
 
 
 	return (
-		<div className="max-w-sm mx-auto p-4 bg-base-100 rounded space-y-4 text-left">
-			<form onSubmit={handleSubmit}>
-				<Input
-					label="Name"
-					name="name"
-					placeholder='Ex: Base, ...'
-					type="text"
-					value={formData.name}
-					onChange={handleChange}
-				/>
-				<Input
-					label="URL"
-					name="url"
-					type="text"
-					placeholder='Ex: http://localhost:11434'
-					value={formData.url}
-					onChange={handleChange}
-				/>
-
-				<div className="flex flex-row items-center gap-2">
-					<Select
-						label={`Model (${formData.model || "None"})`}
-						onChange={(e) => {
-							setFormData({ ...formData, model: e.target.value })
+		<form onSubmit={handleSubmit} className="max-w-sm mx-auto p-4 bg-base-100 rounded space-y-4 text-left">
+			<Input
+				label="Name"
+				name="name"
+				placeholder='Ex: Base, ...'
+				type="text"
+				value={formData.name}
+				onChange={handleChange}
+			/>
+			<Input
+				label="URL"
+				name="url"
+				type="text"
+				placeholder='Ex: http://localhost:11434'
+				value={formData.url}
+				onChange={handleChange}
+				topRight={<>
+					<Button
+						type="button"
+						onClick={() => {
+							setFormData({ ...formData, url: 'http://localhost:11434' })
 						}}
-						options={[
-							{ label: 'Select model...', value: '' },
-							...models.map(m => ({
-								label: m.name,
-								value: m.name
-							}))
-						]}
-					/>
-					<div className="mt-6">
-						<Button
-							type="button" // Explicitly set type to button
-							theme="dark"
-							isLoading={isLoadingModels}
-							onClick={loadModels}
-						>
-							<FontAwesomeIcon icon={faRefresh} />
-						</Button>
-					</div>
+						theme="ghost"
+						isOutline
+						className='btn-xs'>
+						LOCAL
+					</Button>
+				</>}
+			/>
+
+			<div className="flex flex-row items-center gap-2">
+				<Select
+					label={`Model (${formData.model || "None"})`}
+					onChange={(e) => {
+						setFormData({ ...formData, model: e.target.value })
+					}}
+					options={[
+						{ label: 'Select model...', value: '' },
+						...models.map(m => ({
+							label: m.name,
+							value: m.name
+						}))
+					]}
+				/>
+				<div className="mt-6">
+					<Button
+						type="button"
+						theme="dark"
+						isLoading={isLoadingModels}
+						onClick={loadModels}>
+						<FontAwesomeIcon icon={faRefresh} />
+					</Button>
 				</div>
+			</div>
 
-				{loadingModelsError && <p className='text-red-500'>{loadingModelsError}</p>}
+			{loadingModelsError && <p className='text-red-500'>{loadingModelsError}</p>}
 
 
-				<Button type="submit" theme="primary">
-					Save
-				</Button>
-			</form>
-		</div>
+			<Button type="submit" theme="primary">
+				Save
+			</Button>
+		</form>
 	)
 }
 
