@@ -4,7 +4,7 @@
 
 # AI Juicebox
 
-A collection of local AI tools to get things done. If chat is useful but not enough, check out our other tools.
+A collection of local AI tools to get things done. Chat is useful but not enough, check out our other tools. I find it unfair that the big guys have tools and not the open source ones. This is an attempt to make a collection of tools that are useful and private.
 
 ## Features
 
@@ -56,3 +56,19 @@ yarn package
 ## Contributing
 
 Community contributions are welcome, especially in testing and packaging. Contribute via issues and pull requests.
+
+## Todo
+
+- [ ] Onboarding revamp
+- [ ] Add Ollama server installation
+- [ ] Add any AI services to use
+- [ ] Finish the Canvas interface
+- [ ] Add a web search
+- [ ] Add a web scrapping
+- [ ] Add a document to answer
+- [ ] Add an auto-updater
+- [ ] Set up and connect remote server
+
+## Wishlist
+
+- [ ] Add a way to generate images (ideally locally, but remote also an option)

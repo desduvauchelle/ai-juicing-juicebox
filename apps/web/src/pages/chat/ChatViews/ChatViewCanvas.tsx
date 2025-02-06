@@ -4,6 +4,7 @@ import { useConversation } from '../../../context/ConversationContext'
 import Textarea from '../../../components/Textarea'
 import useAi from '../../../hooks/useAi'
 import ChatMessage from './components/ChatMessage'
+import { ChatInputBox } from './components/ChatInputBox'
 
 const ChatViewCanvas: React.FC = () => {
 	const conversationContext = useConversation()
@@ -95,7 +96,7 @@ const ChatViewCanvas: React.FC = () => {
 	return (
 		<div className="w-full h-full flex">
 			{/* Left side - Chat */}
-			<div className="w-1/3 flex flex-col border-r border-base-300">
+			<div className="w-2/5 flex flex-col border-r border-base-300">
 				<div className="flex-1 overflow-y-auto space-y-1" ref={chatWrapperRef}>
 					<div className="h-8"></div>
 					{chats.map((chat) => (
@@ -127,20 +128,21 @@ const ChatViewCanvas: React.FC = () => {
 						</div>
 					)}
 					<div className="flex gap-2">
-						<Textarea
+						<ChatInputBox
 							id="chat-input"
 							autoFocus
 							disabled={isTyping}
-							maxRows={6}
+							maxRows={3}
 							value={newMessage}
 							onChange={(e) => !isTyping && setNewMessage(e.target.value)}
 							className={`flex-1 px-3 py-2 border-transparent ${isTyping ? "opacity-50" : ""}`}
 							placeholder="Type a message..."
+							onSubmit={send}
 						/>
 						<Button
-							isLoading={isTyping}
 							type="submit"
-							theme="primary">
+							theme="custom"
+							className='opacity-0 absolute right-0 top-0 h-0 w-0'>
 							Send
 						</Button>
 					</div>
@@ -148,12 +150,12 @@ const ChatViewCanvas: React.FC = () => {
 			</div>
 
 			{/* Right side - Canvas */}
-			<div className="w-2/3 h-full p-4 pt-12">
-				<Textarea
+			<div className="w-3/5 h-full rounded-r-6xl">
+				<textarea
 					value={canvasText}
 					onChange={(e) => setCanvasText(e.target.value)}
 					onSelect={handleCanvasSelection}
-					className="w-full h-full resize-none"
+					className="w-full h-full resize-none p-4 pt-12"
 					placeholder="Enter or paste your text here..."
 				/>
 			</div>
