@@ -15,6 +15,7 @@ function App() {
 				<Route path="/chat/:conversationId" element={<Chat />} />
 				<Route path="/welcome" element={<Welcome />} />
 				<Route path="/settings/*" element={<Settings />} />
+
 				{/* Add more routes as needed */}
 				<Route path="*" element={<Init />} /> {/* Catch-all route */}
 			</Routes>

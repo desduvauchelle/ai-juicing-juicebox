@@ -2,9 +2,9 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import createMainContextActionsFolders, { MainContextActionsFolders } from "./actions/mainContextActionsFolders"
 import { IFileExplorerFolder } from "../../types/IFolder"
 import { ILlmConfig } from "../../types/ILlmConfig"
-import { UserSettings } from "../../types/UserSettings"
-import { UserSettingsService, UserSettingsServiceType } from "../services/UserSettingsService"
+import { UserSettingsService } from "../services/UserSettingsService"
 import createMainContextActionsLlmConfigs, { MainContextActionsLlmConfigs } from "./actions/mainContextActionsLlmConfigs"
+import createMainContextActionsSettings, { MainContextActionsSettings, MainContextUserSettings } from "./actions/mainContextActionsSettings"
 
 
 
@@ -13,14 +13,13 @@ const setActions = <T,>(actions: T) => {
 }
 
 
-type BaseUserSettings = Omit<UserSettings, 'folders' | 'llmConfigs'>
 interface IMainContext {
-	userSettings: BaseUserSettings
+	userSettings: MainContextUserSettings | undefined
 	folders: IFileExplorerFolder[]
 	llmConfigs: ILlmConfig[],
 	actions: {
 		folders: MainContextActionsFolders,
-		userSettings: UserSettingsServiceType,
+		userSettings: MainContextActionsSettings,
 		llmConfigs: MainContextActionsLlmConfigs
 	}
 }
@@ -30,21 +29,28 @@ const defaultMainContext: IMainContext = {
 	folders: [],
 	llmConfigs: [],
 	actions: {
-		userSettings: UserSettingsService,
+		userSettings: createMainContextActionsSettings({ setUserSettings: setActions }),
 		folders: createMainContextActionsFolders({ setFolders: setActions }),
 		llmConfigs: createMainContextActionsLlmConfigs({ setLlmConfigs: setActions }),
 	},
+}
+
+const setUserTheme = (theme: string) => {
+	document.documentElement.setAttribute('data-theme', theme)
 }
 
 
 const MainContext = createContext<IMainContext>(defaultMainContext)
 
 export const MainContextProvider = ({ children }: { children: React.ReactNode }) => {
-	const [userSettings, setUserSettings] = useState<BaseUserSettings>(defaultMainContext.userSettings)
+	const [userSettings, setUserSettings] = useState<MainContextUserSettings | undefined>(defaultMainContext.userSettings)
 	const [folders, setFolders] = useState<IFileExplorerFolder[]>(defaultMainContext.folders)
 	const [llmConfigs, setLlmConfigs] = useState<ILlmConfig[]>(defaultMainContext.llmConfigs)
 	const initCompleteRef = useRef(false)
-	// On load of component, use the UserSettingsService to get the user settings
+
+	//
+	// INIT LOAD
+	//
 	useEffect(() => {
 		UserSettingsService.get()
 			.then((settings) => {
@@ -55,24 +61,36 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 				setUserSettings(rest)
 				setFolders(folders || [])
 				setLlmConfigs(llmConfigs || [])
+				if (rest.theme) setUserTheme(rest.theme || "dim")
 			})
 	}, [])
 
-	// On change of user settings, save the user settings using the UserSettingsService
 	useEffect(() => {
 		if (!initCompleteRef.current) return
+		if (userSettings?.theme) setUserTheme(userSettings.theme || "dim")
+	}, [userSettings?.theme])
+
+	//
+	// SAVE TO STORAGE ON CHANGE
+	//
+	useEffect(() => {
+		console.log("Saving user settings", userSettings)
+		if (!initCompleteRef.current) return
+		if (!userSettings) return
 		UserSettingsService.save(userSettings)
 	}, [userSettings])
-	// Same for folders
+
 	useEffect(() => {
 		if (!initCompleteRef.current) return
 		UserSettingsService.save({ folders })
 	}, [folders])
-	// Same for LLM configs
+
 	useEffect(() => {
 		if (!initCompleteRef.current) return
 		UserSettingsService.save({ llmConfigs })
 	}, [llmConfigs])
+
+
 
 	const folderActions = useCallback(
 		() => {
@@ -86,18 +104,24 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 		},
 		[])
 
+	const userSettingActions = useCallback(
+		() => {
+			return createMainContextActionsSettings({ setUserSettings })
+		},
+		[])
+
 	const contextValue: IMainContext = useMemo(
 		() => ({
 			userSettings,
 			folders,
 			llmConfigs,
 			actions: {
-				userSettings: UserSettingsService,
+				userSettings: userSettingActions(),
 				folders: folderActions(),
 				llmConfigs: llmConfigActions()
 			}
 		}),
-		[userSettings, folders, llmConfigs, folderActions, llmConfigActions])
+		[userSettings, folders, llmConfigs, userSettingActions, folderActions, llmConfigActions])
 
 	return <MainContext.Provider value={contextValue}>
 		{children}

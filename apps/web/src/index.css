@@ -2,7 +2,6 @@
 @plugin "daisyui" {
   logs: true;
   root: ":root";
-  themes: light --default, dark --prefersdark, cupcake;
 }
 @import "./style/markdown.css";
 @import "./style/base.css";

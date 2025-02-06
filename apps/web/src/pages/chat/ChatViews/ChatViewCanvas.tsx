@@ -96,7 +96,7 @@ const ChatViewCanvas: React.FC = () => {
 	return (
 		<div className="w-full h-full flex">
 			{/* Left side - Chat */}
-			<div className="w-2/5 flex flex-col border-r border-base-300">
+			<div className="w-[400px] min-w-[200px] max-w-[600px] flex flex-col border-r border-base-300">
 				<div className="flex-1 overflow-y-auto space-y-1" ref={chatWrapperRef}>
 					<div className="h-8"></div>
 					{chats.map((chat) => (
@@ -150,7 +150,7 @@ const ChatViewCanvas: React.FC = () => {
 			</div>
 
 			{/* Right side - Canvas */}
-			<div className="w-3/5 h-full rounded-r-6xl">
+			<div className="flex-1 h-full rounded-r-6xl">
 				<textarea
 					value={canvasText}
 					onChange={(e) => setCanvasText(e.target.value)}
