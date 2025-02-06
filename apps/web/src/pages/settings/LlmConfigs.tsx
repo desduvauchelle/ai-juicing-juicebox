@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Button from '../../components/Button'
 import LlmConfigForm from '../../llm-config/LlmConfigForm'
-import LlmConfigurationService from '../../services/llmConfigurationService'
+import LlmConfigService from '../../services/LlmConfigService'
 import { ILlmConfig } from '../../../types/ILlmConfig'
 
 const LlmConfigs: React.FC = () => {
@@ -15,7 +15,7 @@ const LlmConfigs: React.FC = () => {
 		if (isFetching.current) return
 		isFetching.current = true
 
-		const allConfigs = await LlmConfigurationService.getAllConfigs()
+		const allConfigs = await LlmConfigService.getAllConfigs()
 		setConfigs(allConfigs)
 		isFetching.current = false
 	}, [])
@@ -26,7 +26,7 @@ const LlmConfigs: React.FC = () => {
 
 	// const handleSearch = async (e?: FormEvent) => {
 	// 	if (e) e.preventDefault()
-	// 	const results = await LlmConfigurationService.searchConfigs(searchQuery)
+	// 	const results = await LlmConfigService.searchConfigs(searchQuery)
 	// 	setConfigs(results)
 	// }
 
@@ -38,7 +38,7 @@ const LlmConfigs: React.FC = () => {
 	}
 
 	const handleDelete = async (id: number) => {
-		await LlmConfigurationService.deleteConfig(id)
+		await LlmConfigService.deleteConfig(id)
 		fetchConfigs()
 	}
 

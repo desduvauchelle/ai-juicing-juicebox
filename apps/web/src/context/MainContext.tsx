@@ -1,9 +1,10 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
-import mainContextActionsFolders, { MainContextActionsFolders } from "./actions/mainContextActionsFolders"
+import createMainContextActionsFolders, { MainContextActionsFolders } from "./actions/mainContextActionsFolders"
 import { IFileExplorerFolder } from "../../types/IFolder"
 import { ILlmConfig } from "../../types/ILlmConfig"
 import { UserSettings } from "../../types/UserSettings"
 import { UserSettingsService, UserSettingsServiceType } from "../services/UserSettingsService"
+import createMainContextActionsLlmConfigs, { MainContextActionsLlmConfigs } from "./actions/mainContextActionsLlmconfigs"
 
 
 
@@ -19,7 +20,8 @@ interface IMainContext {
 	llmConfigs: ILlmConfig[],
 	actions: {
 		folders: MainContextActionsFolders,
-		userSettings: UserSettingsServiceType
+		userSettings: UserSettingsServiceType,
+		llmConfigs: MainContextActionsLlmConfigs
 	}
 }
 
@@ -29,7 +31,8 @@ const defaultMainContext: IMainContext = {
 	llmConfigs: [],
 	actions: {
 		userSettings: UserSettingsService,
-		folders: mainContextActionsFolders({ setFolders: setActions })
+		folders: createMainContextActionsFolders({ setFolders: setActions }),
+		llmConfigs: createMainContextActionsLlmConfigs({ setLlmConfigs: setActions }),
 	},
 }
 
@@ -73,7 +76,13 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 
 	const folderActions = useCallback(
 		() => {
-			return mainContextActionsFolders({ setFolders })
+			return createMainContextActionsFolders({ setFolders })
+		},
+		[])
+
+	const llmConfigActions = useCallback(
+		() => {
+			return createMainContextActionsLlmConfigs({ setLlmConfigs })
 		},
 		[])
 
@@ -84,10 +93,11 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 			llmConfigs,
 			actions: {
 				userSettings: UserSettingsService,
-				folders: folderActions()
+				folders: folderActions(),
+				llmConfigs: llmConfigActions()
 			}
 		}),
-		[userSettings, folders, llmConfigs, folderActions])
+		[userSettings, folders, llmConfigs, folderActions, llmConfigActions])
 
 	return <MainContext.Provider value={contextValue}>
 		{children}

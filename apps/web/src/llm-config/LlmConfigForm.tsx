@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Input from '../components/Input'
 import Button from '../components/Button'
-import LlmConfigurationService from '../services/llmConfigurationService'
+import LlmConfigService from '../services/LlmConfigService'
 import Select from '../components/Select'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRefresh } from '@fortawesome/free-solid-svg-icons'
@@ -31,7 +31,7 @@ const LlmConfigForm: React.FC<LlmConfigFormProps> = ({ initialValues, configId, 
 		if (!configId) return
 
 		const fetchConfig = async () => {
-			const config = await LlmConfigurationService.getConfigById(configId)
+			const config = await LlmConfigService.getConfigById(configId)
 			setFormData(config)
 		}
 
@@ -48,10 +48,10 @@ const LlmConfigForm: React.FC<LlmConfigFormProps> = ({ initialValues, configId, 
 		try {
 			let item: ILlmConfig
 			if (configId) {
-				await LlmConfigurationService.updateConfig(configId, formData)
+				await LlmConfigService.updateConfig(configId, formData)
 				item = formData
 			} else {
-				const response = await LlmConfigurationService.createConfig(formData)
+				const response = await LlmConfigService.createConfig(formData)
 				item = response
 			}
 			if (onSubmit) onSubmit(item)

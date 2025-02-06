@@ -3,7 +3,7 @@ import Select from '../../components/Select'
 import Box from '../../components/Box'
 import OllamaSystemInformation from './ollama/OllamaSystemInformation'
 import { useConfigChecker } from '../../hooks/useConfigChecker'
-import LlmConfigurationService from '../../services/llmConfigurationService'
+import LlmConfigService from '../../services/LlmConfigService'
 import OllamaStatus from './ollama/OllamaStatus'
 import OllamaInstalledModels from './ollama/OllamaInstalledModels'
 import { ILlmConfig } from '../../../types/ILlmConfig'
@@ -39,7 +39,7 @@ const OllamaPage: React.FC = () => {
 		if (isFetching.current) return
 		isFetching.current = true
 
-		const allConfigs = await LlmConfigurationService.getAllConfigs()
+		const allConfigs = await LlmConfigService.getAllConfigs()
 		setConfigs(allConfigs)
 		if (allConfigs.length > 0) {
 			if (!selectedConfig) {

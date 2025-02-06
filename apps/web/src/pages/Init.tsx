@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react"
-import LlmConfigurationService from "../services/llmConfigurationService"
+import LlmConfigService from "../services/LlmConfigService"
 import { useNavigate } from "react-router-dom"
 import { ILlmConfig } from "../../types/ILlmConfig"
 
@@ -11,7 +11,7 @@ const Init: React.FC = () => {
 	const fetchConfigs = useCallback(async () => {
 		if (isFetching.current) return
 		isFetching.current = true
-		const allConfigs = await LlmConfigurationService.getAllConfigs()
+		const allConfigs = await LlmConfigService.getAllConfigs()
 		console.log(allConfigs)
 		setConfigs(allConfigs)
 	}, [])

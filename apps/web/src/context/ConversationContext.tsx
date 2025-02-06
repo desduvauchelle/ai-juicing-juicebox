@@ -3,7 +3,7 @@ import { IConversation, IConversationChat } from "../../../../types/IConversatio
 import ConversationService from "../services/ConversationService"
 import ChatService from "../services/ChatService"
 import { ILlmConfig } from "../../../../types/ILlmConfig"
-import LlmConfigurationService from "../services/llmConfigurationService"
+import LlmConfigService from "../services/LlmConfigService"
 import { UseConfigChecker, useConfigChecker } from "../hooks/useConfigChecker"
 import useAi from "../hooks/useAi"
 import { useMainContext } from "./MainContext"
@@ -59,7 +59,7 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 	useEffect(() => {
 		const fetchConfig = async () => {
 			if (!conversation?.llmConfigId) return
-			const allConfigs = await LlmConfigurationService.getAllConfigs()
+			const allConfigs = await LlmConfigService.getAllConfigs()
 			if (!allConfigs) return
 			setConfigs(allConfigs)
 		}

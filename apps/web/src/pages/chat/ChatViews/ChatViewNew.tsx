@@ -4,7 +4,7 @@ import { useFileExplorer } from '../../../context/FileExplorerContext'
 import Button, { MyLink } from '../../../components/Button'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ILlmConfig } from '../../../../../../types/ILlmConfig'
-import LlmConfigurationService from '../../../services/llmConfigurationService'
+import LlmConfigService from '../../../services/LlmConfigService'
 import Textarea from '../../../components/Textarea'
 import { faArrowRight, faChevronUp, faComment, faRobot } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -47,7 +47,7 @@ const ChatViewNew: React.FC = () => {
 		isFetching.current = true
 
 		try {
-			const allConfigs = await LlmConfigurationService.getAllConfigs()
+			const allConfigs = await LlmConfigService.getAllConfigs()
 			setConfigs(allConfigs)
 			if (allConfigs.length > 0) {
 				if (!selectedConfig) {
@@ -112,7 +112,7 @@ const ChatViewNew: React.FC = () => {
 	const handleSetDefault = async (configId: number, e: React.MouseEvent) => {
 		e.stopPropagation()
 		try {
-			await LlmConfigurationService.setDefaultConfig(configId)
+			await LlmConfigService.setDefaultConfig(configId)
 			// Force update the configs state directly
 			const updatedConfigs = configs.map(config => ({
 				...config,
