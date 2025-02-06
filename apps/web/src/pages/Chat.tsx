@@ -1,4 +1,4 @@
-import { faCog, faPlus, faSquareCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faCaretLeft, faChevronLeft, faChevronRight, faCog, faPlus, faSquareCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -45,7 +45,7 @@ const Chat: React.FC = () => {
 				<Button aria-label="Hide menu"
 					theme="ghost"
 					onClick={toggleMenu}>
-					<FontAwesomeIcon icon={faSquareCaretDown} className='rotate-90' />
+					<FontAwesomeIcon icon={faChevronLeft} />
 				</Button>
 			</div>
 			<div className="w-full block px-3 pb-2">
@@ -57,12 +57,17 @@ const Chat: React.FC = () => {
 					<FontAwesomeIcon icon={faPlus} /> Chat
 				</MyLink>
 			</div>
-			<div className=" flex-grow w-full overflow-y-auto overflow-x-hidden">
+			<div className="flex-grow w-full overflow-y-auto overflow-x-hidden">
 				<FileExplorer conversationId={conversationId} />
 			</div>
-			<MyLink href="/settings" theme="custom" className="text-left w-full px-4 py-2 hover:bg-base-200">
-				<FontAwesomeIcon icon={faCog} className='mr-1' /> Settings
-			</MyLink>
+
+			<ul className="menu w-full border-t border-base-100">
+				<li>
+					<MyLink href="/settings" theme="custom" className="">
+						<FontAwesomeIcon icon={faCog} /> Settings
+					</MyLink>
+				</li>
+			</ul>
 		</div>
 		<div
 			className={`flex-1 transition-all duration-300 p-4 pl-0 ${isMenuOpen ? 'ml-64' : 'ml-0 pl-4'} relative`}>
@@ -76,7 +81,7 @@ const Chat: React.FC = () => {
 
 				<div className="absolute top-0 left-0 flex flex-row gap-2 items-center ">
 					{!isMenuOpen && <Button aria-label="Hide menu" onClick={toggleMenu} theme="ghost">
-						<FontAwesomeIcon icon={faSquareCaretDown} className='rotate-90' />
+						<FontAwesomeIcon icon={faChevronRight} />
 					</Button>}
 				</div>
 			</div>

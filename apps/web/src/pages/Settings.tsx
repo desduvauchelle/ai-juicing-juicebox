@@ -12,7 +12,7 @@ import SettingsTheme from './settings/SettingsTheme'
 const Settings: React.FC = () => {
 	const location = useLocation()
 	const page = location.pathname.split('/settings/')[1] || 'theme'
-	console.log(page)
+
 	return <div className="flex h-screen">
 		<nav className="min-w-3xs max-w-[250px] w-full bg-base-200 pt-8 flex flex-col gap-4">
 			<Logo />

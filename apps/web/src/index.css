@@ -2,6 +2,7 @@
 @plugin "daisyui" {
   logs: true;
   root: ":root";
+  themes: all;
 }
 @import "./style/markdown.css";
 @import "./style/base.css";

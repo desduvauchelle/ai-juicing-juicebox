@@ -34,7 +34,7 @@ const FileExplorer: React.FC<{ conversationId?: string }> = ({ conversationId })
 
 
 
-		<div className="overflow-auto">
+		<ul className="menu w-full">
 			{fileExplorer.folders.map(folder => {
 				return <FileExplorerFolderItem
 					activeConversationId={conversationId}
@@ -42,35 +42,42 @@ const FileExplorer: React.FC<{ conversationId?: string }> = ({ conversationId })
 					folder={folder}
 					depth={0} />
 			})}
-			<button
-				onClick={() => {
-					setShowNewFolder(!showNewFolder)
-				}}
-				className="pl-8 w-full text-left py-2 hover:bg-base-100/15 opacity-30 hover:opacity-100 rounded">
-				{showNewFolder && <>Cancel</>}
-				{!showNewFolder && <>
-					<FontAwesomeIcon icon={faPlus} /> Folder
-				</>}
-			</button>
-			{showNewFolder && <form onSubmit={handleNewFolder}
-				className='overflow-hidden bg-base-200/30 rounded-xl mx-2'>
-				<input
-					aria-label='New folder name'
-					placeholder='New folder name...'
-					type="text"
-					autoFocus
-					value={newItemName}
-					onChange={(e) => setNewItemName(e.target.value)}
-					className="p-2 w-full rounded-t-xl"
-				/>
-				<Button
-					theme="primary"
-					type="submit"
-					className="w-full ">
-					Create folder
-				</Button>
-			</form>}
-			<div className="px-3 border-b border-slate-700 pb-3 mb-3 pt-6">Recent</div>
+
+		</ul>
+
+
+		<button
+			onClick={() => {
+				setShowNewFolder(!showNewFolder)
+			}}
+			className="w-full text-left px-6 py-2 hover:bg-base-100/15 opacity-30 hover:opacity-100 rounded">
+			{showNewFolder && <>Cancel</>}
+			{!showNewFolder && <>
+				<FontAwesomeIcon icon={faPlus} /> Folder
+			</>}
+		</button>
+
+		{showNewFolder && <form onSubmit={handleNewFolder}
+			className='overflow-hidden bg-base-200/30 rounded-xl mx-2'>
+			<input
+				aria-label='New folder name'
+				placeholder='New folder name...'
+				type="text"
+				autoFocus
+				value={newItemName}
+				onChange={(e) => setNewItemName(e.target.value)}
+				className="p-2 w-full rounded-t-xl"
+			/>
+			<Button
+				theme="primary"
+				type="submit"
+				className="w-full ">
+				Create folder
+			</Button>
+		</form>}
+
+		<div className="divider uppercase opacity-30 font-medium text-xs">Recent</div>
+		<ul className="menu w-full">
 			{noFolderConversations.map((conversation => {
 				return <FileExplorerConversationItem
 					isActive={conversation.id.toString() === conversationId}
@@ -78,9 +85,7 @@ const FileExplorer: React.FC<{ conversationId?: string }> = ({ conversationId })
 					item={conversation}
 					depth={0} />
 			}))}
-
-		</div>
-
+		</ul>
 	</DndProvider>
 
 }

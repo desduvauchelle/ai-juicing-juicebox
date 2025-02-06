@@ -118,9 +118,9 @@ const ChatViewWrapper: React.FC<{
 				</div>
 			</>}
 			<div className="absolute top-0 right-3 w-full flex flex-row gap-2 items-center ">
-				{!isMenuOpen && <Button aria-label="Hide menu" onClick={toggleMenu} theme="ghost">
+				{/* {!isMenuOpen && <Button aria-label="Hide menu" onClick={toggleMenu} theme="ghost">
 					<FontAwesomeIcon icon={faSquareCaretDown} className='rotate-90' />
-				</Button>}
+				</Button>} */}
 				<div className="flex-grow"></div>
 				<Button theme="ghost"
 					onClick={() => setShowConfigStatusDetails(!showConfigStatusDetails)}

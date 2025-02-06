@@ -1,5 +1,5 @@
 
-import { faFolderOpen, faFolder, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faFolderOpen, faFolder, faTrash, faTimes } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useRef, useEffect, useMemo } from "react"
 import { useDrag, useDrop } from "react-dnd"
@@ -76,11 +76,10 @@ const FileExplorerFolderItem: React.FC<FileExplorerItemProps> = ({
 		return 'Untitled'
 	}, [folder])
 
-	return <div
+	return <li
 		ref={(node) => drag(drop(node))}
-		className={`relative flex flex-col py-1 hover:bg-slate-100/5 cursor-pointer group/folder
-		${isDragging ? 'opacity-50 bg-slate-400/30' : ''} ${isOver ? 'bg-slate-400/30' : ''}`}
-		style={{ paddingLeft: `${paddingLeft}px` }}>
+		className={`relative flex flex-col cursor-pointer group/folder rounded-xl
+		${isDragging ? 'opacity-50 bg-slate-400/30' : ''} ${isOver ? 'bg-slate-400/30' : ''}`}>
 		<div className="flex items-center flex-1">
 			<button
 				aria-label='Toggle item'
@@ -128,22 +127,24 @@ const FileExplorerFolderItem: React.FC<FileExplorerItemProps> = ({
 				if (!conf) return
 				fileExplorer.actions.folder.delete(folder.id)
 			}}
-			className="absolute right-2 text-red-500 hover:text-red-700 opacity-0 group-hover/folder:opacity-100">
-			<FontAwesomeIcon icon={faTrash} />
+			className="absolute right-0 h-full px-3 hover:text-red-500 opacity-0 group-hover:opacity-30 hover:opacity-100 translate-x-full group-hover:translate-x-0">
+			<FontAwesomeIcon icon={faTimes} />
 		</button>
 
 		{(!isDragging && folder.isOpen) && <>
-			{conversations.map(conversation => {
-				return <FileExplorerConversationItem
-					isActive={conversation.id.toString() === activeConversationId}
-					key={conversation.id}
-					item={conversation}
-					depth={1} />
-			})}
+			<ul className="">
+				{conversations.map(conversation => {
+					return <FileExplorerConversationItem
+						isActive={conversation.id.toString() === activeConversationId}
+						key={conversation.id}
+						item={conversation}
+						depth={1} />
+				})}
+			</ul>
 		</>}
 
 
-	</div>
+	</li>
 
 }
 

@@ -31,20 +31,19 @@ export const ChatInputBox = forwardRef<HTMLTextAreaElement, ChatInputBoxProps>((
 
 		const lineHeight = 24
 		const maxHeight = lineHeight * maxRows
+		const minHeight = lineHeight * startingRows
 
-		// Reset height to auto to get the actual content height
-		textarea.style.height = 'auto'
+		// Reset height to minHeight first
+		textarea.style.height = `${minHeight}px`
 
-		if (textarea.scrollHeight <= maxHeight) {
-			// Content fits within maxRows - adjust height to content
-			textarea.style.height = `${textarea.scrollHeight}px`
-			textarea.style.overflowY = 'hidden'
-		} else {
-			// Content exceeds maxRows - set to maxHeight and enable scrolling
-			textarea.style.height = `${maxHeight}px`
-			textarea.style.overflowY = 'auto'
-		}
+		// Get the scroll height and determine the new height
+		const scrollHeight = Math.max(minHeight, textarea.scrollHeight)
+		const newHeight = Math.min(scrollHeight, maxHeight)
+
+		textarea.style.height = `${newHeight}px`
+		textarea.style.overflowY = scrollHeight > maxHeight ? 'auto' : 'hidden'
 	}
+
 
 	useEffect(() => {
 		adjustHeight()
@@ -76,8 +75,9 @@ export const ChatInputBox = forwardRef<HTMLTextAreaElement, ChatInputBoxProps>((
 		disabled={isDisabled || isLoading}
 		className={`w-full px-4 py-2 text-sm border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
 		onKeyDown={handleKeyDown}
+		rows={startingRows}
 		style={{
-			minHeight: `${24 * startingRows}px`,
+			height: `${24 * startingRows}px`,
 			maxHeight: `${24 * maxRows}px`
 		}}
 		{...props}
