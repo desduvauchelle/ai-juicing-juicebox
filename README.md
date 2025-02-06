@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="Promptery" src="public/logo.png" width="200" />
+  <img alt="Juicebox by AI Juicing" src="logo.png" width="200" />
 </div>
 
 # AI Juicebox
