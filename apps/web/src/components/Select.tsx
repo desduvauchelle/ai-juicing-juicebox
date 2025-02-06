@@ -14,7 +14,7 @@ const Select: React.FC<SelectProps> = ({ label, options, description, className,
 				{label}
 			</label>}
 			<select
-				className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ${className}`}
+				className={`select select-bordered w-full ${className}`}
 				{...props}>
 				{options.map((option) => (
 					<option key={option.value}

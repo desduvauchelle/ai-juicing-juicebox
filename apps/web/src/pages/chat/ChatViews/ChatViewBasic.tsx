@@ -136,7 +136,7 @@ const ChatViewBasic: React.FC = () => {
 							conversationId: conversation?.id || 0
 						}} />
 				</div>}
-				{!conversationContext.selectedConfig && <p className='text-red-500'>
+				{!conversationContext.selectedConfig && <p className='text-red-500 text-center'>
 					No config
 				</p>}
 			</div>

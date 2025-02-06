@@ -11,7 +11,7 @@ const Input: React.FC<InputProps> = ({ label, description, className, ...props }
 			{label}
 		</label>
 		<input
-			className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+			className="input input-bordered w-full"
 			{...props}
 		/>
 		{description && (

@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Button from "../../components/Button"
 import Select from "../../components/Select"
 import ChatViewCanvas from './ChatViews/ChatViewCanvas'
+import { InlineAlert } from '../../components/InlineAlert'
+import { formatDistanceToNow } from 'date-fns'
 
 
 const ChatViewWrapper: React.FC<{
@@ -57,37 +59,62 @@ const ChatViewWrapper: React.FC<{
 			{showConfigStatusDetails && <>
 				<button
 					onClick={() => setShowConfigStatusDetails(false)}
-					aria-label="Toggle server status" className="absolute top-0 left-0 w-full h-full bg-gray-800/10 backdrop-blur-xs"></button>
+					aria-label="Toggle server status"
+					className="absolute top-0 left-0 w-full h-full bg-gray-800/10 backdrop-blur-xs"></button>
 				<div className="absolute top-0 left-0 w-full p-4 pt-16 bg-base-200">
-					{conversationContext?.configChecker.isRunning && <>
-						<p className="text-green-500">Server is reachable.</p>
-					</>}
-					{!conversationContext?.configChecker.isRunning && <>
-						<p className="text-red-500">Server is not reachable.</p>
-					</>}
+					<div className="flex flex-col md:flex-row gap-4">
 
-					<div className="mt-4">
-						<Select
-							label='Select LLM Configuration'
-							value={conversationContext?.conversation?.llmConfigId?.toString() || ''}
-							onChange={(e) => {
-								// conversationContext?.actions.selectConfig(parseInt(e.target.value))
-								conversationContext?.actions.update({
-									llmConfigId: parseInt(e.target.value)
-								})
-							}}
-							options={[
-								{
-									value: "",
-									label: 'Select LLM Configuration',
-									disabled: true
-								},
-								...(conversationContext?.configs || []).map(c => ({
-									value: c.id.toString(),
-									label: c.name
-								}))
-							]} />
+
+						<div className="flex-1">
+							<Select
+								label='Select LLM Configuration'
+								value={conversationContext?.conversation?.llmConfigId?.toString() || ''}
+								onChange={(e) => {
+									// conversationContext?.actions.selectConfig(parseInt(e.target.value))
+									conversationContext?.actions.update({
+										llmConfigId: parseInt(e.target.value)
+									})
+								}}
+								options={[
+									{
+										value: "",
+										label: 'Select LLM Configuration',
+										disabled: true
+									},
+									...(conversationContext?.configs || []).map(c => ({
+										value: c.id.toString(),
+										label: c.name
+									}))
+								]} />
+						</div>
+
+						<div className="flex-1">
+							{conversationContext?.configChecker.isRunning && <>
+								<InlineAlert type="success">
+									Server is reachable.
+								</InlineAlert>
+
+							</>}
+							{!conversationContext?.configChecker.isRunning && <>
+								<InlineAlert type="error">
+									<p>Server is not reachable. It might be idle as it goes to sleep after a couple of minutes.</p>
+									<div className="flex flex-row gap-2 items-center">
+										<Button
+											isLoading={conversationContext?.configChecker.isCheckingRunning}
+											onClick={() => conversationContext?.configChecker.actions.checkStatusWithPing()}
+											theme="danger">
+											Check again
+										</Button>
+										<span className='text-sm italic'>
+											Last checked: {formatDistanceToNow(new Date(conversationContext?.configChecker.lastRunningCheck || 0), { addSuffix: false })}
+										</span>
+									</div>
+								</InlineAlert>
+							</>}
+						</div>
 					</div>
+
+
 				</div>
 			</>}
 			<div className="absolute top-0 right-3 w-full flex flex-row gap-2 items-center ">
@@ -95,9 +122,9 @@ const ChatViewWrapper: React.FC<{
 					<FontAwesomeIcon icon={faSquareCaretDown} className='rotate-90' />
 				</Button>}
 				<div className="flex-grow"></div>
-				<Button theme="custom"
+				<Button theme="ghost"
 					onClick={() => setShowConfigStatusDetails(!showConfigStatusDetails)}
-					className="btn text-base-200 font-normal bg-base-100 hover:bg-base-200 rounded-tr-3xl rounded-b-none rounded-l-none flex flex-row gap-3 items-center">
+					className=" rounded-tr-3xl rounded-b-none rounded-l-none flex flex-row gap-3 items-center">
 					{conversationContext?.configChecker.isRunning && <>
 						<div className="w-4 h-4 rounded-full bg-green-500"></div>
 					</>}

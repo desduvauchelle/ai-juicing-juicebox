@@ -10,12 +10,12 @@ import SettingsConfig from './settings/SettingsConfig'
 
 const Settings: React.FC = () => {
 	return <div className="flex h-screen">
-		<nav className="w-1/5 bg-base-200 pt-8 flex flex-col gap-8">
+		<nav className="min-w-3xs max-w-[250px] w-full bg-base-200 pt-8 flex flex-col gap-4">
 			<Logo />
-			<MyLink href="/chat" theme="ghost" isButton className='w-full'>
+			<MyLink href="/chat" theme="custom" className='w-full text-left px-4 pr-2 py-2 hover:bg-base-300'>
 				<FontAwesomeIcon icon={faArrowLeft} className='mr-1' /> Back to Chat
 			</MyLink>
-			<ul className='flex flex-col gap-1'>
+			<ul className="menu rounded-box w-full">
 				{
 					[
 						{
@@ -35,8 +35,9 @@ const Settings: React.FC = () => {
 							text: "LLM Configs"
 						}
 					].map(({ href, text }) => {
+
 						return <li key={href}>
-							<MyLink href={href} className="w-full hover:bg-base-300 block py-1 px-4">{text}</MyLink>
+							<MyLink theme="custom" href={href} className="">{text}</MyLink>
 						</li>
 					})}
 

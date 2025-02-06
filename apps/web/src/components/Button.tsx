@@ -44,7 +44,7 @@ const Button: FC<ButtonHTMLAttributes<HTMLButtonElement> & {
 					themeClassName += " btn-secondary"
 					break
 				case "danger":
-					themeClassName += " btn-danger"
+					themeClassName += " btn-error"
 					break
 				case "success":
 					themeClassName += " btn-success"
