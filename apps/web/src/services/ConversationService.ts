@@ -1,5 +1,5 @@
 import createDBService from './db'
-import { IConversation } from '../../types/IConversation'
+import { IConversation } from '../../../../types/IConversation'
 
 class ConversationService {
 	private static dbService = createDBService<IConversation>('conversations')

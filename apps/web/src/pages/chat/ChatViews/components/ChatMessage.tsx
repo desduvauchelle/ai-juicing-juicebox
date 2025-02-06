@@ -2,9 +2,9 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useMemo, useState } from "react"
 import Markdown from "react-markdown"
-import { IConversationChat } from "../../../../../types/IConversation"
 import Button from "../../../../components/Button"
 import { useConversation } from "../../../../context/ConversationContext"
+import { IConversationChat } from "../../../../../types/IConversation"
 
 
 

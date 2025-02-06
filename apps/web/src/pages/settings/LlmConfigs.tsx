@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { ILlmConfig } from '../../../types/ILlmConfig'
 import Button from '../../components/Button'
 import LlmConfigForm from '../../llm-config/LlmConfigForm'
 import LlmConfigurationService from '../../services/llmConfigurationService'
+import { ILlmConfig } from '../../../types/ILlmConfig'
 
 const LlmConfigs: React.FC = () => {
 	const [configs, setConfigs] = useState<Array<ILlmConfig & { id: number }>>([])

@@ -6,8 +6,8 @@ import Button from "../../../components/Button"
 import { UseConfigChecker } from "../../../hooks/useConfigChecker"
 import { bridgeApi } from "../../../tools/bridgeApi"
 import React from "react"
-import { ILlmConfig, OllamaModel } from "../../../../types/ILlmConfig"
 import useAi from "../../../hooks/useAi"
+import { ILlmConfig, OllamaModel } from "../../../../types/ILlmConfig"
 import { OllamaRemoteModel } from "../../../../types/Electron"
 
 

@@ -1,4 +1,4 @@
-import type { ElectronAPI, OllamaRemoteModel, SystemInfo } from '../../types/Electron'
+import { ElectronAPI, OllamaRemoteModel, SystemInfo } from "../../types/Electron"
 
 const electron = window.electron as ElectronAPI
 

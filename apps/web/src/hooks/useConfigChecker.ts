@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
-import { ILlmConfig } from '../../types/ILlmConfig'
 import { bridgeApi } from '../tools/bridgeApi'
+import { ILlmConfig } from '../../types/ILlmConfig'
 
 const localServers = ["localhost", "0.0.0.0", "127.0.0.1"]
 

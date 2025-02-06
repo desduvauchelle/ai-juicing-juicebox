@@ -1,6 +1,6 @@
 import { useCallback } from "react"
-import { ILlmConfig, OllamaModel } from "../../types/ILlmConfig"
-import { IConversation, IConversationChat } from "../../types/IConversation"
+import { ILlmConfig, OllamaModel } from "../../../../types/ILlmConfig"
+import { IConversation, IConversationChat } from "../../../../types/IConversation"
 
 
 export type AIMessage = {

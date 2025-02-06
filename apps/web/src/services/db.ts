@@ -3,7 +3,6 @@ import IndexedDBService from './helpers/IndexedDBService'
 // import StoreService from './helpers/StoreService'
 
 function createDBService<T extends { id?: number }>(storeName: DbStores) {
-
 	return new IndexedDBService<T>(storeName)
 }
 

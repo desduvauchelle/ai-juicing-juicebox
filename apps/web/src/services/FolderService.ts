@@ -1,34 +1,42 @@
 import { IFileExplorerFolder } from '../../types/IFolder'
-import createDBService from './db'
+import { UserSettingsService } from './UserSettingsService'
 
 class FolderService {
-	private static dbService = createDBService<IFileExplorerFolder>('folders')
+	private static async getFolders(): Promise<Array<IFileExplorerFolder & { id: number }>> {
+		const settings = await UserSettingsService.get() || {}
+		return settings.folders || []
+	}
+
+	private static async saveFolders(folders: Array<IFileExplorerFolder & { id: number }>) {
+		await UserSettingsService.save({ folders })
+	}
 
 	static async createFolder(folder: IFileExplorerFolder): Promise<IFileExplorerFolder & { id: number }> {
-		return this.dbService.create(folder)
+		const folders = await this.getFolders()
+		const newId = folders.length > 0 ? Math.max(...folders.map(f => f.id)) + 1 : 1
+		const newFolder = { ...folder, id: newId }
+		folders.push(newFolder)
+		await this.saveFolders(folders)
+		return newFolder
 	}
 
 	static async updateFolder(id: number, updatedFolder: Partial<IFileExplorerFolder>): Promise<void> {
-		return this.dbService.update(id, updatedFolder)
+		const folders = await this.getFolders()
+		const index = folders.findIndex(f => f.id === id)
+		if (index === -1) throw new Error('Folder not found')
+		folders[index] = { ...folders[index], ...updatedFolder }
+		await this.saveFolders(folders)
 	}
 
 	static async deleteFolder(id: number): Promise<void> {
-		return this.dbService.delete(id)
+		const folders = await this.getFolders()
+		const filtered = folders.filter(f => f.id !== id)
+		await this.saveFolders(filtered)
 	}
 
 	static async getAllFolders(): Promise<Array<IFileExplorerFolder & { id: number }>> {
-		return this.dbService.getAll()
+		return this.getFolders()
 	}
-
-	static async getFolderById(id: number): Promise<IFileExplorerFolder & { id: number }> {
-		return this.dbService.getById(id)
-	}
-
-	static async searchFolders(query: string, page: number = 1, limit: number = 10): Promise<Array<IFileExplorerFolder & { id: number }>> {
-		return this.dbService.search(query, page, limit)
-	}
-
-
 }
 
 export default FolderService

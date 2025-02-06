@@ -3,7 +3,7 @@ import { faComment, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useRef, useEffect, useMemo } from "react"
 import { useDrag, useDrop } from "react-dnd"
-import { IConversation } from "../../../../types/IConversation"
+import { IConversation } from "../../../../../../types/IConversation"
 import { formatDistanceToNow } from 'date-fns'
 import { useFileExplorer } from "../../../context/FileExplorerContext"
 import { useNavigate } from "react-router-dom"

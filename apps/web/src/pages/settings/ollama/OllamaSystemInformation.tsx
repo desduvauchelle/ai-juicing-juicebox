@@ -1,9 +1,9 @@
 import { faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useCallback, useEffect } from "react"
-import { SystemInfo } from "../../../../types/Electron"
 import Box from "../../../components/Box"
 import { bridgeApi } from "../../../tools/bridgeApi"
+import { SystemInfo } from "../../../../types/Electron"
 
 
 const OllamaSystemInformation: React.FC = () => {

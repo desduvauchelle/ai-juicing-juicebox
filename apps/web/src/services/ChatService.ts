@@ -1,4 +1,4 @@
-import { IConversationChat } from '../../types/IConversation'
+import { IConversationChat } from '../../../../types/IConversation'
 import createDBService from './db'
 
 class ChatService {

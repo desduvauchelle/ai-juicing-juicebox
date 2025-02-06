@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import IndexedDBService, { DbStores } from '../../../services/db'
+import IndexedDBService from '../../../services/db'
 import Button from '../../../components/Button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownload, faUpload } from '@fortawesome/free-solid-svg-icons'
+import { DbStores } from '../../../services/helpers/IndexedDBService'
 
 interface DatabaseItem {
 	id?: number
@@ -28,13 +29,13 @@ const SettingsSettingsImportExport: React.FC = () => {
 
 			// Export base stores
 			for (const store of stores) {
-				const dbService = new IndexedDBService<DatabaseItem>(store)
+				const dbService = IndexedDBService<DatabaseItem>(store)
 				exportData[store] = await dbService.getAll()
 			}
 
 			// Conditionally export chats
 			if (includeChats) {
-				const chatService = new IndexedDBService<DatabaseItem>("chats")
+				const chatService = IndexedDBService<DatabaseItem>("chats")
 				exportData.chats = await chatService.getAll()
 			} else {
 				exportData.chats = []
@@ -80,7 +81,7 @@ const SettingsSettingsImportExport: React.FC = () => {
 			}
 
 			for (const [storeName, items] of Object.entries(importData)) {
-				const dbService = new IndexedDBService<DatabaseItem>(storeName as DbStores)
+				const dbService = IndexedDBService<DatabaseItem>(storeName as DbStores)
 				for (const item of items) {
 					await dbService.create(item)
 				}

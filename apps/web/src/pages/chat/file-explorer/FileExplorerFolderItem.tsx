@@ -3,9 +3,9 @@ import { faFolderOpen, faFolder, faTrash } from "@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useRef, useEffect, useMemo } from "react"
 import { useDrag, useDrop } from "react-dnd"
-import { IFileExplorerFolder } from "../../../../types/IFolder"
 import FileExplorerConversationItem from "./FileExplorerConversationItem"
 import { useFileExplorer } from "../../../context/FileExplorerContext"
+import { IFileExplorerFolder } from "../../../../types/IFolder"
 
 export interface FileExplorerItemProps {
 	folder: IFileExplorerFolder

@@ -1,3 +1,4 @@
+import { UserSettings } from './UserSettings'
 export interface SystemInfo {
 	os: {
 		platform: string
@@ -39,7 +40,11 @@ export interface ElectronAPI {
 	ollamaModelRemove: (modelId: string) => Promise<string>
 	systemInfoGet: () => Promise<SystemInfo>
 	ollamaModelRemote: () => Promise<OllamaRemoteModel[]>
+	generalSettingsGet: () => Promise<UserSettings>
+	generalSettingsSave: (userSettings: Partial<UserSettings>) => Promise<UserSettings>
+	generalSettingsClear: () => Promise<void>
 }
+
 
 declare global {
 	interface Window {

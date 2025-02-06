@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react"
-import { ILlmConfig } from "../../types/ILlmConfig"
 import LlmConfigurationService from "../services/llmConfigurationService"
 import { useNavigate } from "react-router-dom"
+import { ILlmConfig } from "../../types/ILlmConfig"
 
 const Init: React.FC = () => {
 	const navigate = useNavigate()

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { ILlmConfig, OllamaModel } from '../../types/ILlmConfig'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import LlmConfigurationService from '../services/llmConfigurationService'
@@ -7,6 +6,7 @@ import Select from '../components/Select'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRefresh } from '@fortawesome/free-solid-svg-icons'
 import useAi from '../hooks/useAi'
+import { ILlmConfig, OllamaModel } from '../../types/ILlmConfig'
 
 interface LlmConfigFormProps {
 	initialValues?: ILlmConfig

@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState } from "react"
-import { IConversation } from "../../types/IConversation"
-import { IFileExplorerFolder } from "../../types/IFolder"
+import { IConversation } from "../../../../types/IConversation"
+import { IFileExplorerFolder } from "../../../../types/IFolder"
 import ConversationService from "../services/ConversationService"
 import FolderService from "../services/FolderService"
 
