@@ -12,7 +12,7 @@ const ChatMessage: React.FC<{
 	chat: IConversationChat,
 	maxWidth?: string
 }> = ({ chat, maxWidth }) => {
-	const [showThinking, setShowThinking] = useState(false)
+	const [showThinking, setShowThinking] = useState(true)
 	const conversationContext = useConversation()
 
 	const thinkingState = useMemo(() => {
@@ -20,7 +20,7 @@ const ChatMessage: React.FC<{
 		return !chat.text.includes("</think>")
 	}, [chat.text])
 
-	const parsedText = useMemo<{ thinking?: string, response?: string }>(() => {
+	const parsedText = useMemo<{ thinking?: string, response?: string, isThinking?: boolean }>(() => {
 		if (!chat.text) {
 			return {
 				response: ''
@@ -43,7 +43,8 @@ const ChatMessage: React.FC<{
 		if (chat.text.includes("<think>")) {
 			const [_, thinking] = chat.text.match(/<think>(.*)$/s) || []
 			return {
-				thinking: thinking
+				thinking: thinking,
+				isThinking: true
 			}
 		}
 
@@ -70,9 +71,8 @@ const ChatMessage: React.FC<{
 				<Button
 					theme="ghost"
 					isSmall
-					isLoading={thinkingState}
 					onClick={() => setShowThinking(!showThinking)}
-					className="mb-2">
+					className={`mb-2 ${parsedText.isThinking ? 'animate-pulse' : ''}`}>
 					{showThinking ? 'Hide thinking' : 'Show thinking'}
 				</Button>
 				{showThinking && <>

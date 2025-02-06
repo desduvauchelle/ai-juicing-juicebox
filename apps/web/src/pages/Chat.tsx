@@ -42,8 +42,8 @@ const Chat: React.FC = () => {
 		<div className={`absolute h-full w-64 transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} flex flex-col`}>
 			<div className="flex justify-between items-center mt-6 pb-6">
 				<Logo />
-				<Button aria-label="Hide menu" theme="custom"
-					className='btn'
+				<Button aria-label="Hide menu"
+					theme="ghost"
 					onClick={toggleMenu}>
 					<FontAwesomeIcon icon={faSquareCaretDown} className='rotate-90' />
 				</Button>
@@ -52,16 +52,15 @@ const Chat: React.FC = () => {
 				<MyLink
 					href="/chat"
 					theme="primary"
-					isOutline
 					isButton
-					className="block w-full text-center">
+					className="w-full">
 					<FontAwesomeIcon icon={faPlus} /> Chat
 				</MyLink>
 			</div>
 			<div className=" flex-grow w-full overflow-y-auto overflow-x-hidden">
 				<FileExplorer conversationId={conversationId} />
 			</div>
-			<MyLink href="/settings" theme="ghost" isButton>
+			<MyLink href="/settings" theme="custom" className="text-left w-full px-4 py-2 hover:bg-base-200">
 				<FontAwesomeIcon icon={faCog} className='mr-1' /> Settings
 			</MyLink>
 		</div>

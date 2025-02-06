@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import Button from '../../../components/Button'
 import { useConversation } from '../../../context/ConversationContext'
-import Textarea from '../../../components/Textarea'
 import useAi from '../../../hooks/useAi'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ChatMessage from './components/ChatMessage'
+import { ChatInputBox } from './components/ChatInputBox'
 
 const maxWidth = 'max-w-3xl mx-auto'
 
@@ -141,9 +141,9 @@ const ChatViewBasic: React.FC = () => {
 				</p>}
 			</div>
 
-			<form onSubmit={handleSubmit} className=" p-4 bg-base-200">
+			<form onSubmit={handleSubmit} className=" p-4 bg-base-200 relative">
 				<div className={`${maxWidth} flex gap-2`}>
-					<Textarea
+					<ChatInputBox
 						id="chat-input"
 						autoFocus
 						disabled={isTyping}
@@ -153,13 +153,15 @@ const ChatViewBasic: React.FC = () => {
 							if (isTyping) return
 							setNewMessage(e.target.value)
 						}}
+						onSubmit={send}
 						className={`flex-1 px-3 py-2 border-transparent ${isTyping ? "opacity-50" : ""}`}
 						placeholder="Type a message..."
 					/>
 					<Button
 						isLoading={isTyping}
 						type="submit"
-						theme="primary">
+						theme="custom"
+						className="absolute right-2 top-2 opacity-0">
 						Send
 					</Button>
 				</div>

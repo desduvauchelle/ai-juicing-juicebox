@@ -8,7 +8,7 @@ interface TextareaProps extends TextareaAutosizeProps {
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, ...props }, ref) => {
 	return <TextareaAutosize
 		ref={ref}
-		className={`appearance-none leading-tight focus:outline-none focus:shadow-outline ${className}`}
+		className={`textarea ${className}`}
 		{...props}
 	/>
 })

@@ -5,9 +5,9 @@ import Button, { MyLink } from '../../../components/Button'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ILlmConfig } from '../../../../../../types/ILlmConfig'
 import LlmConfigService from '../../../services/LlmConfigService'
-import Textarea from '../../../components/Textarea'
 import { faArrowRight, faChevronUp, faComment, faRobot } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ChatInputBox } from './components/ChatInputBox'
 
 type IChatView = {
 	id: number
@@ -72,8 +72,8 @@ const ChatViewNew: React.FC = () => {
 	const currentConfig = configs.find((config) => config.id === selectedConfig)
 
 
-	const createChat = async (e: React.FormEvent) => {
-		e.preventDefault()
+	const createChat = async (e?: React.FormEvent) => {
+		if (e) e.preventDefault()
 
 		if (!selectedConfig) {
 			alert("Please select a configuration")
@@ -130,24 +130,26 @@ const ChatViewNew: React.FC = () => {
 		<div className="max-w-2xl w-full mx-auto text-center space-y-6">
 			<h2 className="text-2xl logo font-bold">What can I help with?</h2>
 			<form onSubmit={createChat} className="bg-base-200 p-6 space-y-4 rounded-xl">
-				<Textarea
+				<ChatInputBox
 					ref={textareaRef}
 					autoFocus
 					className='w-full'
 					placeholder='Start typing here...'
 					value={text}
 					tabIndex={1}
-					onChange={(e) => setText(e.target.value)} />
+					onChange={(e) => setText(e.target.value)}
+					onSubmit={createChat}
+				/>
 				<div className="flex flex-row gap-4 items-center">
 
-					<Button theme="custom"
+					<Button theme="ghost"
 						onClick={(e) => {
 							e.preventDefault()
 							setShowConfigs(!showConfigs)
 							if (showChatViews) setShowChatViews(false)
 						}}
 						tabIndex={3}
-						className="btn text-base-200 text-sm tracking-widest font-normal bg-base-100 hover:bg-base-200 rounded-tr-3xl rounded-b-none rounded-l-none flex flex-row gap-3 items-center">
+						className="bg-base-100 flex flex-row gap-3 items-center">
 
 						<span className="relative">
 							<FontAwesomeIcon icon={faRobot} />
@@ -164,7 +166,7 @@ const ChatViewNew: React.FC = () => {
 							if (showConfigs) setShowConfigs(false)
 						}}
 						tabIndex={4}
-						className="btn text-base-200 text-sm tracking-widest font-normal bg-base-100 hover:bg-base-200 rounded-tr-3xl rounded-b-none rounded-l-none flex flex-row gap-3 items-center">
+						className="bg-base-100 flex flex-row gap-3 items-center">
 						<span className="relative">
 							<FontAwesomeIcon icon={faComment} />
 						</span>
@@ -174,7 +176,7 @@ const ChatViewNew: React.FC = () => {
 					</Button>
 
 					<div className="flex-grow"></div>
-					<Button theme="light"
+					<Button theme="primary"
 						tabIndex={2}
 						type="submit">
 						<FontAwesomeIcon icon={faArrowRight} />

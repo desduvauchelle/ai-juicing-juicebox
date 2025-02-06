@@ -4,7 +4,7 @@ import { IFileExplorerFolder } from "../../types/IFolder"
 import { ILlmConfig } from "../../types/ILlmConfig"
 import { UserSettings } from "../../types/UserSettings"
 import { UserSettingsService, UserSettingsServiceType } from "../services/UserSettingsService"
-import createMainContextActionsLlmConfigs, { MainContextActionsLlmConfigs } from "./actions/mainContextActionsLlmconfigs"
+import createMainContextActionsLlmConfigs, { MainContextActionsLlmConfigs } from "./actions/mainContextActionsLlmConfigs"
 
 
 
