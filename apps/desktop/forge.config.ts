@@ -7,6 +7,7 @@ import { AutoUnpackNativesPlugin } from '@electron-forge/plugin-auto-unpack-nati
 import { WebpackPlugin } from '@electron-forge/plugin-webpack'
 import { FusesPlugin } from '@electron-forge/plugin-fuses'
 import { FuseV1Options, FuseVersion } from '@electron/fuses'
+import { MakerDMG } from '@electron-forge/maker-dmg'
 
 import { mainConfig } from './webpack.main.config'
 import { rendererConfig } from './webpack.renderer.config'
@@ -25,7 +26,31 @@ const config: ForgeConfig = {
 		extraResource: ['./src/dist-web', './public']  // Update path to match source location
 	}, // bypass type checking for custom property
 	rebuildConfig: {},
-	makers: [new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
+	makers: [
+		new MakerSquirrel({}),
+		new MakerZIP({}, ['darwin']),
+		new MakerRpm({}),
+		new MakerDeb({}),
+		new MakerDMG({
+			format: 'ULFO',
+			icon: path.join(process.cwd(), 'public', 'icons', 'icon.icns'),
+			background: path.join(process.cwd(), 'public', 'icons', 'dmg-background.png'),
+			contents: [
+				{
+					x: 130,
+					y: 220,
+					type: 'file',
+					path: path.join(process.cwd(), 'out', 'Juicebox AI-darwin-x64', 'Juicebox AI.app')
+				},
+				{
+					x: 410,
+					y: 220,
+					type: 'link',
+					path: '/Applications'
+				}
+			]
+		})
+	],
 	plugins: [
 		new AutoUnpackNativesPlugin({}),
 		new WebpackPlugin({

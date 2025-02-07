@@ -25,7 +25,10 @@ jobs:
         run: yarn install
 
       - name: Build and Make
-        run: yarn make
+        run: |
+          echo "Forge Config:"
+          cat forge.config.js || echo "No forge config found"
+          yarn make --verbose
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
