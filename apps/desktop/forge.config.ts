@@ -23,6 +23,8 @@ const config: ForgeConfig = {
 		name: 'Juicebox AI',
 		executableName: 'Juicebox AI',
 		icon: path.join(process.cwd(), 'public', 'icons', 'icon'), // Ensure this path is correct
+		// darwinArm64: {},
+		// darwinX64: {},
 		extraResource: ['./src/dist-web', './public']  // Update path to match source location
 	}, // bypass type checking for custom property
 	rebuildConfig: {},
@@ -40,7 +42,7 @@ const config: ForgeConfig = {
 					x: 130,
 					y: 220,
 					type: 'file',
-					path: path.join(process.cwd(), 'out', 'Juicebox AI-darwin-x64', 'Juicebox AI.app')
+					path: `./out/Juicebox AI-darwin-${process.env.ELECTRON_ARCH || 'x64'}/Juicebox AI.app`
 				},
 				{
 					x: 410,

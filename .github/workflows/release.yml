@@ -11,13 +11,18 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
+        arch: [x64, arm64]
+        exclude:
+          # Windows and Linux don't need arm64 builds
+          - os: windows-latest
+            arch: arm64
+          - os: ubuntu-latest
+            arch: arm64
 
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -25,10 +30,10 @@ jobs:
         run: yarn install
 
       - name: Build and Make
+        env:
+          ELECTRON_ARCH: ${{ matrix.arch }}
         run: |
-          echo "Forge Config:"
-          cat forge.config.js || echo "No forge config found"
-          yarn make --verbose
+          yarn make --arch=${{ matrix.arch }} --verbose
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
