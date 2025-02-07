@@ -36,7 +36,7 @@ const config: ForgeConfig = {
 		new MakerDMG({
 			format: 'ULFO',
 			icon: path.join(process.cwd(), 'public', 'icons', 'icon.icns'),
-			background: path.join(process.cwd(), 'public', 'icons', 'dmg-background.png'),
+			// background: path.join(process.cwd(), 'public', 'icons', 'dmg-background.png'),
 			contents: [
 				{
 					x: 130,
