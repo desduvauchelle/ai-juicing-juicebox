@@ -107,11 +107,11 @@ const ChatViewNew: React.FC = () => {
 	return <div className="w-full h-full flex flex-col items-center justify-center">
 		<div className="max-w-2xl w-full mx-auto text-center space-y-6">
 			<h2 className="text-2xl logo font-bold">What can I help with?</h2>
-			<form onSubmit={createChat} className="bg-base-200 p-6 space-y-4 rounded-xl">
+			<form onSubmit={createChat} className="bg-base-100 p-6 py-4 space-y-4 rounded-xl">
 				<ChatInputBox
 					ref={textareaRef}
 					autoFocus
-					className='w-full border-transparent bg-base-100 text-lg'
+					className='w-full bg-base-100 text-lg'
 					placeholder='Start typing here...'
 					value={text}
 					tabIndex={1}

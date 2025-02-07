@@ -64,7 +64,7 @@ const ChatMessage: React.FC<{
 						<FontAwesomeIcon icon={faTrash} />
 					</Button>
 				</div>
-				<div className="max-w-lg px-4 rounded-xl bg-base-300">
+				<div className="max-w-lg px-4 rounded-xl bg-base-200">
 					<div className="markdown">
 						{parsedText.thinking && <>
 							<Button
@@ -75,7 +75,7 @@ const ChatMessage: React.FC<{
 								{showThinking ? 'Hide thinking' : 'Show thinking'}
 							</Button>
 							{showThinking && <>
-								<div className="opacity-50 mb-6">
+								<div className="opacity-50 mb-6 max-w-full">
 									<Markdown>
 										{parsedText.thinking}
 									</Markdown>

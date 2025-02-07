@@ -1,6 +1,10 @@
 
 body {
-	@apply bg-slate-800;
+	/* @apply bg-slate-800; */
+	@apply bg-base-100;
+}
+#chat-content{
+	@apply bg-base-300;
 }
 
 button, a {

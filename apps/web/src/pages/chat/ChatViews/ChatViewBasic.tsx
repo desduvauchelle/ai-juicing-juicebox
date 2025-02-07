@@ -152,10 +152,8 @@ const ChatViewBasic: React.FC = () => {
 			</div>
 
 			<form onSubmit={handleSubmit} className="py-4 relative">
-				<div className="absolute top-0 w-full">
-					<div className={`h-[1px] w-full ${maxWidth} mx-auto bg-slate-500`}></div>
-				</div>
-				<div className={`${maxWidth} flex gap-2`}>
+
+				<div className={`${maxWidth} flex gap-2 bg-base-100 rounded-xl`}>
 					<ChatInputBox
 						id="chat-input"
 						ref={chatInputRef}
@@ -168,7 +166,7 @@ const ChatViewBasic: React.FC = () => {
 							setNewMessage(e.target.value)
 						}}
 						onSubmit={send}
-						className={`flex-1 px-3 py-2 border-transparent ${isTyping ? "opacity-50" : ""}`}
+						className={`flex-1 border-transparent ${isTyping ? "opacity-50" : ""}`}
 						placeholder="Type your message..."
 					/>
 					<Button

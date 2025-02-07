@@ -75,7 +75,7 @@ const Chat: React.FC = () => {
 		</div>
 		<div
 			className={`flex-1 transition-all duration-300 p-4 pl-0 ${isMenuOpen ? 'ml-64' : 'ml-0 pl-4'} relative`}>
-			<div className="bg-base-100 h-full rounded-xl overflow-hidden relative">
+			<div id="chat-content" className="h-full rounded-xl overflow-hidden relative">
 				{!conversationId && <ChatViewNew />}
 				{conversationId && <ChatViewWrapper
 					toggleMenu={toggleMenu}
