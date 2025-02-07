@@ -1,4 +1,4 @@
-import { faCaretLeft, faChevronLeft, faChevronRight, faCog, faExclamation, faPlus, faSquareCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronRight, faCog, faExclamation, faPlus, faSquareCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'

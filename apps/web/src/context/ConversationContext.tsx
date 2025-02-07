@@ -2,18 +2,18 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { IConversation, IConversationChat } from "../../../../types/IConversation"
 import ConversationService from "../services/ConversationService"
 import ChatService from "../services/ChatService"
-import { ILlmConfig } from "../../../../types/ILlmConfig"
-import LlmConfigService from "../services/LlmConfigService"
+import { IAIService } from "../../../../types/IAIService"
+import LlmConfigService from "../services/AiServiceService"
 import { UseConfigChecker, useConfigChecker } from "../hooks/useConfigChecker"
-import useAi from "../hooks/useAi"
 import { useMainContext } from "./MainContext"
+import useGlobalAi from "../hooks/useGlobalAi"
 
 
 interface ConversationContextProps {
 	conversation?: IConversation | null,
 	chats: IConversationChat[],
-	configs: ILlmConfig[],
-	selectedConfig?: ILlmConfig,
+	configs: IAIService[],
+	selectedConfig?: IAIService,
 	isLoading: boolean,
 	configChecker: UseConfigChecker,
 	actions: {
@@ -33,10 +33,10 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 	const [conversation, setConversation] = useState<IConversation | null>(null)
 	const [chats, setChats] = useState<IConversationChat[]>([])
 	const [isLoading, setIsLoading] = useState(false)
-	const [configs, setConfigs] = useState<ILlmConfig[]>([])
-	const ai = useAi()
+	const [configs, setConfigs] = useState<IAIService[]>([])
 	const isGeneratingTitleRef = useRef(false)
 	const mainContext = useMainContext()
+	const globalAi = useGlobalAi()
 
 	const getByConversationId = useCallback(async (id: number) => {
 
@@ -100,17 +100,15 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 
 			if (isGeneratingTitleRef.current) return
 			isGeneratingTitleRef.current = true
-			const titleResponse = await ai.actions.generate({
-				conversation,
-				config: selectedConfig,
+			const titleResponse = await globalAi.actions.streamMessage({
 				chats: [
 					{ role: "system", text: "You are an expert at finding titles for conversations", id: 0, conversationId: conversation.id, createdAt: Date.now() },
 					{ role: "user", text: `I need a title for this conversation, it needs to concise and descriptive. <chats>${chats.map(c => { return `<chat><from>${c.role}</from><messages>${c.text}</message></chat>` })}</chats>  Just give me the title and nothing else. No quotes, no mention of "Title", just the title. Be strict with yourself.`, id: 1, conversationId: conversation.id, createdAt: Date.now() },
 				]
 			})
 			isGeneratingTitleRef.current = false
-			if (titleResponse.aiMessage) {
-				const title = titleResponse.aiMessage.content
+			if (titleResponse) {
+				const title = titleResponse
 					.replace(/<think>[\s\S]*?<\/think>/g, '')
 					.trim()
 					.replace(/["']/g, '')
@@ -126,7 +124,7 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 		}
 
 		generateTitle()
-	}, [conversation, selectedConfig, chats, update, ai.actions])
+	}, [conversation, selectedConfig, chats, update, globalAi.actions])
 
 	const chatAdd = useCallback(async (chat: Partial<IConversationChat>) => {
 		if (!conversation) {

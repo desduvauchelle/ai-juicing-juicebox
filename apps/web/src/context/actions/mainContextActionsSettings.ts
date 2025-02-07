@@ -3,7 +3,7 @@ import { UserSettingsService } from "../../services/UserSettingsService"
 
 type SetState<T> = React.Dispatch<React.SetStateAction<T | undefined>>
 
-export type MainContextUserSettings = Omit<UserSettings, 'folders' | 'llmConfigs'>
+export type MainContextUserSettings = Omit<UserSettings, 'folders' | 'aiServices'>
 
 const createMainContextActionsSettings = ({
 	setUserSettings,

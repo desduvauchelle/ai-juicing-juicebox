@@ -3,11 +3,11 @@ import { IConversation, IConversationTypes } from '../../../../../../types/IConv
 import { useFileExplorer } from '../../../context/FileExplorerContext'
 import Button, { MyLink } from '../../../components/Button'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { ILlmConfig } from '../../../../../../types/ILlmConfig'
-import LlmConfigService from '../../../services/LlmConfigService'
+import LlmConfigService from '../../../services/AiServiceService'
 import { faArrowRight, faChevronUp, faComment, faRobot } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ChatInputBox } from './components/ChatInputBox'
+import { IAIService } from '../../../../types/IAIService'
 
 type IChatView = {
 	id: number
@@ -34,7 +34,7 @@ const ChatViewNew: React.FC = () => {
 	const navigate = useNavigate()
 	const fileExplorer = useFileExplorer()
 	const textareaRef = useRef<HTMLTextAreaElement>(null)
-	const [configs, setConfigs] = useState<Array<ILlmConfig>>([])
+	const [configs, setConfigs] = useState<Array<IAIService>>([])
 	const [selectedConfig, setSelectedConfig] = useState<number | null>(null)
 	const isFetching = useRef<boolean>(false)
 	const [text, setText] = useState<string>('')
@@ -208,7 +208,6 @@ const ChatViewNew: React.FC = () => {
 							}}>
 							<h3 className="text-lg font-bold">{config.name}</h3>
 							<p className="text-sm opacity-50 line-clamp-1">URL: {config.url}</p>
-							<p className="text-sm opacity-50 line-clamp-1">Model: {config.model}</p>
 							<button
 								onClick={(e) => handleSetDefault(config.id, e)}
 								className={`mt-2 text-xs px-2 py-1 rounded ${config.isDefault

@@ -38,7 +38,7 @@ const THEME_OPTIONS = [
 	{ value: "sunset", label: "Sunset" },
 ]
 
-const SettingsTheme: React.FC = () => {
+const ThemePage: React.FC = () => {
 	const { userSettings, actions } = useMainContext()
 
 	const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -67,4 +67,4 @@ const SettingsTheme: React.FC = () => {
 	)
 }
 
-export default SettingsTheme
+export default ThemePage

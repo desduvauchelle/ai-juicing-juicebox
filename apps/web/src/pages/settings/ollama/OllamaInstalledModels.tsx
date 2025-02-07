@@ -6,15 +6,15 @@ import Button from "../../../components/Button"
 import { UseConfigChecker } from "../../../hooks/useConfigChecker"
 import { bridgeApi } from "../../../tools/bridgeApi"
 import React from "react"
-import useAi from "../../../hooks/useAi"
-import { ILlmConfig, OllamaModel } from "../../../../types/ILlmConfig"
+import { IAIService, OllamaModel } from "../../../../types/IAIService"
 import { OllamaRemoteModel } from "../../../../types/Electron"
+import { fetchOllamaModels } from "../../../tools/fetchOllamaModels"
 
 
 const OllamaInstalledModels: React.FC<{
 	configChecker: UseConfigChecker,
 	selectedConfig: number | null,
-	configs: Array<ILlmConfig>
+	configs: Array<IAIService>
 }> = ({
 	configChecker,
 	selectedConfig,
@@ -22,7 +22,6 @@ const OllamaInstalledModels: React.FC<{
 }) => {
 		const [models, setModels] = useState<OllamaModel[]>([])
 		const [isLoadingModels, setIsLoadingModels] = useState(false)
-		const { actions } = useAi()
 		const modelsBeingLoadedRef = React.useRef(false)
 		const [showDownloadNewModels, setShowDownloadNewModels] = useState(false)
 		const [availableModels, setAvailableModels] = useState<OllamaRemoteModel[]>([])
@@ -38,7 +37,7 @@ const OllamaInstalledModels: React.FC<{
 			modelsBeingLoadedRef.current = true
 			setIsLoadingModels(true)
 			try {
-				const result = await actions.fetchModels({ config })
+				const result = await fetchOllamaModels({ url: config.url })
 				modelsBeingLoadedRef.current = false
 				if (result.success) {
 					setModels(result.models)
@@ -46,7 +45,7 @@ const OllamaInstalledModels: React.FC<{
 			} finally {
 				setIsLoadingModels(false)
 			}
-		}, [selectedConfig, configChecker.isRunning, isLoadingModels, configs, actions]) // Add isRunning to dependencies
+		}, [selectedConfig, configChecker.isRunning, isLoadingModels, configs]) // Add isRunning to dependencies
 
 		useEffect(() => {
 			if (!selectedConfig || !configChecker.isRunning) return // Add isRunning check here

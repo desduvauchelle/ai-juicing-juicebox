@@ -54,7 +54,7 @@ export const FileExplorerProvider = ({ children }: { children: React.ReactNode }
 
 	const folderToggle = async (id: number) => {
 		const item = await FolderService.getFolderById(id)
-		if (item.type !== 'folder') return
+		if (item?.type !== 'folder') return
 		await FolderService.updateFolder(id, { isOpen: !item.isOpen })
 
 		setFolders(prev => {

@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react'
 import { bridgeApi } from '../tools/bridgeApi'
-import { ILlmConfig } from '../../types/ILlmConfig'
+import { IAIService } from '../../types/IAIService'
 
 const localServers = ["localhost", "0.0.0.0", "127.0.0.1"]
 
 interface UseConfigCheckerProps {
-	config?: ILlmConfig
+	config?: IAIService
 }
 
 export const useConfigChecker = ({ config }: UseConfigCheckerProps = {}) => {

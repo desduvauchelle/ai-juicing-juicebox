@@ -1,7 +1,7 @@
 import ChatViewBasic from './ChatViews/ChatViewBasic'
 import { useConversation } from "../../context/ConversationContext"
 import { useEffect, useRef, useState } from "react"
-import { faRobot, faSquareCaretDown } from "@fortawesome/free-solid-svg-icons"
+import { faRobot } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Button from "../../components/Button"
 import Select from "../../components/Select"
@@ -148,6 +148,8 @@ const ChatViewWrapper: React.FC<{
 			{conversation.type === "co-authoring" && <>
 				<ChatViewCanvas />
 			</>}
+
+
 		</>
 
 

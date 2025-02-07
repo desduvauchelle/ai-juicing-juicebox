@@ -1,11 +1,10 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 import createMainContextActionsFolders, { MainContextActionsFolders } from "./actions/mainContextActionsFolders"
 import { IFileExplorerFolder } from "../../types/IFolder"
-import { ILlmConfig } from "../../types/ILlmConfig"
+import { IAIService } from "../../types/IAIService"
 import { UserSettingsService } from "../services/UserSettingsService"
-import createMainContextActionsLlmConfigs, { MainContextActionsLlmConfigs } from "./actions/mainContextActionsLlmConfigs"
 import createMainContextActionsSettings, { MainContextActionsSettings, MainContextUserSettings } from "./actions/mainContextActionsSettings"
-import { bridgeApi } from "../tools/bridgeApi"
+import createMainContextActionsAiServices, { MainContextActionsAiServices } from "./actions/mainContextActionsAiServices"
 
 
 
@@ -17,22 +16,22 @@ const setActions = <T,>(actions: T) => {
 interface IMainContext {
 	userSettings: MainContextUserSettings | undefined
 	folders: IFileExplorerFolder[]
-	llmConfigs: ILlmConfig[],
+	aiServices: IAIService[],
 	actions: {
 		folders: MainContextActionsFolders,
 		userSettings: MainContextActionsSettings,
-		llmConfigs: MainContextActionsLlmConfigs
+		aiServices: MainContextActionsAiServices
 	}
 }
 
 const defaultMainContext: IMainContext = {
 	userSettings: {},
 	folders: [],
-	llmConfigs: [],
+	aiServices: [],
 	actions: {
 		userSettings: createMainContextActionsSettings({ setUserSettings: setActions }),
 		folders: createMainContextActionsFolders({ setFolders: setActions }),
-		llmConfigs: createMainContextActionsLlmConfigs({ setLlmConfigs: setActions }),
+		aiServices: createMainContextActionsAiServices({ setAiServices: setActions }),
 	},
 }
 
@@ -48,7 +47,7 @@ const MainContext = createContext<IMainContext>(defaultMainContext)
 export const MainContextProvider = ({ children }: { children: React.ReactNode }) => {
 	const [userSettings, setUserSettings] = useState<MainContextUserSettings | undefined>(defaultMainContext.userSettings)
 	const [folders, setFolders] = useState<IFileExplorerFolder[]>(defaultMainContext.folders)
-	const [llmConfigs, setLlmConfigs] = useState<ILlmConfig[]>(defaultMainContext.llmConfigs)
+	const [aiServices, setAiServices] = useState<IAIService[]>(defaultMainContext.aiServices)
 	const initCompleteRef = useRef(false)
 
 	//
@@ -61,10 +60,10 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 				initCompleteRef.current = true
 				console.log("User settings loaded", settings)
 				if (!settings) return
-				const { folders, llmConfigs, ...rest } = settings
+				const { folders, aiServices, ...rest } = settings
 				setUserSettings(rest)
 				setFolders(folders || [])
-				setLlmConfigs(llmConfigs || [])
+				setAiServices(aiServices || [])
 				if (rest.theme) setUserTheme(rest.theme || "dim")
 			})
 	}, [])
@@ -92,8 +91,8 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 
 	useEffect(() => {
 		if (!initCompleteRef.current) return
-		UserSettingsService.save({ llmConfigs })
-	}, [llmConfigs])
+		UserSettingsService.save({ aiServices })
+	}, [aiServices])
 
 
 
@@ -105,7 +104,7 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 
 	const llmConfigActions = useCallback(
 		() => {
-			return createMainContextActionsLlmConfigs({ setLlmConfigs })
+			return createMainContextActionsAiServices({ setAiServices })
 		},
 		[])
 
@@ -119,14 +118,14 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 		() => ({
 			userSettings,
 			folders,
-			llmConfigs,
+			aiServices,
 			actions: {
 				userSettings: userSettingActions(),
 				folders: folderActions(),
-				llmConfigs: llmConfigActions()
+				aiServices: llmConfigActions()
 			}
 		}),
-		[userSettings, folders, llmConfigs, userSettingActions, folderActions, llmConfigActions])
+		[userSettings, folders, aiServices, userSettingActions, folderActions, llmConfigActions])
 
 	return <MainContext.Provider value={contextValue}>
 		{children}

@@ -1,10 +1,10 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import LlmConfigForm from '../llm-config/LlmConfigForm'
 import { useNavigate } from 'react-router-dom'
 import { bridgeApi } from '../tools/bridgeApi'
 import Logo from '../components/Logo'
 import { InlineAlert } from '../components/InlineAlert'
+import AiServiceForm from '../ai-service/AiServiceForm'
 
 const Welcome: React.FC = () => {
 	const [ollamaInstalled, setOllamaInstalled] = useState(true)
@@ -44,8 +44,8 @@ const Welcome: React.FC = () => {
 
 				<div>
 					<p className='text-xl text-center font-medium mb-2'>Setup your first AI</p>
-					<LlmConfigForm
-						onSubmit={() => {
+					<AiServiceForm
+						afterSubmit={() => {
 							// Nav
 							navigate('/chat')
 						}} />

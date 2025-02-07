@@ -1,4 +1,4 @@
-import { ILlmConfig } from './ILlmConfig'
+import { IAIService } from './IAIService'
 import { IFileExplorerFolder } from './IFolder'
 export interface UserSettings {
 	theme?: string
@@ -10,6 +10,6 @@ export interface UserSettings {
 		width?: number
 		height?: number
 	},
-	llmConfigs?: ILlmConfig[]
+	aiServices?: IAIService[]
 	folders?: IFileExplorerFolder[]
 }

@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import Button from '../../../components/Button'
 import { useConversation } from '../../../context/ConversationContext'
-import useAi from '../../../hooks/useAi'
 import { useLocation, useNavigate } from 'react-router-dom'
 import ChatMessage from './components/ChatMessage'
 import { ChatInputBox } from './components/ChatInputBox'
+import useGlobalAi from '../../../hooks/useGlobalAi'
 
 const maxWidth = 'max-w-3xl mx-auto'
 
@@ -15,7 +15,7 @@ const ChatViewBasic: React.FC = () => {
 	const conversation = conversationContext?.conversation
 	const chats = conversationContext?.chats
 	const wrapperRef = React.useRef<HTMLDivElement>(null)
-	const ai = useAi()
+	const globalAi = useGlobalAi()
 	const [isTyping, setIsTyping] = useState(false)
 	const isTypingRef = React.useRef(false)
 
@@ -33,8 +33,11 @@ const ChatViewBasic: React.FC = () => {
 		})
 	}, [conversationContext?.chats, incomingMessage])
 
-	const streamCallback = useCallback((text: string) => {
-		setIncomingMessage(text)
+	const streamCallback = useCallback((data: {
+		fullText: string,
+		delta: string
+	}) => {
+		setIncomingMessage(data.fullText)
 	}, [])
 
 	const send = useCallback(async (messageOverride?: string) => {
@@ -62,38 +65,32 @@ const ChatViewBasic: React.FC = () => {
 		try {
 			setIsTyping(true)
 			isTypingRef.current = true
-			const response = await ai.actions.generate({
-				conversation: conversation,
-				config: conversationContext.selectedConfig,
+			setNewMessage('')
+			const response = await globalAi.actions.streamMessage({
+				text: messageToSend,
 				chats: [
 					...chats,
 					fullMessage
 				],
-				streamCallback: streamCallback
+				streamingCallback: streamCallback
 			})
-			setIsTyping(false)
 			isTypingRef.current = false
+			setIsTyping(false)
 			setIncomingMessage(undefined)
 			// Add the assistant message to the chat
-			if (response.aiMessage) {
+			if (response) {
 				await conversationContext?.actions.chat.add({
 					role: "assistant",
-					text: response.aiMessage.content
+					text: response
 				})
-				setNewMessage('')
 			}
-
-			// Focus on the textarea
-			const input = document.querySelector('#chat-input') as HTMLTextAreaElement
-			if (!input) return
-			input.focus()
 		} catch (error) {
 			setIsTyping(false)
 			isTypingRef.current = false
 			console.error("Failed to generate AI response", error)
 			alert("Failed to generate AI response")
 		}
-	}, [isTyping, newMessage, conversationContext?.actions.chat, conversationContext.selectedConfig, conversation, ai.actions, chats, streamCallback])
+	}, [isTyping, newMessage, conversationContext?.actions.chat, conversationContext.selectedConfig, conversation, globalAi.actions, chats, streamCallback])
 
 	useEffect(() => {
 		if (!conversation) return

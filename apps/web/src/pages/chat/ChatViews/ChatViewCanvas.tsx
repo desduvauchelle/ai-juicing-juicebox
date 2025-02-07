@@ -1,17 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import Button from '../../../components/Button'
 import { useConversation } from '../../../context/ConversationContext'
-import Textarea from '../../../components/Textarea'
-import useAi from '../../../hooks/useAi'
 import ChatMessage from './components/ChatMessage'
 import { ChatInputBox } from './components/ChatInputBox'
+import useGlobalAi from '../../../hooks/useGlobalAi'
 
 const ChatViewCanvas: React.FC = () => {
 	const conversationContext = useConversation()
 	const conversation = conversationContext?.conversation
 	const chats = conversationContext?.chats
 	const chatWrapperRef = React.useRef<HTMLDivElement>(null)
-	const ai = useAi()
+	const globalAi = useGlobalAi()
 	const [isTyping, setIsTyping] = useState(false)
 	const isTypingRef = React.useRef(false)
 
@@ -28,8 +27,11 @@ const ChatViewCanvas: React.FC = () => {
 		})
 	}, [chats, incomingMessage])
 
-	const streamCallback = useCallback((text: string) => {
-		setIncomingMessage(text)
+	const streamCallback = useCallback((data: {
+		fullText: string,
+		delta: string
+	}) => {
+		setIncomingMessage(data.fullText)
 	}, [])
 
 	const handleCanvasSelection = () => {
@@ -61,21 +63,19 @@ const ChatViewCanvas: React.FC = () => {
 			setIsTyping(true)
 			isTypingRef.current = true
 
-			const response = await ai.actions.generate({
-				conversation: conversation,
-				config: conversationContext.selectedConfig,
+			const response = await globalAi.actions.streamMessage({
 				chats: [...chats, fullMessage],
-				streamCallback: streamCallback
+				streamingCallback: streamCallback
 			})
 
 			setIsTyping(false)
 			isTypingRef.current = false
 			setIncomingMessage(undefined)
 
-			if (response.aiMessage) {
+			if (response) {
 				await conversationContext?.actions.chat.add({
 					role: "assistant",
-					text: response.aiMessage.content
+					text: response
 				})
 				setNewMessage('')
 				setSelectedText('')
@@ -86,7 +86,7 @@ const ChatViewCanvas: React.FC = () => {
 			console.error("Failed to generate AI response", error)
 			alert("Failed to generate AI response")
 		}
-	}, [isTyping, newMessage, selectedText, conversationContext, conversation, ai.actions, chats, streamCallback])
+	}, [isTyping, newMessage, selectedText, conversationContext?.actions.chat, conversationContext.selectedConfig, conversation, globalAi.actions, chats, streamCallback])
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()

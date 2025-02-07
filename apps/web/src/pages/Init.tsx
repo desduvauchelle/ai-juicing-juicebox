@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from "react"
-import LlmConfigService from "../services/LlmConfigService"
+import LlmConfigService from "../services/AiServiceService"
 import { useNavigate } from "react-router-dom"
-import { ILlmConfig } from "../../types/ILlmConfig"
+import { IAIService } from "../../types/IAIService"
 
 const Init: React.FC = () => {
 	const navigate = useNavigate()
 	const isFetching = useRef<boolean>(false)
-	const [configs, setConfigs] = useState<Array<ILlmConfig & { id: number }> | null>(null)
+	const [configs, setConfigs] = useState<Array<IAIService & { id: number }> | null>(null)
 
 	const fetchConfigs = useCallback(async () => {
 		if (isFetching.current) return

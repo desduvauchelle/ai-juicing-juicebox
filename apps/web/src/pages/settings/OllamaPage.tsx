@@ -3,14 +3,14 @@ import Select from '../../components/Select'
 import Box from '../../components/Box'
 import OllamaSystemInformation from './ollama/OllamaSystemInformation'
 import { useConfigChecker } from '../../hooks/useConfigChecker'
-import LlmConfigService from '../../services/LlmConfigService'
+import LlmConfigService from '../../services/AiServiceService'
 import OllamaStatus from './ollama/OllamaStatus'
 import OllamaInstalledModels from './ollama/OllamaInstalledModels'
-import { ILlmConfig } from '../../../types/ILlmConfig'
+import { IAIService } from '../../../types/IAIService'
 
 
 const OllamaPage: React.FC = () => {
-	const [configs, setConfigs] = useState<Array<ILlmConfig>>([])
+	const [configs, setConfigs] = useState<Array<IAIService>>([])
 	const [selectedConfig, setSelectedConfig] = useState<number | null>(null)
 
 	const isFetching = useRef<boolean>(false)
