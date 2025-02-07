@@ -80,6 +80,10 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 		setTestSuccess(null)
 
 		try {
+			if (!formData.url) {
+				setTestError('Please enter a URL')
+				return
+			}
 			const result = await fetchOllamaModels({ url: formData.url })
 			if (!result.success) {
 				setTestError(result.message)

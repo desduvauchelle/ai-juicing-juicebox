@@ -127,6 +127,7 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 					name: title,
 					aiGeneratedTitle: true
 				})
+				// mainContext.actions.
 			}
 		}
 

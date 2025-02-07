@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import { IConversation, IConversationTypes } from '../../../../../../types/IConversation'
-import { useFileExplorer } from '../../../context/FileExplorerContext'
 import Button from '../../../components/Button'
 import { useRef, useState, useEffect } from 'react'
 import { faArrowRight, faChevronUp, faComment, faRobot } from '@fortawesome/free-solid-svg-icons'
@@ -33,7 +32,6 @@ const chatViewsList: IChatView[] = [
 
 const ChatViewNew: React.FC = () => {
 	const navigate = useNavigate()
-	const fileExplorer = useFileExplorer()
 	const textareaRef = useRef<HTMLTextAreaElement>(null)
 	const [selectedConfig, setSelectedConfig] = useState<number | null>(null)
 	const [selectedModel, setSelectedModel] = useState<string | null>(null)
@@ -89,7 +87,7 @@ const ChatViewNew: React.FC = () => {
 			updatedAt: Date.now()
 		}
 		try {
-			const fullConversation = await fileExplorer.actions.conversation.create(newConversation)
+			const fullConversation = await mainContext.actions.conversations.create(newConversation)
 			if (!fullConversation?.id) {
 				alert("Failed to create chat")
 				return

@@ -1,12 +1,12 @@
 
-import { faComment, faTimes, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faComment, faTimes } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useRef, useEffect, useMemo } from "react"
 import { useDrag, useDrop } from "react-dnd"
 import { IConversation } from "../../../../../../types/IConversation"
 import { formatDistanceToNow } from 'date-fns'
-import { useFileExplorer } from "../../../context/FileExplorerContext"
 import { useNavigate } from "react-router-dom"
+import { useMainContext } from "../../../context/MainContext"
 
 export interface FileExplorerItemProps {
 	item: IConversation
@@ -23,7 +23,7 @@ const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 	const [isRenaming, setIsRenaming] = useState(false)
 	const [newName, setNewName] = useState(item.name)
 	const inputRef = useRef<HTMLInputElement>(null)
-	const fileExplorer = useFileExplorer()
+	const mainContext = useMainContext()
 
 	const [{ isDragging }, drag] = useDrag(() => ({
 		type: 'FILE_ITEM',
@@ -51,7 +51,10 @@ const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 
 	const handleRename = () => {
 		if (newName.trim()) {
-			fileExplorer.actions.conversation.rename(item.id, newName)
+			mainContext.actions.conversations.rename({
+				id: item.id,
+				newName: newName
+			})
 		}
 		setIsRenaming(false)
 	}
@@ -124,7 +127,7 @@ const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 					e.preventDefault()
 					const conf = confirm('Are you sure you want to delete this item?')
 					if (!conf) return
-					await fileExplorer.actions.conversation.delete(item.id)
+					await mainContext.actions.conversations.delete({ id: item.id })
 					// If it's active, I should useNavigate
 					if (isActive) {
 						navigate('/chat')

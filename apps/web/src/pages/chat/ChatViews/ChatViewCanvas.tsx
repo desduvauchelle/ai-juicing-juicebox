@@ -58,12 +58,18 @@ const ChatViewCanvas: React.FC = () => {
 			alert("Failed to send message")
 			return
 		}
+		if (!conversationContext.conversation?.modelName) {
+			alert("Invalid conversation")
+			return
+		}
 
 		try {
 			setIsTyping(true)
 			isTypingRef.current = true
 
 			const response = await globalAi.actions.streamMessage({
+				aiService: conversationContext.selectedConfig,
+				modelName: conversationContext.conversation.modelName,
 				chats: [...chats, fullMessage],
 				streamingCallback: streamCallback
 			})
@@ -86,7 +92,7 @@ const ChatViewCanvas: React.FC = () => {
 			console.error("Failed to generate AI response", error)
 			alert("Failed to generate AI response")
 		}
-	}, [isTyping, newMessage, selectedText, conversationContext?.actions.chat, conversationContext.selectedConfig, conversation, globalAi.actions, chats, streamCallback])
+	}, [isTyping, newMessage, selectedText, conversationContext?.actions.chat, conversationContext.selectedConfig, conversationContext.conversation?.modelName, conversation, globalAi.actions, chats, streamCallback])
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()

@@ -6,26 +6,28 @@ import Button from '../../../components/Button'
 import { useMemo, useState } from 'react'
 import FileExplorerConversationItem from './FileExplorerConversationItem'
 import FileExplorerFolderItem from './FileExplorerFolderItem'
-import { useFileExplorer } from '../../../context/FileExplorerContext'
+import { useMainContext } from '../../../context/MainContext'
 
 
 const FileExplorer: React.FC<{ conversationId?: string }> = ({ conversationId }) => {
 	const [showNewFolder, setShowNewFolder] = useState(false)
 	const [newItemName, setNewItemName] = useState('')
-	const fileExplorer = useFileExplorer()
+	const mainContext = useMainContext()
 
 
 
 	const noFolderConversations = useMemo(() => {
-		return fileExplorer.conversations.filter(conversation => !conversation.folderId)
-	}, [fileExplorer.conversations])
+		return mainContext.conversations.filter(conversation => !conversation.folderId)
+	}, [mainContext.conversations])
 
 
 
 	const handleNewFolder = (e: React.FormEvent) => {
 		e.preventDefault()
 		// onNewFolder(newItemName)
-		fileExplorer.actions.folder.create(newItemName)
+		mainContext.actions.folders.create({
+			name: newItemName
+		})
 		setNewItemName('')
 		setShowNewFolder(false)
 	}
@@ -35,7 +37,7 @@ const FileExplorer: React.FC<{ conversationId?: string }> = ({ conversationId })
 
 
 		<ul className="menu w-full">
-			{fileExplorer.folders.map(folder => {
+			{mainContext.folders.map(folder => {
 				return <FileExplorerFolderItem
 					activeConversationId={conversationId}
 					key={folder.id}

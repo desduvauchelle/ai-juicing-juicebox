@@ -33,10 +33,12 @@ const OllamaInstalledModels: React.FC<{
 			if (isLoadingModels) return
 			const config = configs.find(c => c.id === selectedConfig)
 			if (!config) return
+			if (!config.url) return
 
 			modelsBeingLoadedRef.current = true
 			setIsLoadingModels(true)
 			try {
+
 				const result = await fetchOllamaModels({ url: config.url })
 				modelsBeingLoadedRef.current = false
 				if (result.success) {

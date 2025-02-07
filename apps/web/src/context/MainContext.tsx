@@ -5,6 +5,9 @@ import { IAIService } from "../../types/IAIService"
 import { UserSettingsService } from "../services/UserSettingsService"
 import createMainContextActionsSettings, { MainContextActionsSettings, MainContextUserSettings } from "./actions/mainContextActionsSettings"
 import createMainContextActionsAiServices, { MainContextActionsAiServices } from "./actions/mainContextActionsAiServices"
+import { IConversation } from "../../types/IConversation"
+import createMainContextActionsConversations, { MainContextActionsConversations } from "./actions/mainContextActionsConversations"
+import ConversationService from "../services/ConversationService"
 
 
 
@@ -17,10 +20,12 @@ export interface IMainContext {
 	userSettings: MainContextUserSettings | undefined
 	folders: IFileExplorerFolder[]
 	aiServices: IAIService[],
+	conversations: IConversation[],
 	actions: {
 		folders: MainContextActionsFolders,
 		userSettings: MainContextActionsSettings,
-		aiServices: MainContextActionsAiServices
+		aiServices: MainContextActionsAiServices,
+		conversations: MainContextActionsConversations
 	}
 }
 
@@ -28,10 +33,12 @@ const defaultMainContext: IMainContext = {
 	userSettings: {},
 	folders: [],
 	aiServices: [],
+	conversations: [],
 	actions: {
 		userSettings: createMainContextActionsSettings({ setUserSettings: setActions }),
 		folders: createMainContextActionsFolders({ setFolders: setActions }),
 		aiServices: createMainContextActionsAiServices({ setAiServices: setActions }),
+		conversations: createMainContextActionsConversations({ setConversations: setActions }),
 	},
 }
 
@@ -48,6 +55,7 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 	const [userSettings, setUserSettings] = useState<MainContextUserSettings | undefined>(defaultMainContext.userSettings)
 	const [folders, setFolders] = useState<IFileExplorerFolder[]>(defaultMainContext.folders)
 	const [aiServices, setAiServices] = useState<IAIService[]>(defaultMainContext.aiServices)
+	const [conversations, setConversations] = useState<IConversation[]>(defaultMainContext.conversations)
 	const initCompleteRef = useRef(false)
 
 	//
@@ -67,7 +75,17 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 				if (rest.theme) setUserTheme(rest.theme || "dim")
 			})
 	}, [])
+	// Load the conversations
+	const fetchConversations = useCallback(async () => {
+		const allChats = await ConversationService.getDefaults()
+		// Sort using updatedAt newest to oldest
+		const sortedChats = allChats.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+		setConversations(sortedChats)
+	}, [])
 
+	useEffect(() => {
+		fetchConversations()
+	}, [fetchConversations])
 
 
 	useEffect(() => {
@@ -114,18 +132,26 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 		},
 		[])
 
+	const conversationActions = useCallback(
+		() => {
+			return createMainContextActionsConversations({ setConversations })
+		},
+		[])
+
 	const contextValue: IMainContext = useMemo(
 		() => ({
 			userSettings,
 			folders,
 			aiServices,
+			conversations,
 			actions: {
 				userSettings: userSettingActions(),
 				folders: folderActions(),
-				aiServices: llmConfigActions()
+				aiServices: llmConfigActions(),
+				conversations: conversationActions()
 			}
 		}),
-		[userSettings, folders, aiServices, userSettingActions, folderActions, llmConfigActions])
+		[userSettings, folders, aiServices, conversations, userSettingActions, folderActions, llmConfigActions, conversationActions])
 
 	return <MainContext.Provider value={contextValue}>
 		{children}

@@ -1,11 +1,10 @@
-import { faChevronLeft, faChevronRight, faCog, faExclamation, faPlus, faSquareCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faChevronRight, faCog, faExclamation, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Button, { MyLink } from '../components/Button'
 import FileExplorer from './chat/file-explorer/FileExplorer'
 import ChatViewNew from './chat/ChatViews/ChatViewNew'
-import { FileExplorerProvider } from '../context/FileExplorerContext'
 import { ConversationProvider } from '../context/ConversationContext'
 import ChatViewWrapper from './chat/ChatViewWrapper'
 import Logo from '../components/Logo'
@@ -96,11 +95,9 @@ const Chat: React.FC = () => {
 }
 
 const ChatWrapper: React.FC = () => {
-	return <FileExplorerProvider>
-		<ConversationProvider>
-			<Chat />
-		</ConversationProvider>
-	</FileExplorerProvider>
+	return <ConversationProvider>
+		<Chat />
+	</ConversationProvider>
 }
 
 export default ChatWrapper
