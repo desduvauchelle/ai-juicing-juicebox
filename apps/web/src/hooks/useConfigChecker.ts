@@ -41,7 +41,8 @@ export const useConfigChecker = ({ config }: UseConfigCheckerProps = {}) => {
 
 		setIsCheckingRunning(true)
 		try {
-			const response = await fetch(config.url)
+			const url = config.url?.replace("/api", "")
+			const response = await fetch(url)
 			setIsRunning(response.ok)
 			setLastRunningCheck(new Date())
 		} catch {

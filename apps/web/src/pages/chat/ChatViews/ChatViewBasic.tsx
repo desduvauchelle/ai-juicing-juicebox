@@ -18,6 +18,7 @@ const ChatViewBasic: React.FC = () => {
 	const globalAi = useGlobalAi()
 	const [isTyping, setIsTyping] = useState(false)
 	const isTypingRef = React.useRef(false)
+	const chatInputRef = React.useRef<HTMLTextAreaElement>(null)
 
 	const [incomingMessage, setIncomingMessage] = useState<string | undefined>(undefined)
 	const initialMessageSent = React.useRef(false)
@@ -63,10 +64,18 @@ const ChatViewBasic: React.FC = () => {
 			return
 		}
 		try {
+
 			setIsTyping(true)
 			isTypingRef.current = true
 			setNewMessage('')
+			// Add small delay to ensure state updates complete
+			setTimeout(() => {
+				chatInputRef.current?.focus()
+			}, 0)
+
 			const response = await globalAi.actions.streamMessage({
+				aiService: conversationContext.selectedConfig,
+				modelName: conversation.modelName || '',
 				text: messageToSend,
 				chats: [
 					...chats,
@@ -77,6 +86,8 @@ const ChatViewBasic: React.FC = () => {
 			isTypingRef.current = false
 			setIsTyping(false)
 			setIncomingMessage(undefined)
+
+
 			// Add the assistant message to the chat
 			if (response) {
 				await conversationContext?.actions.chat.add({
@@ -117,24 +128,27 @@ const ChatViewBasic: React.FC = () => {
 			<div className="flex-1 overflow-y-auto space-y-1" ref={wrapperRef}>
 				<div className="h-8"></div>
 				{chats.map((chat) => {
-					return <div key={chat.id} className={`${chat.role === "user" ? "bg-base-200 bg-opacity-70" : ""}`}>
-						<ChatMessage chat={chat} maxWidth={maxWidth} />
-					</div>
+					return <ChatMessage
+						key={chat.id}
+						chat={chat}
+						maxWidth={maxWidth} />
 				})}
-				{incomingMessage && <div className={`bg-base-200 bg-opacity-70`}>
+				{(incomingMessage || isTyping) && <>
 					<ChatMessage
 						maxWidth={maxWidth}
 						chat={{
 							id: -1,
 							role: "assistant",
-							text: incomingMessage,
+							text: incomingMessage || "",
 							createdAt: Date.now(),
 							conversationId: conversation?.id || 0
 						}} />
-				</div>}
+				</>}
 				{!conversationContext.selectedConfig && <p className='text-red-500 text-center'>
 					No config
 				</p>}
+				<div className="h-12"></div>
+
 			</div>
 
 			<form onSubmit={handleSubmit} className="py-4 relative">
@@ -144,6 +158,7 @@ const ChatViewBasic: React.FC = () => {
 				<div className={`${maxWidth} flex gap-2`}>
 					<ChatInputBox
 						id="chat-input"
+						ref={chatInputRef}
 						autoFocus
 						disabled={isTyping}
 						maxRows={6}

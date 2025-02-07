@@ -13,7 +13,7 @@ const setActions = <T,>(actions: T) => {
 }
 
 
-interface IMainContext {
+export interface IMainContext {
 	userSettings: MainContextUserSettings | undefined
 	folders: IFileExplorerFolder[]
 	aiServices: IAIService[],

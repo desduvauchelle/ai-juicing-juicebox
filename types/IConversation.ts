@@ -16,7 +16,8 @@ export interface IConversation {
 	name: string
 	folderId?: number
 	type: IConversationTypes
-	llmConfigId: number
+	aiServiceId: number
+	modelName?: string
 	instruction?: string
 	createdAt: number
 	updatedAt: number

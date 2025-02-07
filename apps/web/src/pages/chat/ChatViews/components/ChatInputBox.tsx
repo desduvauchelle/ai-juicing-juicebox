@@ -19,11 +19,16 @@ export const ChatInputBox = forwardRef<HTMLTextAreaElement, ChatInputBoxProps>((
 	...props
 }, ref) => {
 	const textareaRef = useRef<HTMLTextAreaElement | null>(null)
-	const combinedRef = (node: HTMLTextAreaElement) => {
-		textareaRef.current = node
-		if (typeof ref === 'function') ref(node)
-		else if (ref && 'current' in ref) (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = node
-	}
+
+	// Simplify ref handling
+	useEffect(() => {
+		if (!textareaRef.current) return
+		if (typeof ref === 'function') {
+			ref(textareaRef.current)
+		} else if (ref) {
+			ref.current = textareaRef.current
+		}
+	}, [ref])
 
 	const adjustHeight = () => {
 		const textarea = textareaRef.current
@@ -69,7 +74,7 @@ export const ChatInputBox = forwardRef<HTMLTextAreaElement, ChatInputBoxProps>((
 	}
 
 	return <textarea
-		ref={combinedRef}
+		ref={textareaRef}
 		value={value}
 		onChange={handleTextareaChange}
 		disabled={isDisabled || isLoading}

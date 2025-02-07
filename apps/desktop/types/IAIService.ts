@@ -1,12 +1,14 @@
-
-
 export const services = [
 	"Ollama",
 	"OpenAI",
 	"Anthropic",
 	"Google",
 	"DeepSeek",
-	"Mistral"
+	"Mistral",
+	"xAI",
+	"Groq",
+	"Replicate",
+	"OpenAI Compatible"
 ] as const
 export type AiService = typeof services[number]
 
@@ -17,9 +19,11 @@ export interface IAIService {
 	url: string
 	apiKey?: string
 	isDefault?: boolean
-	models?: string[]
+	models?: Array<{
+		name: string
+		isDefault?: boolean
+	}>
 }
-
 
 export type OllamaModel = {
 	model: string,

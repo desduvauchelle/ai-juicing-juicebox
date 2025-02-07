@@ -2,17 +2,16 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { IConversation, IConversationChat } from "../../../../types/IConversation"
 import ConversationService from "../services/ConversationService"
 import ChatService from "../services/ChatService"
-import { IAIService } from "../../../../types/IAIService"
 import LlmConfigService from "../services/AiServiceService"
 import { UseConfigChecker, useConfigChecker } from "../hooks/useConfigChecker"
 import { useMainContext } from "./MainContext"
 import useGlobalAi from "../hooks/useGlobalAi"
+import { IAIService } from "../../types/IAIService"
 
 
 interface ConversationContextProps {
 	conversation?: IConversation | null,
 	chats: IConversationChat[],
-	configs: IAIService[],
 	selectedConfig?: IAIService,
 	isLoading: boolean,
 	configChecker: UseConfigChecker,
@@ -58,7 +57,7 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 
 	useEffect(() => {
 		const fetchConfig = async () => {
-			if (!conversation?.llmConfigId) return
+			if (!conversation?.aiServiceId) return
 			const allConfigs = await LlmConfigService.getAllConfigs()
 			if (!allConfigs) return
 			setConfigs(allConfigs)
@@ -67,9 +66,9 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 	}, [conversation])
 
 	const selectedConfig = useMemo(() => {
-		if (!conversation?.llmConfigId) return undefined
-		return configs.find(c => c.id === conversation.llmConfigId)
-	}, [configs, conversation?.llmConfigId])
+		if (!conversation?.aiServiceId) return undefined
+		return configs.find(c => c.id === conversation.aiServiceId)
+	}, [configs, conversation?.aiServiceId])
 	const configChecker = useConfigChecker({ config: selectedConfig })
 
 
@@ -94,15 +93,23 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 		if (conversation?.aiGeneratedTitle) return
 		if (chats.length < 2) return
 
-		if (!conversation?.llmConfigId) return
+		if (!conversation?.aiServiceId) return
 		if (!selectedConfig) return
+		if (!conversation.modelName) return
 		const generateTitle = async () => {
-
 			if (isGeneratingTitleRef.current) return
 			isGeneratingTitleRef.current = true
+			if (!conversation.modelName) return
 			const titleResponse = await globalAi.actions.streamMessage({
+				aiService: selectedConfig,
+				modelName: conversation.modelName,
 				chats: [
-					{ role: "system", text: "You are an expert at finding titles for conversations", id: 0, conversationId: conversation.id, createdAt: Date.now() },
+					{
+						role: "system", text: "You are an expert at finding titles for conversations",
+						id: 0,
+						createdAt: 0,
+						conversationId: 0
+					},
 					{ role: "user", text: `I need a title for this conversation, it needs to concise and descriptive. <chats>${chats.map(c => { return `<chat><from>${c.role}</from><messages>${c.text}</message></chat>` })}</chats>  Just give me the title and nothing else. No quotes, no mention of "Title", just the title. Be strict with yourself.`, id: 1, conversationId: conversation.id, createdAt: Date.now() },
 				]
 			})
@@ -169,7 +176,6 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 		conversation,
 		chats,
 		isLoading,
-		configs,
 		selectedConfig,
 		configChecker,
 		actions: {

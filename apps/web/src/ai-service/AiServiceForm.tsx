@@ -8,6 +8,7 @@ import { fetchOllamaModels } from '../tools/fetchOllamaModels'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRefresh } from '@fortawesome/free-solid-svg-icons'
 import { InlineAlert } from '../components/InlineAlert'
+import Radio from '../components/Radio'
 
 interface AiServiceFormProps {
 	initialValues?: IAIService
@@ -35,6 +36,16 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 
 	const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value })
+	}
+
+	const handleModelDefaultChange = (modelName: string) => {
+		setFormData(prev => ({
+			...prev,
+			models: prev.models?.map(model => ({
+				...model,
+				isDefault: model.name === modelName
+			}))
+		}))
 	}
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -75,12 +86,20 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 				return
 			}
 
-			const modelNames = result.models.map(m => m.name)
+			const modelList = result.models.map(m => ({
+				name: m.name,
+				isDefault: false
+			}))
+			// Set first model as default if no default is set
+			if (modelList.length > 0) {
+				modelList[0].isDefault = true
+			}
+
 			setFormData(prev => ({
 				...prev,
-				models: modelNames
+				models: modelList
 			}))
-			setTestSuccess(`Successfully loaded ${modelNames.length} models`)
+			setTestSuccess(`Successfully loaded ${modelList.length} models`)
 		} catch (error) {
 			setTestError(error instanceof Error ? error.message : 'Failed to test connection')
 		} finally {
@@ -142,11 +161,24 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 						{testSuccess && <InlineAlert type="success">{testSuccess}</InlineAlert>}
 
 						{formData.models && formData.models.length > 0 && (
-							<div className="flex flex-wrap gap-2">
+							<ul className="space-y-2 max-h-60 overflow-y-auto">
 								{formData.models.map(model => (
-									<span key={model} className="badge badge-primary">{model}</span>
+									<li key={model.name}>
+										<button
+											type="button"
+											onClick={() => handleModelDefaultChange(model.name)}
+											className="w-full flex items-center gap-2 p-2 hover:bg-base-200 rounded-lg">
+											<Radio
+												name="default-model"
+												checked={!!model.isDefault}
+												readOnly
+												value={model.name}
+												label={''} />
+											<span className="flex-grow text-left">{model.name}</span>
+										</button>
+									</li>
 								))}
-							</div>
+							</ul>
 						)}
 					</div>
 				</>
