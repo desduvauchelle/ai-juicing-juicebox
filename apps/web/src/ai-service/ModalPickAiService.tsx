@@ -1,6 +1,7 @@
 import React, { useLayoutEffect } from 'react'
 import { useMainContext } from '../context/MainContext'
 import { IAIService } from '../../types/IAIService'
+import modelsList from '../data/modelList'
 
 interface ModalPickAiServiceProps {
 	isOpen: boolean
@@ -31,6 +32,10 @@ export const ModalPickAiService: React.FC<ModalPickAiServiceProps> = ({ isOpen, 
 			return acc
 		}, {} as Record<string, IAIService[]>)
 		: null
+
+	const getModelsForService = (serviceName: string) => {
+		return modelsList.filter(model => model.service === serviceName)
+	}
 
 	return (
 		<dialog id="modal-pick-ai" className="modal ">
@@ -75,16 +80,27 @@ export const ModalPickAiService: React.FC<ModalPickAiServiceProps> = ({ isOpen, 
 														)}
 													</>
 												) : (
-													<a onClick={() => {
-														onSelect(config)
-														const modal = document.getElementById("modal-pick-ai") as HTMLDialogElement
-														modal?.close()
-													}}>
-														{config.name}
-														{config.isDefault && (
-															<span className="badge badge-sm badge-primary ml-2">Default</span>
-														)}
-													</a>
+													<>
+														<h3 className="menu-title">{config.name}</h3>
+														<ul>
+															{getModelsForService(config.service).map(model => (
+																<li key={model.name}>
+																	<a onClick={() => {
+																		onSelect(config, model.name)
+																		const modal = document.getElementById("modal-pick-ai") as HTMLDialogElement
+																		modal?.close()
+																	}}>
+																		{model.name}
+																		<div className="text-xs opacity-70">
+																			{model.features.isMultiModal && "MultiModal • "}
+																			{model.features.hasStructuredData && "Structured • "}
+																			{model.features.hasToolUse && "Tools"}
+																		</div>
+																	</a>
+																</li>
+															))}
+														</ul>
+													</>
 												)}
 											</li>
 										))}
@@ -107,7 +123,11 @@ export const ModalPickAiService: React.FC<ModalPickAiServiceProps> = ({ isOpen, 
 				)}
 			</div>
 			<form method="dialog" className="modal-backdrop">
-				<button>close</button>
+				<button onClick={() => {
+					const modal = document.getElementById("modal-pick-ai") as HTMLDialogElement
+					modal?.close()
+					onCancel()
+				}}>close</button>
 			</form>
 		</dialog>
 	)

@@ -29,5 +29,7 @@ export const bridgeApi: ElectronAPI = {
 
 	ollamaModelRemote: async (): Promise<OllamaRemoteModel[]> => {
 		return electron?.ollamaModelRemote() ?? []
-	}
+	},
+
+
 }

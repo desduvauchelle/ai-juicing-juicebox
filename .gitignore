@@ -25,3 +25,5 @@ dist-ssr
 
 out/
 .yarn/
+apps/desktop/src/dist-web/**
+apps/desktop/src/dist-web/index.html

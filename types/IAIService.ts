@@ -16,7 +16,7 @@ export interface IAIService {
 	id: number
 	name: string
 	service: AiService
-	url: string
+	url?: string
 	apiKey?: string
 	isDefault?: boolean
 	models?: Array<{

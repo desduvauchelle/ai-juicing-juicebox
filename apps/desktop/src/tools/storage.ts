@@ -12,7 +12,7 @@ class Storage {
 	private getFilePath(fileName: string): string {
 		// Ensure the filename has .json extension
 		const fullPath = path.join(app.getPath('userData'), fileName)
-		console.log('Storage path =======>', fullPath)
+		// console.log('Storage path =======>', fullPath)
 		return fullPath
 	}
 

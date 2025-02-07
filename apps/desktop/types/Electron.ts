@@ -1,4 +1,7 @@
-import { UserSettings } from './UserSettings'
+import { IAIService } from './IAIService'
+import { IConversationChat } from './IConversation'
+import { IpcRenderer } from 'electron'
+
 export interface SystemInfo {
 	os: {
 		platform: string
@@ -33,6 +36,28 @@ export interface OllamaRemoteModel {
 	tags: string[]
 }
 
+export type IpcAiHandlers = {
+	'ai-text': {
+		args: {
+			aiService: IAIService
+			messages: IConversationChat[]
+			modelName: string
+			controllerId: string
+		}
+		return: string
+	}
+	'ai-abort': {
+		args: string
+		return: void
+	}
+}
+
+export type StreamChunkData = {
+	textPart: string
+	controllerId: string
+}
+
+
 export interface ElectronAPI {
 	ollamaInstallCheck: () => Promise<boolean>
 	ollamaServerToggle: (start: boolean) => Promise<boolean>
@@ -41,7 +66,6 @@ export interface ElectronAPI {
 	systemInfoGet: () => Promise<SystemInfo>
 	ollamaModelRemote: () => Promise<OllamaRemoteModel[]>
 }
-
 
 declare global {
 	interface Window {
