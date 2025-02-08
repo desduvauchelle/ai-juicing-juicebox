@@ -35,7 +35,7 @@ jobs:
         run: |
           yarn make --arch=${{ matrix.arch }} --verbose
       - name: List built artifacts
-        run: find out/make -type f || true
+        run: find /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make -type f || true
       - name: Create Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
