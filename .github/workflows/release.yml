@@ -39,7 +39,13 @@ jobs:
           yarn make --arch=${{ matrix.arch }} --verbose
 
       - name: List built artifacts
-        run: find /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make -type f || true
+        shell: bash
+        run: |
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            dir "D:\a\ai-juicing-juicebox\ai-juicing-juicebox\apps\desktop\out\make" /s /b || echo "No Windows artifacts found"
+          else
+            ls -R "${{ github.workspace }}/apps/desktop/out/make" || echo "No macOS artifacts found"
+          fi
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
