@@ -72,4 +72,4 @@ jobs:
           draft: false
           prerelease: false
           files: |
-           /apps/desktop/out/make/**.dmg
+           /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make/**.dmg
