@@ -1,7 +1,7 @@
 {
   "name": "desktop",
   "productName": "AI Juicing Juicebox",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "AI interactions Open source",
   "main": ".webpack/main",
   "scripts": {

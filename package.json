@@ -1,6 +1,6 @@
 {
   "name": "ai-juicing-juicebox",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "main": "dist/main.js",
   "license": "MIT",
   "private": true,
