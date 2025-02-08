@@ -51,6 +51,6 @@ jobs:
           prerelease: false
           files: |
            /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make/**.dmg
-           D:\a\ai-juicing-juicebox\ai-juicing-juicebox\apps\desktop\out\make\**.exe
+           D:/a/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make/**.exe
            /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make/**.deb
            /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make/**.rpm

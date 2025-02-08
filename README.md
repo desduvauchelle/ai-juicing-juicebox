@@ -59,17 +59,17 @@ Community contributions are welcome, especially in testing and packaging. Contri
 
 ## Todo
 
+- [ ] Add Tag release packager to download
 - [ ] Onboarding revamp
 - [ ] Add Ollama server installation
-- [x] Add any AI services to use
 - [ ] Finish the Canvas interface
-- [ ] Add a web search
 - [ ] Add a web scrapping
 - [ ] Add a document to answer
+- [ ] Add a web search
 - [ ] Add an auto-updater
 - [ ] Set up and connect remote server
 - [x] Theme manager
-- [ ] Add Tag release packager to download
+- [x] Add any AI services to use
 
 ## Wishlist
 
