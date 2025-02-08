@@ -38,23 +38,23 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Get Signing Certificate
-        run: |
-          echo "${{ secrets.CODE_SIGN_P12_BASE64 }}" | base64 --decode > certificate.p12
+    #   - name: Get Signing Certificate
+    #     run: |
+    #       echo "${{ secrets.CODE_SIGN_P12_BASE64 }}" | base64 --decode > certificate.p12
 
-      - name: Import Certificate
-        uses: apple-actions/import-codesign-certs@v2
-        with:
-          p12-file-base64: ${{ secrets.CODE_SIGN_P12_BASE64 }}
-          p12-password: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
+    #   - name: Import Certificate
+    #     uses: apple-actions/import-codesign-certs@v2
+    #     with:
+    #       p12-file-base64: ${{ secrets.CODE_SIGN_P12_BASE64 }}
+    #       p12-password: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
 
       - name: Build and Make
-        env:
-          CSC_LINK: certificate.p12
-          CSC_KEY_PASSWORD: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          DEVELOPER_ID: ${{ secrets.DEVELOPER_ID }}
+        # env:
+        #   CSC_LINK: certificate.p12
+        #   CSC_KEY_PASSWORD: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
+        #   APPLE_ID: ${{ secrets.APPLE_ID }}
+        #   APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        #   DEVELOPER_ID: ${{ secrets.DEVELOPER_ID }}
         run: |
           yarn make --verbose
 
@@ -72,4 +72,4 @@ jobs:
           draft: false
           prerelease: false
           files: |
-           /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make/**.dmg
+           /apps/desktop/out/make/**.dmg
