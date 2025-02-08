@@ -19,8 +19,23 @@ NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${VERSION_PARTS[2]}"
 # Update package.json with new version
 jq --arg new_version "$NEW_VERSION" '.version = $new_version' package.json > package.tmp.json && mv package.tmp.json package.json
 
+# Get version from root package.json
+version=$(jq -r '.version' package.json)
+echo "Root version: $version"
+
+# Update versions in workspace package.json files
+for dir in "apps/desktop" "apps/web"; do
+  pkg="$dir/package.json"
+  if [ -f "$pkg" ]; then
+    echo "Updating $pkg..."
+    jq --arg ver "$version" '.version = $ver' "$pkg" > "$pkg.tmp" && mv "$pkg.tmp" "$pkg"
+  else
+    echo "$pkg not found!"
+  fi
+done
+
 # Commit the change
-git add package.json
+git add .
 git commit -m "Bump version to $NEW_VERSION"
 
 # Create and push tag

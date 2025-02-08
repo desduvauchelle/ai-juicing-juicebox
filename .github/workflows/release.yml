@@ -10,8 +10,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest] # , windows-latest, ubuntu-latest
-        arch: [ arm64] # x64,
+        os: [windows-latest] # macos-latest, windows-latest, ubuntu-latest
+        arch: [x64] # x64,arm64
         exclude:
           # Windows and Linux don't need arm64 builds
           - os: windows-latest
@@ -51,3 +51,6 @@ jobs:
           prerelease: false
           files: |
            /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make/**.dmg
+           /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make/**.exe
+           /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make/**.deb
+           /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make/**.rpm
