@@ -44,7 +44,4 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            out/make/**/*.dmg
-            out/make/**/*.exe
-            out/make/**/*.deb
-            out/make/**/*.rpm
+           /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make/**.dmg
