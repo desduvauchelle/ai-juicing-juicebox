@@ -42,7 +42,7 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ runner.os }}" == "Windows" ]]; then
-            dir "D:\a\ai-juicing-juicebox\ai-juicing-juicebox\apps\desktop\out\make" /s /b || echo "No Windows artifacts found"
+            cmd.exe /c "dir D:\a\ai-juicing-juicebox\ai-juicing-juicebox\apps\desktop\out\make /s /b" || echo "No Windows artifacts found"
           else
             ls -R "${{ github.workspace }}/apps/desktop/out/make" || echo "No macOS artifacts found"
           fi
