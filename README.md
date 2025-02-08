@@ -61,7 +61,7 @@ Community contributions are welcome, especially in testing and packaging. Contri
 
 - [ ] Onboarding revamp
 - [ ] Add Ollama server installation
-- [ ] Add any AI services to use
+- [x] Add any AI services to use
 - [ ] Finish the Canvas interface
 - [ ] Add a web search
 - [ ] Add a web scrapping
@@ -69,7 +69,34 @@ Community contributions are welcome, especially in testing and packaging. Contri
 - [ ] Add an auto-updater
 - [ ] Set up and connect remote server
 - [x] Theme manager
+- [ ] Add Tag release packager to download
 
 ## Wishlist
 
 - [ ] Add a way to generate images (ideally locally, but remote also an option)
+
+## Releases
+
+Releases are done by the Github action `.github/workflows/release.yml` and are automatically uploaded to the releases page.
+
+For the action to trigger, you need to create a new tag with the version number. The action will then build the app and upload it to the releases page.
+
+I've created a script to help with the release process. You can run the following command to create a new release:
+
+```bash
+./tag-release.sh
+```
+
+This will:
+
+- get the version from the root package.json
+- bump the minor version
+- update workspace apps to that version as well
+- add the changes (and any pending changes)
+- commit the changes
+- create a tag with the version
+- push the changes and the tag
+
+All you have to do after is wait. The action will build the app and upload it to the releases page.
+
+**Note**: This script requires write permission, I've set in the release.yml flow, but you might also need to go your repo, settings, actions, and provide the permission.
