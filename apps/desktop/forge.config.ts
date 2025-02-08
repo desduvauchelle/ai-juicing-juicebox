@@ -20,7 +20,7 @@ const htmlPath = isDev ? '../web/index.html' : './src/dist-web/index.html'
 const config: ForgeConfig = {
 	packagerConfig: {
 		asar: true,
-		name: process.platform === 'linux' ? 'juicebox-ai' : 'juicebox-ai',
+		name: process.platform === 'linux' ? 'juicebox-ai' : 'Juicebox AI',
 		executableName: process.platform === 'linux' ? 'juicebox-ai' : 'juicebox-ai',
 		icon: path.join(process.cwd(), 'public', 'icons', 'icon'), // Ensure this path is correct
 		extraResource: ['./src/dist-web', './public']  // Update path to match source location
@@ -44,7 +44,7 @@ const config: ForgeConfig = {
 				config: rendererConfig,
 				entryPoints: [
 					{
-						html: htmlPath,
+						html: "../web/index.html", // htmlPath,
 						js: './src/renderer.ts',
 						name: 'main_window',
 						preload: {
@@ -58,6 +58,8 @@ const config: ForgeConfig = {
 		// at package time, before code signing the application
 		new FusesPlugin({
 			version: FuseVersion.V1,
+			// https://github.com/electron/fuses?tab=readme-ov-file#apple-silicon
+			resetAdHocDarwinSignature: true,
 			[FuseV1Options.RunAsNode]: false,
 			[FuseV1Options.EnableCookieEncryption]: true,
 			[FuseV1Options.EnableNodeOptionsEnvironmentVariable]: false,

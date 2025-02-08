@@ -100,3 +100,11 @@ This will:
 All you have to do after is wait. The action will build the app and upload it to the releases page.
 
 **Note**: This script requires write permission, I've set in the release.yml flow, but you might also need to go your repo, settings, actions, and provide the permission.
+
+**For macOs**: Apple being annoying, you probably will need to run this command in your terminal to open the app. It's not signed yet, so you need to allow it in the security settings.
+
+```bash
+xattr -r -d com.apple.quarantine /Applications/Juicebox\ AI.app
+-- or --
+codesign --force --deep --sign - /Applications/Juicebox\ AI.app
+```
