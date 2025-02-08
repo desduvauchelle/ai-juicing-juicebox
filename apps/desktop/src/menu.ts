@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, MenuItem, MenuItemConstructorOptions, shell } from 'electron'
+import { app, BrowserWindow, dialog, Menu, MenuItem, MenuItemConstructorOptions, shell } from 'electron'
 
 function createMenu(mainWindow: BrowserWindow) {
 	const isMac = process.platform === 'darwin'
@@ -9,7 +9,15 @@ function createMenu(mainWindow: BrowserWindow) {
 		template.push({
 			label: app.name,
 			submenu: [
-				{ role: 'about' },
+				// { role: 'about' },
+				{
+					label: `About ${app.name}`,
+					click: () =>
+						dialog.showMessageBox({
+							title: app.name,
+							message: `${app.name} Version v${app.getVersion()}\n\nCopyright © 2024 Jan`,
+						}),
+				},
 				{ type: 'separator' },
 				// {
 				// 	label: 'Check for Updates...',
@@ -36,7 +44,8 @@ function createMenu(mainWindow: BrowserWindow) {
 			// 	label: 'Return Home',
 			// 	accelerator: 'CmdOrCtrl+H',
 			// 	click: () => {
-			// 		mainWindow.webContents.send('navigate-home')
+			// 		// Close this window and open the home window
+
 			// 	}
 			// },
 			// {

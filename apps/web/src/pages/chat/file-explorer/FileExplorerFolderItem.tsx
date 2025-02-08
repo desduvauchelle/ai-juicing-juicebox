@@ -1,11 +1,13 @@
 
-import { faFolderOpen, faFolder, faTrash, faTimes } from "@fortawesome/free-solid-svg-icons"
+import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useRef, useEffect, useMemo } from "react"
 import { useDrag, useDrop } from "react-dnd"
 import FileExplorerConversationItem from "./FileExplorerConversationItem"
 import { IFileExplorerFolder } from "../../../../types/IFolder"
 import { useMainContext } from "../../../context/MainContext"
+
+import { IconFolder, IconFolderMinus } from "../../../svg/SvgIcons"
 
 export interface FileExplorerItemProps {
 	folder: IFileExplorerFolder
@@ -94,8 +96,9 @@ const FileExplorerFolderItem: React.FC<FileExplorerItemProps> = ({
 			<button
 				aria-label='Toggle item'
 				onClick={() => mainContext.actions.folders.toggle({ folderId: folder.id, isOpen: !folder.isOpen })}
-				className="mr-2 text-yellow-600">
-				<FontAwesomeIcon icon={folder.isOpen ? faFolderOpen : faFolder} />
+				className=" text-yellow-600">
+				{!folder.isOpen && <IconFolder color="orange" className="h-4" />}
+				{folder.isOpen && <IconFolderMinus color="orange" className="h-4" />}
 			</button>
 
 			{isRenaming && <form onSubmit={(e) => {

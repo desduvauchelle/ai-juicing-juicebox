@@ -1,9 +1,30 @@
 import { BrowserWindow, screen } from 'electron'
-import { UserSettingsService } from '../services/UserSettingsService'
+import Store from 'electron-store'
+
+type windowSize = {
+	x?: number
+	y?: number
+	width?: number
+	height?: number
+}
+
+interface StoreSchema {
+	windowSize?: windowSize
+}
+
+// Using type assertion to ensure TypeScript recognizes the methods
+const storage = new Store<StoreSchema>({
+	defaults: {
+		windowSize: undefined
+	}
+}) as Store<StoreSchema> & {
+	get(key: keyof StoreSchema): StoreSchema[keyof StoreSchema]
+	set<K extends keyof StoreSchema>(key: K, value: StoreSchema[K]): void
+}
 
 const DEFAULT_WINDOW_SIZE = {
 	width: 1000,
-	height: 600
+	height: 800
 }
 
 export async function saveWindowState(window: BrowserWindow): Promise<void> {
@@ -11,13 +32,11 @@ export async function saveWindowState(window: BrowserWindow): Promise<void> {
 
 	try {
 		const bounds = window.getBounds()
-		await UserSettingsService.save({
-			windowSize: {
-				x: bounds.x,
-				y: bounds.y,
-				width: bounds.width,
-				height: bounds.height
-			}
+		storage.set('windowSize', {
+			x: bounds.x,
+			y: bounds.y,
+			width: bounds.width,
+			height: bounds.height
 		})
 	} catch (error) {
 		console.error('Failed to save window state:', error)
@@ -27,8 +46,7 @@ export async function saveWindowState(window: BrowserWindow): Promise<void> {
 
 export async function loadWindowState(window: BrowserWindow): Promise<void> {
 	try {
-		const settings = await UserSettingsService.get()
-		const windowSize = settings.windowSize
+		const windowSize = storage.get('windowSize') as windowSize | undefined
 
 		// Handle undefined windowSize or missing required properties
 		if (!windowSize?.x || !windowSize?.y || !windowSize?.width || !windowSize?.height) {

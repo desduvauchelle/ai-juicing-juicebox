@@ -4,7 +4,8 @@ import { createMenu } from './menu'
 import { registerIpcHandlers } from './ipc/registerIpc'
 import { loadWindowState, saveWindowState } from './window-tools/windowResize'
 // import createServer from './server/createServer'
-
+import Store from 'electron-store'
+Store.initRenderer()
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string

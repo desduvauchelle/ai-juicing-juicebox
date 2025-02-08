@@ -5,6 +5,8 @@ import ChatMessage from './components/ChatMessage'
 import { ChatInputBox } from './components/ChatInputBox'
 import useGlobalAi from '../../../hooks/useGlobalAi'
 
+
+
 const ChatViewCanvas: React.FC = () => {
 	const conversationContext = useConversation()
 	const conversation = conversationContext?.conversation
@@ -156,12 +158,12 @@ const ChatViewCanvas: React.FC = () => {
 			</div>
 
 			{/* Right side - Canvas */}
-			<div className="flex-1 h-full rounded-r-6xl">
+			<div className="flex-1 h-full rounded-r-6xl border-l border-base-100">
 				<textarea
 					value={canvasText}
 					onChange={(e) => setCanvasText(e.target.value)}
 					onSelect={handleCanvasSelection}
-					className="w-full h-full resize-none p-4 pt-12"
+					className="w-full h-full resize-none p-4 pt-12 focus:outline-none border-0"
 					placeholder="Enter or paste your text here..."
 				/>
 			</div>

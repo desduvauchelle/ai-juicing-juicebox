@@ -7,6 +7,7 @@ import { IConversation } from "../../../../../../types/IConversation"
 import { formatDistanceToNow } from 'date-fns'
 import { useNavigate } from "react-router-dom"
 import { useMainContext } from "../../../context/MainContext"
+import { IconChat } from "../../../svg/SvgIcons"
 
 export interface FileExplorerItemProps {
 	item: IConversation
@@ -76,7 +77,6 @@ const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 	return <li
 		ref={(node) => drag(drop(node))}>
 		<a
-
 			href={`#chat/${item.id}`}
 			className={`relative flex items-center py-1 hover:bg-slate-100/5 cursor-pointer group
 			${isActive ? 'bg-primary/30' : ''}
@@ -84,8 +84,8 @@ const FileExplorerConversationItem: React.FC<FileExplorerItemProps> = ({
 			style={{ paddingLeft: `${paddingLeft}px` }}>
 			<div className="flex items-center flex-1 py-1">
 				<span
-					className="mr-2 text-blue-600">
-					<FontAwesomeIcon icon={faComment} />
+					className="mr-2 ">
+					<IconChat color="white" className="h-4" />
 				</span>
 
 				{isRenaming && <form onSubmit={(e) => {

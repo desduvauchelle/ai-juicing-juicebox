@@ -150,7 +150,7 @@ const Welcome: React.FC = () => {
 					<LogoImage className='h-16' />
 					<LogoText />
 				</div>
-				<div className="flex-1">
+				<div className="flex-1 overflow-y-auto">
 					{step === 1 && <StepIntro {...props} />}
 					{step === 2 && <StepOllama {...props} />}
 					{step === 3 && <StepAiService {...props} />}
