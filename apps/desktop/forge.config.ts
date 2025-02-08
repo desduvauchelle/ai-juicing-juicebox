@@ -29,34 +29,11 @@ const config: ForgeConfig = {
 	makers: [
 		new MakerSquirrel({}),
 		new MakerZIP({}, ['darwin']),
-		new MakerRpm({
-			options: {
-				name: 'juicebox-ai'
-			}
-		}),
-		new MakerDeb({
-			options: {
-				name: 'juicebox-ai'
-			}
-		}),
+		new MakerRpm({}),
+		new MakerDeb({}),
 		new MakerDMG({
 			format: 'ULFO',
-			icon: path.join(process.cwd(), 'public', 'icons', 'icon.icns'),
-			// background: path.join(process.cwd(), 'public', 'icons', 'dmg-background.png'),
-			contents: [
-				{
-					x: 130,
-					y: 220,
-					type: 'file',
-					path: `./out/Juicebox AI-darwin-${process.env.ELECTRON_ARCH || 'x64'}/Juicebox AI.app`
-				},
-				{
-					x: 410,
-					y: 220,
-					type: 'link',
-					path: '/Applications'
-				}
-			]
+			icon: path.join(process.cwd(), 'public', 'icons', 'icon.icns')
 		})
 	],
 	plugins: [

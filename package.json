@@ -1,49 +1,49 @@
 {
-  "name": "ai-juicing-juicebox",
-  "version": "1.0.5",
-  "main": "index.js",
-  "license": "MIT",
-  "private": true,
-  "description": "A local AI juicing application",
-  "author": "Denis Duvauchelle <desduvauchelle@gmail.com>",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "installConfig": {
-    "hoistingLimits": {
-      "desktop": [
-        "electron",
-        "electron/**"
-      ]
-    }
-  },
-  "engines": {
-    "node": ">=20.0.0",
-    "npm": ">=10.0.0"
-  },
-  "scripts": {
-    "watch-copy": "node type-watcher.js",
-    "web:start": "yarn workspace web dev",
-    "web:build": "yarn workspace web dev build",
-    "web:typecheck": "yarn workspace web typecheck",
-    "desktop:start": "yarn workspace desktop start",
-    "desktop:package": "yarn workspace desktop package",
-    "desktop:make": "yarn workspace desktop make",
-    "desktop:publish": "yarn workspace desktop publish",
-    "desktop:typecheck": "yarn workspace desktop typecheck",
-    "start": "concurrently \"yarn watch-copy\" \"yarn web:start\" \"wait-on http://localhost:5173 && yarn desktop:start\"",
-    "package": "yarn web:build && yarn desktop:package",
-    "make": "yarn web:build && yarn desktop:make",
-    "publish": "yarn web:build && yarn desktop:publish",
-    "lint": "eslint .",
-    "test": "jest",
-    "typecheck": "yarn web:typecheck && yarn desktop:typecheck"
-  },
-  "devDependencies": {
-    "chokidar": "^4.0.3",
-    "concurrently": "^9.1.2",
-    "fs-extra": "^11.3.0",
-    "wait-on": "^8.0.2"
-  }
+	"name": "ai-juicing-juicebox",
+	"version": "1.0.5",
+	"main": "dist/main.js",
+	"license": "MIT",
+	"private": true,
+	"description": "A local AI juicing application",
+	"author": "Denis Duvauchelle <desduvauchelle@gmail.com>",
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"installConfig": {
+		"hoistingLimits": {
+			"desktop": [
+				"electron",
+				"electron/**"
+			]
+		}
+	},
+	"engines": {
+		"node": ">=20.0.0",
+		"npm": ">=10.0.0"
+	},
+	"scripts": {
+		"watch-copy": "node type-watcher.js",
+		"web:start": "yarn workspace web dev",
+		"web:build": "yarn workspace web dev build",
+		"web:typecheck": "yarn workspace web typecheck",
+		"desktop:start": "yarn workspace desktop start",
+		"desktop:package": "yarn workspace desktop package",
+		"desktop:make": "yarn workspace desktop make",
+		"desktop:publish": "yarn workspace desktop publish",
+		"desktop:typecheck": "yarn workspace desktop typecheck",
+		"start": "concurrently \"yarn watch-copy\" \"yarn web:start\" \"wait-on http://localhost:5173 && yarn desktop:start\"",
+		"package": "yarn web:build && yarn desktop:package",
+		"make": "yarn web:build && yarn desktop:make",
+		"publish": "yarn web:build && yarn desktop:publish",
+		"lint": "eslint .",
+		"test": "jest",
+		"typecheck": "yarn web:typecheck && yarn desktop:typecheck"
+	},
+	"devDependencies": {
+		"chokidar": "^4.0.3",
+		"concurrently": "^9.1.2",
+		"fs-extra": "^11.3.0",
+		"wait-on": "^8.0.2"
+	}
 }
