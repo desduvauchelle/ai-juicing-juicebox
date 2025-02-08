@@ -52,9 +52,7 @@ class AiServiceService {
 
 		const updatedConfigs = configs.map(config => ({
 			...config,
-			isDefault: config.service === targetConfig.service ?
-				config.id === id :
-				config.isDefault
+			isDefault: config.id === id
 		}))
 		await this.saveConfigs(updatedConfigs)
 	}

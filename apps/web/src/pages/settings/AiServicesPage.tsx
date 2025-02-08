@@ -15,18 +15,7 @@ const AiServicesPage: React.FC = () => {
 	const { aiServices: configs, actions } = useMainContext()
 	const [editingConfig, setEditingConfig] = useState<IAIService & { id: number } | null>(null)
 
-	const handleFormSubmit = async (config: IAIService) => {
-		if (editingConfig) {
-			await actions.aiServices.update({
-				configId: editingConfig.id,
-				updates: config
-			})
-		} else {
-			await actions.aiServices.create(config)
-		}
-		setEditingConfig(null)
-		hideModal(editingConfig ? EDIT_CONFIG_MODAL_ID : NEW_CONFIG_MODAL_ID)
-	}
+
 
 	const handleDelete = async (id: number) => {
 		await actions.aiServices.delete({ configId: id })
@@ -77,22 +66,22 @@ const AiServicesPage: React.FC = () => {
 										<FontAwesomeIcon icon={faTrash} />
 									</Button>
 									<div className="flex-grow"></div>
-									{serviceConfigs.length > 1 && (
-										<Radio
-											name="default-config"
-											label="Default"
-											theme={config.isDefault ? 'primary' : 'custom'}
-											isSmall
-											setTextToLeft
-											checked={!!config.isDefault}
-											onChange={(e) => {
-												if (e.target.checked) {
-													handleDefaultChange(config.id)
-												}
-											}}
-											value={config.id.toString()}
-										/>
-									)}
+
+									<Radio
+										name="default-config"
+										label="Default"
+										theme={config.isDefault ? 'primary' : 'custom'}
+										isSmall
+										setTextToLeft
+										checked={!!config.isDefault}
+										onChange={(e) => {
+											if (e.target.checked) {
+												handleDefaultChange(config.id)
+											}
+										}}
+										value={config.id.toString()}
+									/>
+
 								</div>
 							</li>
 						))}

@@ -6,7 +6,7 @@ import ChatMessage from './components/ChatMessage'
 import { ChatInputBox } from './components/ChatInputBox'
 import useGlobalAi from '../../../hooks/useGlobalAi'
 
-const maxWidth = 'max-w-3xl mx-auto'
+const maxWidth = 'max-w-3xl w-full mx-2 lg:mx-auto'
 
 const ChatViewBasic: React.FC = () => {
 	const location = useLocation()
