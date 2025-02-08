@@ -20,19 +20,25 @@ const htmlPath = isDev ? '../web/index.html' : './src/dist-web/index.html'
 const config: ForgeConfig = {
 	packagerConfig: {
 		asar: true,
-		name: 'Juicebox AI',
-		executableName: 'Juicebox AI',
+		name: process.platform === 'linux' ? 'juicebox-ai' : 'Juicebox AI',
+		executableName: process.platform === 'linux' ? 'juicebox-ai' : 'Juicebox AI',
 		icon: path.join(process.cwd(), 'public', 'icons', 'icon'), // Ensure this path is correct
-		// darwinArm64: {},
-		// darwinX64: {},
 		extraResource: ['./src/dist-web', './public']  // Update path to match source location
 	}, // bypass type checking for custom property
 	rebuildConfig: {},
 	makers: [
 		new MakerSquirrel({}),
 		new MakerZIP({}, ['darwin']),
-		new MakerRpm({}),
-		new MakerDeb({}),
+		new MakerRpm({
+			options: {
+				name: 'juicebox-ai'
+			}
+		}),
+		new MakerDeb({
+			options: {
+				name: 'juicebox-ai'
+			}
+		}),
 		new MakerDMG({
 			format: 'ULFO',
 			icon: path.join(process.cwd(), 'public', 'icons', 'icon.icns'),
