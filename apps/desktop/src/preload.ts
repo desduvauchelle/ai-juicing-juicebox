@@ -10,7 +10,8 @@ const electronAPI: ElectronAPI = {
 	ollamaModelDownload: (modelId: string) => ipcRenderer.invoke('ollama-model-download', modelId),
 	ollamaModelRemove: (modelId: string) => ipcRenderer.invoke('ollama-model-remove', modelId),
 	systemInfoGet: () => ipcRenderer.invoke('system-info-get'),
-	ollamaModelRemote: () => ipcRenderer.invoke('ollama-model-remote')
+	ollamaModelRemote: () => ipcRenderer.invoke('ollama-model-remote'),
+	goToUrl: (url: string) => ipcRenderer.send('go-to-url', url)
 }
 
 // Expose the API through contextBridge

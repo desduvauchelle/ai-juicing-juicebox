@@ -31,5 +31,8 @@ export const bridgeApi: ElectronAPI = {
 		return electron?.ollamaModelRemote() ?? []
 	},
 
-
+	goToUrl: (url: string): void => {
+		console.log('goToUrl', url, electron)
+		electron?.goToUrl(url)
+	}
 }

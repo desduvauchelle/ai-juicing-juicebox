@@ -2,9 +2,10 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { AnchorHTMLAttributes, ButtonHTMLAttributes, FC, ReactNode, useMemo } from "react"
 import { Link, LinkProps } from "react-router-dom"
+import { bridgeApi } from "../tools/bridgeApi"
 
 
-type ButtonThemes = "primary" | "secondary" | "danger" | "success" | "warning" | "info" | "dark" | "light" | "link" | "custom" | "ghost"
+type ButtonThemes = "primary" | "secondary" | "danger" | "success" | "warning" | "info" | "dark" | "light" | "link" | "custom" | "ghost" | "blank"
 
 
 
@@ -160,10 +161,14 @@ export const MyLink: FC<AnchorHTMLAttributes<HTMLAnchorElement> & { theme?: Butt
 			case "ghost":
 				themeClassName += " link-ghost"
 				break
+			case "blank":
+				themeClassName = ""
+				break
 			default:
 				themeClassName += ""
 				break
 		}
+
 		if (className) {
 			themeClassName += " " + className
 		}
@@ -180,6 +185,13 @@ export const MyLink: FC<AnchorHTMLAttributes<HTMLAnchorElement> & { theme?: Butt
 		...rest,
 		to: href || "#",
 		className: customClassName
+	}
+
+	if (window.electron && href?.startsWith("http")) {
+		attributes.onClick = (e) => {
+			e.preventDefault()
+			bridgeApi.goToUrl(href)
+		}
 	}
 
 	if (isLoading) {

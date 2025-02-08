@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, shell } from 'electron'
 import * as path from 'path'
 import { createMenu } from './menu'
 import { registerIpcHandlers } from './ipc/registerIpc'
@@ -55,9 +55,10 @@ const createWindow = (): void => {
 		mainWindow.loadFile(indexPath)
 	}
 
-	if (isDev) {
-		mainWindow.webContents.openDevTools()
-	}
+
+	// if (isDev) {
+	// 	mainWindow.webContents.openDevTools()
+	// }
 
 	createMenu(mainWindow)
 }
@@ -70,9 +71,7 @@ app.on('ready', async () => {
 	registerIpcHandlers()
 	// 	const usedPort = await createServer()
 	// 	console.log(`
-
 	// 		Polka server running on http://localhost:${usedPort}
-
 	// `)
 })
 

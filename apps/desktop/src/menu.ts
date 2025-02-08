@@ -33,6 +33,13 @@ function createMenu(mainWindow: BrowserWindow) {
 		label: 'File',
 		submenu: [
 			// {
+			// 	label: 'Return Home',
+			// 	accelerator: 'CmdOrCtrl+H',
+			// 	click: () => {
+			// 		mainWindow.webContents.send('navigate-home')
+			// 	}
+			// },
+			// {
 			// 	label: 'Open File...',
 			// 	click: () => {
 			// 		// Open file dialog

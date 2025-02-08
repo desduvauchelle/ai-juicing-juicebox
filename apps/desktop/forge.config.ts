@@ -23,7 +23,7 @@ const config: ForgeConfig = {
 		name: process.platform === 'linux' ? 'juicebox-ai' : 'Juicebox AI',
 		executableName: process.platform === 'linux' ? 'juicebox-ai' : 'juicebox-ai',
 		icon: path.join(process.cwd(), 'public', 'icons', 'icon'), // Ensure this path is correct
-		extraResource: ['./src/dist-web', './public']  // Update path to match source location
+		extraResource: ['./src/dist-web', './public'],  // Update path to match source location
 	}, // bypass type checking for custom property
 	rebuildConfig: {},
 	makers: [
@@ -44,7 +44,7 @@ const config: ForgeConfig = {
 				config: rendererConfig,
 				entryPoints: [
 					{
-						html: "../web/index.html", // htmlPath,
+						html: htmlPath, // htmlPath,
 						js: './src/renderer.ts',
 						name: 'main_window',
 						preload: {
