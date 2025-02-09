@@ -1,0 +1,20 @@
+{
+	"name": "server-web",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"build": "tsc",
+		"start": "node dist/server.js",
+		"dev": "nodemon src/server.ts"
+	},
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"@types/express": "^5.0.0",
+		"@types/node": "^22.13.1",
+		"express": "^4.21.2",
+		"nodemon": "^3.1.9",
+		"typescript": "^5.7.3"
+	}
+}

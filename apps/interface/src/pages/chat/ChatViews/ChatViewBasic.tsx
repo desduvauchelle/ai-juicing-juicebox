@@ -94,6 +94,14 @@ const ChatViewBasic: React.FC = () => {
 					role: "assistant",
 					text: response
 				})
+				setTimeout(() => {
+					// Scroll to the bottom of the chat smoothly
+					if (!wrapperRef.current) return
+					wrapperRef.current.scrollTo({
+						top: wrapperRef.current.scrollHeight,
+						behavior: 'smooth'
+					})
+				}, 20)
 			}
 		} catch (error) {
 			setIsTyping(false)

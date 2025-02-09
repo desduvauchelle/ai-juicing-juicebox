@@ -15,12 +15,6 @@ A collection of local AI tools to get things done. Chat is useful but not enough
 - Prompt sequences
 - And more
 
-## Getting Started
-
-To get started, you can either download the app from the releases page or you can clone this repository and run the app locally.
-
-[Download the app](https://github.com/desduvauchelle/ai-juicing-juicebox/releases)
-
 ## Why AI Juicebox?
 
 An extendable experimentation of using AI to accomplish tasks. From the chat interface that you probably already know, to document searching, web searching, co-authoring text, prompt sequences, and more. All this using local models, keeping the information private and secure on your computer.
@@ -29,6 +23,49 @@ I really hope that the future of AI is open source and private. This project is 
 
 This is an electron app that will either install and run Ollama on your computer or you can use a remote version of Ollama. It is installed like an application on your computer. You can check the console and network tab in the developer tools to see that is to no interaction with any server other than the AI one. Nothing is stored in the cloud either, all your chats are stored on the app storage (IndexedDB).
 
+## Getting Started
+
+You can install the app manually on your computer
+
+### NodeJS
+
+You need to have NodeJS installed on your computer. You can download it from [here](https://nodejs.org/).
+
+### Download
+
+You can clone this repository:
+
+```bash
+git clone https://github.com/desduvauchelle/ai-juicing-juicebox
+```
+
+### Install
+
+You can install the dependencies and run the app with the following commands:
+
+```bash
+cd ai-juicing-juicebox # Go to the project folder
+yarn install # Install the dependencies
+```
+
+This might take a minute, as it will download all the dependencies.
+
+### Run
+
+You can run the app with the following command:
+
+```bash
+yarn start
+```
+
+Or you can build the app with the following command:
+
+```bash
+yarn package
+```
+
+Then navigate to the `/apps/desktop/out` folder and find the app for your operating system (ie .exe for Windows, .dmg for macOS, .AppImage for Linux).
+
 ### Prerequisites
 
 We don't install Ollama for you yet. But you can add the Ollama server URL from your current computer or from a remote URL.
@@ -36,16 +73,6 @@ We don't install Ollama for you yet. But you can add the Ollama server URL from 
 ## Development status
 
 This project is in early development. It is not ready for production use. It is not ready for general use. It is not ready for any use. It is not ready for anything. It is not ready.
-
-## Self build
-
-To build the app yourself, you can clone the repository and run the following commands:
-
-```bash
-# Clone the repository
-yarn install
-yarn start
-```
 
 ## Built With
 
@@ -59,8 +86,8 @@ Community contributions are welcome, especially in testing and packaging. Contri
 
 ## Todo
 
+- [ ] Create a static website to easily host it
 - [ ] Add Tag release packager to download
-- [ ] Onboarding revamp
 - [ ] Add Ollama server installation
 - [ ] Finish the Canvas interface
 - [ ] Add a web scrapping
@@ -70,6 +97,7 @@ Community contributions are welcome, especially in testing and packaging. Contri
 - [ ] Set up and connect remote server
 - [x] Theme manager
 - [x] Add any AI services to use
+- [x] Onboarding revamp
 
 ## Wishlist
 

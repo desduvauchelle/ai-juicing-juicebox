@@ -35,7 +35,7 @@
 	@apply border-l-4 border-gray-300 pl-2 my-2;
 }
 .markdown pre {
-	@apply bg-gray-900 text-white p-2 my-2;
+	@apply bg-gray-900 text-white p-2 my-2 max-w-full overflow-x-auto;
 }
 .markdown code {
 	@apply  p-1 break-words overflow-x-scroll;

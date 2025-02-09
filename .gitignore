@@ -28,3 +28,5 @@ out/
 apps/desktop/src/dist-web/**
 apps/desktop/src/dist-web/index.html
 apps/desktop/src/dist-web/index.html
+apps/interface/dist-interface/
+apps/server-web/web/

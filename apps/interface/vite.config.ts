@@ -10,7 +10,7 @@ export default defineConfig({
 		tailwindcss()
 	],
 	build: {
-		outDir: '../desktop/src/dist-web',
+		outDir: './dist-interface',
 		emptyOutDir: true
 	}
 })
