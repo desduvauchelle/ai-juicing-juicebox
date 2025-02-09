@@ -1,0 +1,75 @@
+name: Build and Release macos app
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_call:
+    secrets:
+      CODE_SIGN_P12_BASE64:
+        description: 'Base64 encoded P12 certificate'
+        required: true
+      CODE_SIGN_P12_PASSWORD:
+        description: 'Password for the P12 certificate'
+        required: true
+      APPLE_ID:
+        description: 'Apple ID for notarization'
+        required: true
+      APPLE_APP_SPECIFIC_PASSWORD:
+        description: 'App-specific password for notarization'
+        required: true
+      DEVELOPER_ID:
+        description: 'Developer ID for signing'
+        required: true
+
+jobs:
+  release:
+    runs-on: macos-latest
+    permissions:
+      contents: write  # Grant write permission to contents
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: yarn install
+
+    #   - name: Get Signing Certificate
+    #     run: |
+    #       echo "${{ secrets.CODE_SIGN_P12_BASE64 }}" | base64 --decode > certificate.p12
+
+    #   - name: Import Certificate
+    #     uses: apple-actions/import-codesign-certs@v2
+    #     with:
+    #       p12-file-base64: ${{ secrets.CODE_SIGN_P12_BASE64 }}
+    #       p12-password: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
+
+      - name: Build and Make
+        # env:
+        #   CSC_LINK: certificate.p12
+        #   CSC_KEY_PASSWORD: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
+        #   APPLE_ID: ${{ secrets.APPLE_ID }}
+        #   APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        #   DEVELOPER_ID: ${{ secrets.DEVELOPER_ID }}
+        run: |
+          yarn make --verbose
+
+      - name: List built artifacts
+        shell: bash
+        run: |
+          ls -R "${{ github.workspace }}/apps/desktop/out/make" || echo "No macOS artifacts found"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          draft: false
+          prerelease: false
+          files: |
+           /Users/runner/work/ai-juicing-juicebox/ai-juicing-juicebox/apps/desktop/out/make/**.dmg
