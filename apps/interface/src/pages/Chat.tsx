@@ -1,6 +1,6 @@
 import { faChevronLeft, faChevronRight, faCog, faExclamation, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Button, { MyLink } from '../components/Button'
 import FileExplorer from './chat/file-explorer/FileExplorer'
@@ -31,6 +31,10 @@ const Chat: React.FC = () => {
 	// 		return
 	// 	}
 	// }, [params])
+
+	const isLocal = useMemo(() => {
+		return window.location.hostname === 'localhost'
+	}, [])
 
 
 	const toggleMenu = () => {
@@ -66,11 +70,11 @@ const Chat: React.FC = () => {
 						<FontAwesomeIcon icon={faCog} /> Settings
 					</MyLink>
 				</li>
-				<li>
+				{isLocal && <li>
 					<MyLink href="/welcome" theme="custom" className="">
 						<FontAwesomeIcon icon={faExclamation} /> Onboarding
 					</MyLink>
-				</li>
+				</li>}
 			</ul>
 		</div>
 		<div

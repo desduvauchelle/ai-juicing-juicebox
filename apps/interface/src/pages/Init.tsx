@@ -12,7 +12,6 @@ const Init: React.FC = () => {
 		if (isFetching.current) return
 		isFetching.current = true
 		const allConfigs = await LlmConfigService.getAllConfigs()
-		console.log(allConfigs)
 		setConfigs(allConfigs)
 	}, [])
 

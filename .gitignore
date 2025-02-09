@@ -28,3 +28,4 @@ out/
 apps/desktop/src/dist-interface/**
 apps/interface/dist-interface/**
 apps/server-web/dist-interface/**
+dist-interface-github/**

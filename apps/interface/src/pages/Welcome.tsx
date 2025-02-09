@@ -2,16 +2,20 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { bridgeApi } from '../tools/bridgeApi'
-import Logo, { LogoImage, LogoText } from '../components/Logo'
+import { LogoImage, LogoText } from '../components/Logo'
 import { InlineAlert } from '../components/InlineAlert'
 import AiServiceForm from '../ai-service/AiServiceForm'
 import Button, { MyLink } from '../components/Button'
-
+import aiServiceProvidersList from '../data/aiServiceProvidersList'
 
 type StepProps = {
 	goToNextStep: () => void
 	goTo: (step: number) => void
 }
+
+
+
+
 const StepIntro: React.FC<StepProps> = ({
 	goToNextStep
 }) => {
@@ -19,7 +23,49 @@ const StepIntro: React.FC<StepProps> = ({
 		<p className="text-4xl  font-medium">
 			AI freedom is here.
 		</p>
-		<p className='text-xl'>Juicebox brings you endless AI power through different experiences for your needs along with total AI freedom of choice.</p>
+		<p className='text-xl'>Use any and all AIs or local AIs for full privacy.</p>
+
+		<div className="relative overflow-hidden h-16">
+			<div className="flex space-x-4 items-center justify-center h-16 flex-shrink-0">
+				{Object.keys(aiServiceProvidersList).map((provider, index) => {
+					const item = aiServiceProvidersList[provider as keyof typeof aiServiceProvidersList]
+					if (item.logo.includes("dot")) return null
+					return <div key={index} className="flex-shrink-0">
+						<img src={`${item.logo}`} alt={item.name} className="h-16" />
+					</div>
+				})}
+			</div>
+		</div>
+
+
+		<div className="divider uppercase font-medium">WITH</div>
+
+		<div className="grid md:grid-cols-2 gap-4">
+			{[
+				{
+					title: "Chat",
+					description: "Just like you see everywhere.",
+				},
+				{
+					title: "Text editor",
+					description: "Co-write with AI, ",
+				},
+				{
+					title: "Repeat",
+					description: "Build a prompt and get a response. Rinse and Repeat. Perfect things you do often.",
+				},
+				{
+					title: "Chain",
+					description: "Create prompts that feed each other to get exactly what you want.",
+				}
+			].map((item, index) => {
+				return <div key={index} className="flex flex-col items-center justify-start space-y-2 bg-base-300 p-4 rounded-xl">
+					<p className="text-xl font-black tracking-wider uppercase">{item.title}</p>
+					<p className="text-sm w-full text-left">{item.description}</p>
+				</div>
+			})}
+		</div>
+
 
 		{/* IMAGE HERE OR GIF OR YOUTUBE EMBED */}
 
@@ -144,7 +190,7 @@ const Welcome: React.FC = () => {
 	}
 
 	return (
-		<div className="flex items-center justify-center h-screen bg-gradient-to-r from-yellow-500 to-green-600 px-6 py-12">
+		<div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-yellow-500 to-green-600 px-6 py-12">
 			<div className="p-10 flex flex-col h-full bg-base-200 rounded-lg shadow-lg space-y-4 max-w-2xl w-full">
 				<div className="flex flex-col items-center justify-center">
 					<LogoImage className='h-16' />
