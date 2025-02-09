@@ -4,7 +4,7 @@ import path from 'path'
 const app = express()
 const port = process.env.PORT || 3000
 
-const frontendCodePath = path.join(__dirname, '../web')
+const frontendCodePath = path.join(__dirname, '../dist-interface')
 
 // Serve static files from the 'public' directory
 app.use(express.static(frontendCodePath))

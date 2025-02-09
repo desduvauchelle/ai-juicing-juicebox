@@ -15,6 +15,8 @@ A collection of local AI tools to get things done. Chat is useful but not enough
 - Prompt sequences
 - And more
 
+[![Demo](https://desduvauchelle.github.io/ai-juicing-juicebox)](DEMO)
+
 ## Why AI Juicebox?
 
 An extendable experimentation of using AI to accomplish tasks. From the chat interface that you probably already know, to document searching, web searching, co-authoring text, prompt sequences, and more. All this using local models, keeping the information private and secure on your computer.

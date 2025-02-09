@@ -24,30 +24,29 @@
 	},
 	"scripts": {
 		"watch-copy-types": "node scripts/type-watcher.js",
-		"copy-dir": "node scripts/copy-dir.js",
 		"interface:start": "yarn workspace interface dev",
-		"interface:build": "yarn workspace interface dev build",
+		"interface:build": "yarn workspace interface build",
 		"interface:typecheck": "yarn workspace interface typecheck",
 		"desktop:start": "yarn workspace desktop start",
-		"desktop:package": "yarn workspace desktop package",
-		"desktop:make": "yarn workspace desktop make",
-		"desktop:publish": "yarn workspace desktop publish",
+		"desktop:package": "cross-env DESTINATION=desktop yarn workspace interface build && yarn workspace desktop package",
+		"desktop:make": "cross-env DESTINATION=desktop yarn workspace interface build && yarn workspace desktop make",
 		"desktop:typecheck": "yarn workspace desktop typecheck",
-		"server-web:start": "yarn interface:build && node scripts/server-web-cp-interface.js && yarn workspace server-web dev",
-		"server-web:run": "yarn interface:build && node scripts/server-web-cp-interface.js && yarn workspace server-web build && yarn workspace server-web start",
+		"server-web:run": "cross-env DESTINATION=server-web yarn workspace interface build && yarn workspace server-web build && yarn workspace server-web start",
 		"start": "concurrently \"yarn watch-copy-types\" \"yarn interface:start\" \"wait-on http://localhost:5173 && yarn desktop:start\"",
-		"package": "yarn interface:build && yarn desktop:package",
-		"make": "yarn interface:build && yarn desktop:make",
-		"publish": "./scripts/tag-release.sh",
+		"github-publish": "./scripts/tag-release.sh",
 		"lint": "eslint .",
 		"test": "jest",
 		"typecheck": "yarn interface:typecheck && yarn desktop:typecheck",
-		"github-page": "yarn workspace interface dev build && gh-pages -d apps/interface/dist",
+		"github-page": "cross-env DESTINATION=github yarn workspace interface build && gh-pages -d dist-interface-github  && rm -rf dist-interface-github"
 	},
 	"devDependencies": {
 		"chokidar": "^4.0.3",
 		"concurrently": "^9.1.2",
+		"cross-env": "^7.0.3",
 		"fs-extra": "^11.3.0",
 		"wait-on": "^8.0.2"
+	},
+	"dependencies": {
+		"gh-pages": "^6.3.0"
 	}
 }
