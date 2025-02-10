@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import Select from '../components/Select'
-import { IAIService, services } from '../../types/IAIService'
+import { AiService, IAIService, services } from '../../types/IAIService'
 import { useMainContext } from '../context/MainContext'
 import { fetchOllamaModels } from '../tools/fetchOllamaModels'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,6 +10,9 @@ import { faRefresh } from '@fortawesome/free-solid-svg-icons'
 import { InlineAlert } from '../components/InlineAlert'
 import Radio from '../components/Radio'
 
+
+const needsUrl: AiService[] = ["Ollama", "OpenAI Compatible"]
+const needsApiKey: AiService[] = ["OpenAI", "Anthropic", "Google", "DeepSeek", "Mistral", "xAI", "Groq", "Replicate"]
 interface AiServiceFormProps {
 	initialValues?: IAIService
 	afterSubmit?: () => void
@@ -126,7 +129,7 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 				]}
 			/>
 
-			{formData.service === 'Ollama' && (
+			{needsUrl.includes(formData.service) && (
 				<>
 					<Input
 						label="URL"
@@ -188,7 +191,7 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 				</>
 			)}
 
-			{formData.service !== 'Ollama' && <>
+			{needsApiKey.includes(formData.service) && <>
 				<Input
 					label="API Key"
 					name="apiKey"

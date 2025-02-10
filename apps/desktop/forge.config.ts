@@ -25,7 +25,9 @@ const config: ForgeConfig = {
 		executableName: process.platform === 'linux' ? 'juicebox-ai' : 'juicebox-ai',
 		icon: path.join(process.cwd(), 'public', 'icons', 'icon'), // Ensure this path is correct
 		extraResource: ['./src/dist-interface', './public'],  // Update path to match source location
-		osxSign: {},
+		osxSign: {
+			identity: "AI Juicing Juicebox"
+		},
 	}, // bypass type checking for custom property
 	rebuildConfig: {},
 	makers: [

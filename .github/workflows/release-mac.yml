@@ -12,15 +12,6 @@ on:
       CODE_SIGN_P12_PASSWORD:
         description: 'Password for the P12 certificate'
         required: true
-      APPLE_ID:
-        description: 'Apple ID for notarization'
-        required: true
-      APPLE_APP_SPECIFIC_PASSWORD:
-        description: 'App-specific password for notarization'
-        required: true
-      DEVELOPER_ID:
-        description: 'Developer ID for signing'
-        required: true
 
 jobs:
   release:
@@ -38,6 +29,9 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
+      - name: Create certificate
+        run: echo ${{ secrets.MAC_CERTIFICATE_BASE64 }} | base64 --decode > certificate.p12
+
     #   - name: Get Signing Certificate
     #     run: |
     #       echo "${{ secrets.CODE_SIGN_P12_BASE64 }}" | base64 --decode > certificate.p12
@@ -49,7 +43,9 @@ jobs:
     #       p12-password: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
 
       - name: Build and Make
-        # env:
+        env:
+          CSC_LINK: file://myapp.p12
+          CSC_KEY_PASSWORD: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
         #   CSC_LINK: certificate.p12
         #   CSC_KEY_PASSWORD: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
         #   APPLE_ID: ${{ secrets.APPLE_ID }}
