@@ -15,7 +15,7 @@ A collection of local AI tools to get things done. Chat is useful but not enough
 - Prompt sequences
 - And more
 
-[TRY IT OUT HERE](https://desduvauchelle.github.io/ai-juicing-juicebox)]
+[TRY IT OUT HERE](https://desduvauchelle.github.io/ai-juicing-juicebox)
 
 ## Why AI Juicebox?
 
@@ -88,15 +88,15 @@ Community contributions are welcome, especially in testing and packaging. Contri
 
 ## Todo
 
-- [ ] Create a static website to easily host it
 - [ ] Add Tag release packager to download
 - [ ] Add Ollama server installation
-- [ ] Finish the Canvas interface
 - [ ] Add a web scrapping
 - [ ] Add a document to answer
 - [ ] Add a web search
 - [ ] Add an auto-updater
 - [ ] Set up and connect remote server
+- [x] Finish the Canvas interface
+- [x] Create a static website to easily host it
 - [x] Theme manager
 - [x] Add any AI services to use
 - [x] Onboarding revamp
