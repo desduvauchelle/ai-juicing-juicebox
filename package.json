@@ -1,6 +1,6 @@
 {
   "name": "ai-juicing-juicebox",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "main": "dist/main.js",
   "license": "MIT",
   "private": true,
@@ -29,7 +29,7 @@
     "interface:typecheck": "yarn workspace interface typecheck",
     "desktop:start": "yarn workspace desktop start",
     "desktop:package": "cross-env DESTINATION=desktop yarn workspace interface build && yarn workspace desktop package",
-    "desktop:make": "cross-env DESTINATION=desktop yarn workspace interface build && yarn workspace desktop make",
+    "desktop:make": "cross-env DESTINATION=desktop yarn workspace interface build && yarn workspace desktop make --verbose",
     "desktop:typecheck": "yarn workspace desktop typecheck",
     "server-web:run": "cross-env DESTINATION=server-web yarn workspace interface build && yarn workspace server-web build && yarn workspace server-web start",
     "start": "concurrently \"yarn watch-copy-types\" \"yarn interface:start\" \"wait-on http://localhost:5173 && yarn desktop:start\"",

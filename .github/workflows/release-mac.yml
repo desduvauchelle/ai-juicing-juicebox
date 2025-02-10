@@ -52,7 +52,7 @@ jobs:
         #   APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
         #   DEVELOPER_ID: ${{ secrets.DEVELOPER_ID }}
         run: |
-          yarn make --verbose
+          yarn desktop:make
 
       - name: List built artifacts
         shell: bash

@@ -15,7 +15,7 @@ A collection of local AI tools to get things done. Chat is useful but not enough
 - Prompt sequences
 - And more
 
-[![Demo](https://desduvauchelle.github.io/ai-juicing-juicebox)](DEMO)
+[TRY IT OUT HERE](https://desduvauchelle.github.io/ai-juicing-juicebox)]
 
 ## Why AI Juicebox?
 
