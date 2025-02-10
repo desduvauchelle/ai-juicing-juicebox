@@ -37,7 +37,10 @@
 		"lint": "eslint .",
 		"test": "jest",
 		"typecheck": "yarn interface:typecheck && yarn desktop:typecheck",
-		"github-page": "cross-env DESTINATION=github yarn workspace interface build && gh-pages -d dist-interface-github"
+		"github-page": "cross-env DESTINATION=github yarn workspace interface build && gh-pages -d dist-interface-github",
+		"docs:start": "yarn workspace docs start",
+		"docs:build": "yarn workspace docs build",
+		"docs:serve": "yarn workspace docs deploy"
 	},
 	"devDependencies": {
 		"chokidar": "^4.0.3",

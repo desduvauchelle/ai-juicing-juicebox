@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite'
+import { defineConfig, UserConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 
-const config: defineConfig = {
+const config: UserConfig = {
 	base: './',
 	plugins: [
 		react(),
@@ -14,6 +14,9 @@ const config: defineConfig = {
 		emptyOutDir: true
 	}
 }
+config.build = config.build || {}
+config.plugins = config.plugins || []
+
 const destination = process.env.DESTINATION
 
 if (destination === "desktop") {
