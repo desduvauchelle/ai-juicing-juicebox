@@ -30,7 +30,7 @@ jobs:
         run: yarn install
 
       - name: Create certificate
-        run: echo ${{ secrets.MAC_CERTIFICATE_BASE64 }} | base64 --decode > certificate.p12
+        run: echo ${{ secrets.MAC_CERTIFICATE_BASE64 }} | base64 --decode > myapp.p12
 
     #   - name: Get Signing Certificate
     #     run: |
@@ -44,15 +44,17 @@ jobs:
 
       - name: Build and Make
         env:
-          CSC_LINK: file://myapp.p12
+          CSC_LINK: myapp.p12
           CSC_KEY_PASSWORD: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
+          DEBUG: electron-osx-sign*
         #   CSC_LINK: certificate.p12
         #   CSC_KEY_PASSWORD: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
         #   APPLE_ID: ${{ secrets.APPLE_ID }}
         #   APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
         #   DEVELOPER_ID: ${{ secrets.DEVELOPER_ID }}
         run: |
-          yarn desktop:make
+          cd apps/desktop
+          yarn desktop:make --verbose
 
       - name: List built artifacts
         shell: bash
