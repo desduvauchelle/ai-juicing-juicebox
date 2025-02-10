@@ -1,13 +1,8 @@
 import ChatViewBasic from './ChatViews/ChatViewBasic'
 import { useConversation } from "../../context/ConversationContext"
 import { useEffect, useRef, useState } from "react"
-import { faRobot } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Button from "../../components/Button"
-import Select from "../../components/Select"
-import ChatViewCanvas from './ChatViews/ChatViewCanvas'
-import { InlineAlert } from '../../components/InlineAlert'
-import { formatDistanceToNow } from 'date-fns'
+import ChatViewCoAuthor from './ChatViews/ChatViewCoAuthor'
 import { useMainContext } from '../../context/MainContext'
 import { ModalPickAiService } from '../../ai-service/ModalPickAiService'
 
@@ -98,7 +93,7 @@ const ChatViewWrapper: React.FC<{
 				<ChatViewBasic />
 			</>}
 			{conversation.type === "co-authoring" && <>
-				<ChatViewCanvas />
+				<ChatViewCoAuthor />
 			</>}
 
 		</>

@@ -25,7 +25,7 @@ const chatViewsList: IChatView[] = [
 	{
 		id: 2,
 		name: "Co-authoring",
-		description: "Collaborative document editing",
+		description: "Collaborative AI document editing",
 		type: "co-authoring"
 	}
 ]

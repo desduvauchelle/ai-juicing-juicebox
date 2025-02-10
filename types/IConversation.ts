@@ -9,6 +9,10 @@ export type IConversationChat = {
 	text: string
 	createdAt: number
 	conversationId: number
+	data?: {
+		// For canvas
+		text?: string
+	}
 }
 
 export interface IConversation {

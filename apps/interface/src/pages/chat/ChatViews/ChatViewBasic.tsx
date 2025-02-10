@@ -136,10 +136,15 @@ const ChatViewBasic: React.FC = () => {
 			<div className="flex-1 overflow-y-auto space-y-1" ref={wrapperRef}>
 				<div className="h-8"></div>
 				{chats.map((chat) => {
-					return <ChatMessage
+					const isUser = chat.role === "user"
+					return <div
 						key={chat.id}
-						chat={chat}
-						maxWidth={maxWidth} />
+						className={isUser ? "pt-12" : "pt-4"}>
+						<ChatMessage
+
+							chat={chat}
+							maxWidth={maxWidth} />
+					</div>
 				})}
 				{(incomingMessage || isTyping) && <>
 					<ChatMessage

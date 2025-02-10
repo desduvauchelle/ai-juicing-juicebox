@@ -21,6 +21,7 @@ interface ConversationContextProps {
 		chat: {
 			add: (chat: Partial<IConversationChat>) => Promise<IConversationChat | undefined>
 			delete: (id: number) => Promise<void>
+			update: (id: number, chat: Partial<IConversationChat>) => Promise<void>
 		}
 	}
 }
@@ -127,12 +128,18 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 					name: title,
 					aiGeneratedTitle: true
 				})
-				// mainContext.actions.
+				mainContext.actions.conversations.update({
+					id: conversation.id,
+					partial: {
+						name: title,
+						aiGeneratedTitle: true
+					}
+				})
 			}
 		}
 
 		generateTitle()
-	}, [conversation, selectedConfig, chats, update, globalAi.actions])
+	}, [conversation, selectedConfig, chats, update, globalAi.actions, mainContext.actions.conversations])
 
 	const chatAdd = useCallback(async (chat: Partial<IConversationChat>) => {
 		if (!conversation) {
@@ -173,6 +180,16 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 		setChats(prev => prev.filter(chat => chat.id !== id))
 	}, [chats])
 
+	const chatUpdate = useCallback(async (id: number, chat: Partial<IConversationChat>) => {
+		const existingChat = chats.find(chat => chat.id === id)
+		if (!existingChat) {
+			console.warn('Chat not found')
+			return
+		}
+		await ChatService.update(id, chat)
+		setChats(prev => prev.map(chat => chat.id === id ? { ...chat, ...chat } : chat))
+	}, [chats])
+
 	const value: ConversationContextProps = {
 		conversation,
 		chats,
@@ -184,7 +201,8 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 			update,
 			chat: {
 				add: chatAdd,
-				delete: chatRemove
+				delete: chatRemove,
+				update: chatUpdate
 			}
 		}
 	}

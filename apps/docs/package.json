@@ -6,7 +6,7 @@
 		"docusaurus": "docusaurus",
 		"start": "docusaurus start",
 		"build": "docusaurus build",
-		"build:demo": "docusaurus build && mb build",
+		"build:demo": "docusaurus build && mb build ../../dist-interface-hithub",
 		"swizzle": "docusaurus swizzle",
 		"deploy": "docusaurus deploy",
 		"clear": "docusaurus clear",

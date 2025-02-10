@@ -51,7 +51,7 @@ const ChatMessage: React.FC<{
 	}, [chat.text])
 
 	if (chat.role === "user") {
-		return <div className={`${maxWidth || ""} group pt-12 px-4 lg:px-0`}>
+		return <div className={`${maxWidth || ""} group px-4 lg:px-0`}>
 
 			<div className="flex justify-end items-start gap-4">
 				<div className="">
@@ -89,7 +89,7 @@ const ChatMessage: React.FC<{
 		</div>
 	}
 
-	return <div className={`${maxWidth || ""} group pt-4 px-4 lg:px-0`}>
+	return <div className={`${maxWidth || ""} group px-4 lg:px-0`}>
 
 		<div className="flex flex-row gap-2 items-start">
 			<div className="flex-grow">

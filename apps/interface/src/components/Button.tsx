@@ -1,25 +1,25 @@
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { AnchorHTMLAttributes, ButtonHTMLAttributes, FC, ReactNode, useMemo } from "react"
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, FC, ReactNode, useMemo, forwardRef } from "react"
 import { Link, LinkProps } from "react-router-dom"
 import { bridgeApi } from "../tools/bridgeApi"
 
-
 type ButtonThemes = "primary" | "secondary" | "danger" | "success" | "warning" | "info" | "dark" | "light" | "link" | "custom" | "ghost" | "blank"
 
-
-
-const Button: FC<ButtonHTMLAttributes<HTMLButtonElement> & {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 	theme: ButtonThemes,
 	children: ReactNode,
 	isLoading?: boolean,
 	isLoadingContent?: ReactNode,
 	isBig?: boolean,
 	isSmall?: boolean,
+	isExtraSmall?: boolean,
 	isOutline?: boolean,
 	tooltip?: string,
 	tooltipPosition?: "top" | "bottom" | "left" | "right"
-}> = ({
+}
+
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
 	theme,
 	children,
 	className,
@@ -29,85 +29,89 @@ const Button: FC<ButtonHTMLAttributes<HTMLButtonElement> & {
 	isOutline,
 	tooltip,
 	tooltipPosition,
+	isExtraSmall,
 	isLoadingContent = <FontAwesomeIcon icon={faCircleNotch} spin />,
 	...rest
-}) => {
-		const customClassName = useMemo(() => {
-			let themeClassName = "btn "
-			if (isOutline) {
-				themeClassName += " btn-outline"
-			}
-			switch (theme) {
-				case "primary":
-					themeClassName += " btn-primary"
-					break
-				case "secondary":
-					themeClassName += " btn-secondary"
-					break
-				case "danger":
-					themeClassName += " btn-error"
-					break
-				case "success":
-					themeClassName += " btn-success"
-					break
-				case "warning":
-					themeClassName += " btn-warning"
-					break
-				case "info":
-					themeClassName += " btn-info"
-					break
-				case "dark":
-					themeClassName += " btn-dark"
-					break
-				case "light":
-					themeClassName += " btn-light"
-					break
-				case "link":
-					themeClassName += " btn-link"
-					break
-				case "ghost":
-					themeClassName += " btn-ghost"
-					break
-				case "custom":
-					themeClassName = ""
-					break
-				default:
-					themeClassName += " btn-primary"
-					break
-			}
-			if (className) {
-				themeClassName += " " + className
-			}
-
-			if (isBig) {
-				themeClassName += " btn-lg"
-			}
-			if (isSmall) {
-				themeClassName += " btn-sm"
-			}
-			return themeClassName
-		}, [isOutline, theme, className, isBig, isSmall])
-
-		const attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
-			...rest,
-			className: customClassName
+}, ref) => {
+	const customClassName = useMemo(() => {
+		let themeClassName = "btn "
+		if (isOutline) {
+			themeClassName += " btn-outline"
 		}
-		if (isLoading) {
-			attributes.disabled = true
+		switch (theme) {
+			case "primary":
+				themeClassName += " btn-primary"
+				break
+			case "secondary":
+				themeClassName += " btn-secondary"
+				break
+			case "danger":
+				themeClassName += " btn-error"
+				break
+			case "success":
+				themeClassName += " btn-success"
+				break
+			case "warning":
+				themeClassName += " btn-warning"
+				break
+			case "info":
+				themeClassName += " btn-info"
+				break
+			case "dark":
+				themeClassName += " btn-dark"
+				break
+			case "light":
+				themeClassName += " btn-light"
+				break
+			case "link":
+				themeClassName += " btn-link"
+				break
+			case "ghost":
+				themeClassName += " btn-ghost"
+				break
+			case "custom":
+				themeClassName = ""
+				break
+			default:
+				themeClassName += " btn-primary"
+				break
 		}
-		if (tooltip) {
-			// @ts-expect-error Not sure how to type fix this
-			attributes["data-tip"] = tooltip
-			attributes.className += " tooltip"
-			if (tooltipPosition) {
-				attributes.className += " tooltip-" + tooltipPosition
-			}
+		if (className) {
+			themeClassName += " " + className
 		}
 
-		return <button {...attributes}>{isLoading ? isLoadingContent : children}</button>
+		if (isBig) {
+			themeClassName += " btn-lg"
+		}
+		if (isSmall) {
+			themeClassName += " btn-sm"
+		}
+		if (isExtraSmall) {
+			themeClassName += " btn-xs"
+		}
+		return themeClassName
+	}, [isOutline, theme, className, isBig, isSmall, isExtraSmall])
+
+	const attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
+		...rest,
+		className: customClassName
+	}
+	if (isLoading) {
+		attributes.disabled = true
+	}
+	if (tooltip) {
+		// @ts-expect-error Not sure how to type fix this
+		attributes["data-tip"] = tooltip
+		attributes.className += " tooltip"
+		if (tooltipPosition) {
+			attributes.className += " tooltip-" + tooltipPosition
+		}
 	}
 
+	return <button ref={ref} {...attributes}>{isLoading ? isLoadingContent : children}</button>
+})
 
+Button.displayName = 'Button'
 
 export default Button
 
