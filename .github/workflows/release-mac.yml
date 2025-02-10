@@ -33,7 +33,9 @@ jobs:
         run: DESTINATION=desktop yarn workspace interface build
 
       - name: Create certificate
-        run: echo ${{ secrets.CODE_SIGN_P12_BASE64 }} | base64 --decode > myapp.p12
+        run: |
+          cd apps/desktop
+          echo ${{ secrets.CODE_SIGN_P12_BASE64 }} | base64 --decode > myapp.p12
 
       - name: Debug Certificate
         run: |
@@ -50,7 +52,6 @@ jobs:
           CSC_KEY_PASSWORD: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
           DEBUG: electron-osx-sign*
         run: |
-          cd apps/desktop
           yarn make --verbose
 
       - name: List built artifacts
