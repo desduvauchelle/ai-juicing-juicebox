@@ -52,7 +52,7 @@ const createWindow = (): void => {
 		mainWindow.loadURL('http://localhost:5173')
 	} else {
 		// Changed production path to remove extra "src" folder
-		const indexPath = path.join(process.resourcesPath, 'dist-web', 'index.html')
+		const indexPath = path.join(process.resourcesPath, 'dist-interface', 'index.html')
 		mainWindow.loadFile(indexPath)
 	}
 

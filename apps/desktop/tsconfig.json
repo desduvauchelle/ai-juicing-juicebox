@@ -28,6 +28,6 @@
 	],
 	"exclude": [
 		"**/node_modules",
-		"src/dist-web"
+		"src/dist-interface"
 	]
 }

@@ -15,7 +15,7 @@ import path from 'path'
 
 // Determine HTML path based on environment
 const isDev = process.env.NODE_ENV === 'development'
-const htmlPath = isDev ? '../web/index.html' : './src/dist-web/index.html'
+const htmlPath = isDev ? '../web/index.html' : './src/dist-interface/index.html'
 
 const config: ForgeConfig = {
 	packagerConfig: {
@@ -24,7 +24,7 @@ const config: ForgeConfig = {
 		name: process.platform === 'linux' ? 'juicebox-ai' : 'Juicebox AI',
 		executableName: process.platform === 'linux' ? 'juicebox-ai' : 'juicebox-ai',
 		icon: path.join(process.cwd(), 'public', 'icons', 'icon'), // Ensure this path is correct
-		extraResource: ['./src/dist-web', './public'],  // Update path to match source location
+		extraResource: ['./src/dist-interface', './public'],  // Update path to match source location
 		osxSign: {},
 	}, // bypass type checking for custom property
 	rebuildConfig: {},
