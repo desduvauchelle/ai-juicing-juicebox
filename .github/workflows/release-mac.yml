@@ -29,6 +29,9 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
+      - name: Build frontend
+        run: DESTINATION=desktop yarn workspace interface build
+
       - name: Create certificate
         run: echo ${{ secrets.MAC_CERTIFICATE_BASE64 }} | base64 --decode > myapp.p12
 
@@ -41,6 +44,15 @@ jobs:
     #     with:
     #       p12-file-base64: ${{ secrets.CODE_SIGN_P12_BASE64 }}
     #       p12-password: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
+
+      - name: Debug Certificate
+        run: |
+          echo "Certificate location check:"
+          ls -la myapp.p12
+          echo "Current directory:"
+          pwd
+          echo "Certificate file size:"
+          stat -f %z myapp.p12
 
       - name: Build and Make
         env:
