@@ -54,7 +54,7 @@ jobs:
         #   DEVELOPER_ID: ${{ secrets.DEVELOPER_ID }}
         run: |
           cd apps/desktop
-          yarn desktop:make --verbose
+          yarn make --verbose
 
       - name: List built artifacts
         shell: bash
