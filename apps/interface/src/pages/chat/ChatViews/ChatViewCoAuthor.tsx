@@ -115,9 +115,7 @@ const ChatViewCoAuthor: React.FC = () => {
 	}, [chats, incomingMessage])
 
 
-	const streamCallback = useCallback((data: Partial<ResponseType>) => {
-		setIncomingMessage(data.text || "")
-	}, [])
+
 
 	const handleCanvasSelection = () => {
 		const textArea = document.querySelector('textarea')
@@ -133,6 +131,10 @@ const ChatViewCoAuthor: React.FC = () => {
 			setSelection(null)
 		}
 	}
+
+	const streamCallback = useCallback((data: Partial<ResponseType>) => {
+		setIncomingMessage(data.text || "")
+	}, [])
 
 	const send = useCallback(async () => {
 		if (isTypingRef.current) return

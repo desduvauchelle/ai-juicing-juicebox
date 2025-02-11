@@ -13,6 +13,10 @@ export type IConversationChat = {
 		// For canvas
 		currentText?: string
 		text?: string
+		// For repeater
+		label?: string
+		prompt?: string
+		response?: string
 	}
 }
 

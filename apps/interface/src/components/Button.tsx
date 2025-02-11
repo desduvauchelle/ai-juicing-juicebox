@@ -1,6 +1,6 @@
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { AnchorHTMLAttributes, ButtonHTMLAttributes, FC, ReactNode, useMemo, forwardRef } from "react"
+import { AnchorHTMLAttributes, ButtonHTMLAttributes, FC, ReactNode, useMemo, forwardRef, useState } from "react"
 import { Link, LinkProps } from "react-router-dom"
 import { bridgeApi } from "../tools/bridgeApi"
 
@@ -16,7 +16,8 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 	isExtraSmall?: boolean,
 	isOutline?: boolean,
 	tooltip?: string,
-	tooltipPosition?: "top" | "bottom" | "left" | "right"
+	tooltipPosition?: "top" | "bottom" | "left" | "right",
+	textToCopy?: string
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
@@ -30,9 +31,28 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
 	tooltip,
 	tooltipPosition,
 	isExtraSmall,
+	textToCopy,
 	isLoadingContent = <FontAwesomeIcon icon={faCircleNotch} spin />,
+	onClick,
 	...rest
 }, ref) => {
+	const [tempText, setTempText] = useState<string | null>(null)
+
+	const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+		if (!textToCopy) {
+			onClick?.(e)
+			return
+		}
+
+		await navigator.clipboard.writeText(textToCopy)
+		setTempText("Copied!")
+		setTimeout(() => {
+			setTempText(null)
+		}, 5000)
+
+		onClick?.(e)
+	}
+
 	const customClassName = useMemo(() => {
 		let themeClassName = "btn "
 		if (isOutline) {
@@ -94,7 +114,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
 
 	const attributes: ButtonHTMLAttributes<HTMLButtonElement> = {
 		...rest,
-		className: customClassName
+		className: customClassName,
+		type: textToCopy ? "button" : rest.type,
+		onClick: handleClick
 	}
 	if (isLoading) {
 		attributes.disabled = true
@@ -108,7 +130,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
 		}
 	}
 
-	return <button ref={ref} {...attributes}>{isLoading ? isLoadingContent : children}</button>
+	return <button ref={ref} {...attributes}>{isLoading ? isLoadingContent : (tempText || children)}</button>
 })
 
 Button.displayName = 'Button'
