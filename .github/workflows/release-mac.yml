@@ -33,11 +33,12 @@ jobs:
         run: DESTINATION=desktop yarn workspace interface build
 
       - name: Create certificate
+        working-directory: apps/desktop
         run: |
-          cd apps/desktop
           echo ${{ secrets.CODE_SIGN_P12_BASE64 }} | base64 --decode > myapp.p12
 
       - name: Debug Certificate
+        working-directory: apps/desktop
         run: |
           echo "Certificate location check:"
           ls -la myapp.p12
@@ -47,6 +48,7 @@ jobs:
           stat -f %z myapp.p12
 
       - name: Build and Make
+        working-directory: apps/desktop
         env:
           CSC_LINK: myapp.p12
           CSC_KEY_PASSWORD: ${{ secrets.CODE_SIGN_P12_PASSWORD }}
