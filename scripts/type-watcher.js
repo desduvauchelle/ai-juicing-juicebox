@@ -5,7 +5,7 @@ const path = require('path');
 // Configure these paths as needed
 const SOURCE_DIR = './types';
 const DEST_DIR_1 = './apps/desktop/types';
-const DEST_DIR_2 = './apps/web/types';
+const DEST_DIR_2 = './apps/interface/types';
 
 // Initialize watcher
 const watcher = chokidar.watch(SOURCE_DIR, {

@@ -3,24 +3,19 @@ import { useConversation } from "../../context/ConversationContext"
 import { useEffect, useRef, useState } from "react"
 import Button from "../../components/Button"
 import ChatViewCoAuthor from './ChatViews/ChatViewCoAuthor'
-import { useMainContext } from '../../context/MainContext'
 import { ModalPickAiService } from '../../ai-service/ModalPickAiService'
+import ChatViewRepeater from './ChatViews/ChatViewRepeater'
 
 
 const ChatViewWrapper: React.FC<{
-	toggleMenu: () => void,
-	isMenuOpen: boolean,
 	conversationId: string
 }> = ({
-	toggleMenu,
-	isMenuOpen,
 	conversationId
 }) => {
 		const conversationContext = useConversation()
 		const conversation = conversationContext?.conversation
 		const isInitiated = useRef<number | undefined>(undefined)
 		const [showAiModal, setShowAiModal] = useState(false)
-		const mainContext = useMainContext()
 
 		useEffect(() => {
 			if (!conversationId) return
@@ -94,6 +89,10 @@ const ChatViewWrapper: React.FC<{
 			</>}
 			{conversation.type === "co-authoring" && <>
 				<ChatViewCoAuthor />
+			</>}
+
+			{conversation.type === "repeater" && <>
+				<ChatViewRepeater />
 			</>}
 
 		</>

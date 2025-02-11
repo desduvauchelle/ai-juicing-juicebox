@@ -180,14 +180,14 @@ export const ConversationProvider = ({ children }: { children: React.ReactNode }
 		setChats(prev => prev.filter(chat => chat.id !== id))
 	}, [chats])
 
-	const chatUpdate = useCallback(async (id: number, chat: Partial<IConversationChat>) => {
+	const chatUpdate = useCallback(async (id: number, partialChat: Partial<IConversationChat>) => {
 		const existingChat = chats.find(chat => chat.id === id)
 		if (!existingChat) {
 			console.warn('Chat not found')
 			return
 		}
-		await ChatService.update(id, chat)
-		setChats(prev => prev.map(chat => chat.id === id ? { ...chat, ...chat } : chat))
+		await ChatService.update(id, partialChat)
+		setChats(prev => prev.map(chat => chat.id === id ? { ...chat, ...partialChat } : chat))
 	}, [chats])
 
 	const value: ConversationContextProps = {

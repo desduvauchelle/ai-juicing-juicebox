@@ -1,6 +1,6 @@
 
 
-const chatTypes = ["chat", "co-authoring", "playground"] as const // eslint-disable-line @typescript-eslint/no-unused-vars
+const chatTypes = ["chat", "co-authoring", "playground", "repeater"] as const // eslint-disable-line @typescript-eslint/no-unused-vars
 export type IConversationTypes = typeof chatTypes[number]
 
 export type IConversationChat = {
@@ -9,6 +9,11 @@ export type IConversationChat = {
 	text: string
 	createdAt: number
 	conversationId: number
+	data?: {
+		// For canvas
+		currentText?: string
+		text?: string
+	}
 }
 
 export interface IConversation {

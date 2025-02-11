@@ -82,8 +82,6 @@ const Chat: React.FC = () => {
 			<div id="chat-content" className="h-full rounded-xl overflow-hidden relative">
 				{!conversationId && <ChatViewNew />}
 				{conversationId && <ChatViewWrapper
-					toggleMenu={toggleMenu}
-					isMenuOpen={isMenuOpen}
 					conversationId={conversationId} />}
 
 
