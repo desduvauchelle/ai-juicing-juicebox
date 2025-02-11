@@ -56,6 +56,31 @@ jobs:
         run: |
           yarn make --verbose
 
+
+      - name: Verify Signing
+        working-directory: apps/desktop
+        run: |
+          echo "Checking DMG signature..."
+          codesign -vv --deep --strict out/make/**/*.dmg
+
+          echo "Checking app bundle signature..."
+          codesign -vv --deep --strict out/make/**/*.app
+
+          echo "Displaying signature details..."
+          codesign -d --verbose=4 out/make/**/*.app
+
+          echo "Checking entitlements..."
+          codesign -d --entitlements :- out/make/**/*.app
+
+          echo "Verifying with spctl..."
+          spctl --assess --verbose --type execute out/make/**/*.app
+
+          echo "Checking DMG contents..."
+          hdiutil attach out/make/**/*.dmg
+          ls -la /Volumes/**/JuiceBox.app
+          codesign -vv --deep --strict /Volumes/**/JuiceBox.app
+          hdiutil detach /Volumes/**/JuiceBox.app
+
       - name: List built artifacts
         shell: bash
         run: |
