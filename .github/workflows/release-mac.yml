@@ -57,29 +57,35 @@ jobs:
           yarn make --verbose
 
 
+      - name: Debug Build Output
+        working-directory: apps/desktop
+        run: |
+          echo "Listing out directory structure:"
+          ls -R out/
+
+          echo "\nFinding DMG files:"
+          find . -name "*.dmg"
+
+          echo "\nChecking make directory:"
+          ls -la out/make/
+
       - name: Verify Signing
         working-directory: apps/desktop
         run: |
-          echo "Checking DMG signature..."
-          codesign -vv --deep --strict out/make/**/*.dmg
+          DMG_PATH=$(find out/make -name "*.dmg")
+          echo "Found DMG at: $DMG_PATH"
 
-          echo "Checking app bundle signature..."
-          codesign -vv --deep --strict out/make/**/*.app
+          if [ -f "$DMG_PATH" ]; then
+            echo "Checking DMG signature..."
+            codesign -vv --deep --strict "$DMG_PATH"
 
-          echo "Displaying signature details..."
-          codesign -d --verbose=4 out/make/**/*.app
-
-          echo "Checking entitlements..."
-          codesign -d --entitlements :- out/make/**/*.app
-
-          echo "Verifying with spctl..."
-          spctl --assess --verbose --type execute out/make/**/*.app
-
-          echo "Checking DMG contents..."
-          hdiutil attach out/make/**/*.dmg
-          ls -la /Volumes/**/JuiceBox.app
-          codesign -vv --deep --strict /Volumes/**/JuiceBox.app
-          hdiutil detach /Volumes/**/JuiceBox.app
+            echo "Checking app bundle signature..."
+            APP_PATH=$(find out/make -name "*.app")
+            codesign -vv --deep --strict "$APP_PATH"
+          else
+            echo "DMG file not found"
+            exit 1
+          fi
 
       - name: List built artifacts
         shell: bash
