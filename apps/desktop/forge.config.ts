@@ -26,8 +26,10 @@ const config: ForgeConfig = {
 		icon: path.join(process.cwd(), 'public', 'icons', 'icon'), // Ensure this path is correct
 		extraResource: ['./src/dist-interface', './public'],  // Update path to match source location
 		osxSign: {
-			identity: "AI Juicing Juicebox",
-			"preAutoEntitlements": true
+			identity: '*', // Uses certificate from CSC_LINK
+			identityValidation: true,
+			preAutoEntitlements: true,
+			strictVerify: true
 		},
 	}, // bypass type checking for custom property
 	rebuildConfig: {},
