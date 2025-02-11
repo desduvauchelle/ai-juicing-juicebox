@@ -113,6 +113,7 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 			setIsTestingConnection(false)
 		}
 	}
+	// console.log('IS_STATIC:', window.IS_STATIC ?? false)
 
 	return (
 		<form onSubmit={handleSubmit} className="max-w-sm mx-auto p-4 bg-base-100 rounded space-y-4 text-left">
@@ -175,12 +176,6 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 											type="button"
 											onClick={() => handleModelDefaultChange(model.name)}
 											className="w-full flex items-center gap-2 p-2 hover:bg-base-200 rounded-lg">
-											<Radio
-												name="default-model"
-												checked={!!model.isDefault}
-												readOnly
-												value={model.name}
-												label={''} />
 											<span className="flex-grow text-left">{model.name}</span>
 										</button>
 									</li>

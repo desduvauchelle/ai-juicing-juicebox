@@ -27,7 +27,9 @@
 	},
 	"include": [
 		"src",
-		"types"
+		"types",
+		"interface.d.ts",
+		"interface.d.ts"
 	],
 	"exclude": [
 		"../../types"

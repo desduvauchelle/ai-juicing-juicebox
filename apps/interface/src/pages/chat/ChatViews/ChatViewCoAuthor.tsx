@@ -8,6 +8,7 @@ import { z } from 'zod'
 import DiffView from '../../../components/DiffView'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import InlineLoader from '../../../components/InlineLoader'
 
 
 type ResponseType = {
@@ -324,7 +325,7 @@ ${selection && `You change edit and return only the selected text of the user, n
 						<ChatMessage chat={chat} maxWidth="max-w-full mx-4" />
 						{chat.data?.text && <div className='flex flex-row justify-end pr-3 mt-1'>
 							{(isLast && isTyping) && <>
-								<FontAwesomeIcon icon={faSpinner} spin />
+								<InlineLoader />
 							</>}
 							<Button
 								theme="ghost"
@@ -340,12 +341,14 @@ ${selection && `You change edit and return only the selected text of the user, n
 					<div className="flex flex-row gap-2 items-center justify-end pr-4 pt-2">
 						<Button
 							theme="success"
+							disabled={isTyping}
 							ref={approveBtnRef}
 							onClick={approveEdits}>
 							Approve
 						</Button>
 						<Button
 							theme="warning"
+							disabled={isTyping}
 							onClick={rejectEdits}>
 							Reject
 						</Button>

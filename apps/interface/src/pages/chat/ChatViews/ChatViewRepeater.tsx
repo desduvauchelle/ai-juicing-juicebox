@@ -256,15 +256,14 @@ ${text}
 
 				{shownMessage && <>
 					<div className="max-w-xl w-full flex flex-col space-y-4 p-4 rounded-xl bg-base-100">
-						<div className="rounded-xl bg-base-200 py-2 px-4 relative pr-6">
+						<div className="rounded-xl bg-base-300 py-4 px-6 relative pr-6">
 							<p className="line-clamp-2">{shownMessage.text}</p>
 							<Button
 								theme="ghost"
 								type="button"
 								isSmall
 								textToCopy={shownMessage.text}
-								className="absolute top-1 right-2"
-								onClick={() => setShownMessage(undefined)}>
+								className="absolute top-1 right-2">
 								<FontAwesomeIcon icon={faCopy} />
 							</Button>
 						</div>

@@ -5,6 +5,7 @@ import Markdown from "react-markdown"
 import Button from "../../../../components/Button"
 import { useConversation } from "../../../../context/ConversationContext"
 import { IConversationChat } from "../../../../../types/IConversation"
+import InlineLoader from "../../../../components/InlineLoader"
 
 
 
@@ -95,7 +96,7 @@ const ChatMessage: React.FC<{
 			<div className="flex-grow">
 				<div className="markdown">
 					{!chat.text && <>
-						<FontAwesomeIcon icon={faSpinner} spin />
+						<InlineLoader />
 					</>}
 					{parsedText.thinking && <>
 						<Button

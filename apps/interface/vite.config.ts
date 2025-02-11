@@ -1,7 +1,7 @@
 import { defineConfig, UserConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-
+import type { Globals } from './interface.d.ts'
 
 const config: UserConfig = {
 	base: './',
@@ -26,6 +26,11 @@ if (destination === "github") {
 
 	config.build.outDir = '../../dist-interface-github'
 	config.base = '/ai-juicing-juicebox/'
+
+	// Initialize define object with proper typing
+	config.define = {
+		'window.IS_STATIC': true
+	}
 
 	const allowedSources = [
 		"http://localhost:*",
