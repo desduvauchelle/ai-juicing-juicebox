@@ -21,13 +21,13 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      - name: Install AzureSignTool
-        run: |
-          dotnet tool install --global AzureSignTool
+    #   - name: Install AzureSignTool
+    #     run: |
+    #       dotnet tool install --global AzureSignTool
 
       - name: Build and Make
         run: |
-          yarn make --verbose
+          yarn desktop:make --verbose
 
       - name: List built artifacts
         shell: bash
