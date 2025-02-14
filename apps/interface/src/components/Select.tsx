@@ -5,14 +5,20 @@ interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
 	ariaLabel?: string
 	options: { value: string; label: string, disabled?: boolean }[]
 	description?: string
+	topRight?: React.ReactNode
 }
 
-const Select: React.FC<SelectProps> = ({ label, options, description, className, ...props }) => {
+const Select: React.FC<SelectProps> = ({ label, options, description, className, topRight, ...props }) => {
 	return (
 		<div className='w-full'>
-			{label && <label className="block text-sm font-bold mb-2">
-				{label}
-			</label>}
+			{(label || topRight) && <div className="flex flex-row w-full items-center mb-1">
+				<label className="flex-grow text-sm font-bold">
+					{label}
+				</label>
+				{topRight && <>
+					{topRight}
+				</>}
+			</div>}
 			<select
 				className={`select select-bordered w-full ${className}`}
 				{...props}>

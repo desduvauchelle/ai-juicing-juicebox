@@ -137,7 +137,15 @@ Button.displayName = 'Button'
 
 export default Button
 
-export const MyLink: FC<AnchorHTMLAttributes<HTMLAnchorElement> & { theme?: ButtonThemes, isButton?: boolean, isOutline?: boolean, children: ReactNode, isLoading?: boolean, isBig?: boolean }> = ({
+export const MyLink: FC<AnchorHTMLAttributes<HTMLAnchorElement> & {
+	theme?: ButtonThemes,
+	isButton?: boolean,
+	isOutline?: boolean,
+	children: ReactNode,
+	isLoading?: boolean,
+	isBig?: boolean,
+	isSmall?: boolean,
+}> = ({
 	theme,
 	children,
 	className,
@@ -146,83 +154,87 @@ export const MyLink: FC<AnchorHTMLAttributes<HTMLAnchorElement> & { theme?: Butt
 	isBig,
 	isButton,
 	href,
+	isSmall,
 	...rest
 }) => {
-	const customClassName = useMemo(() => {
-		let themeClassName = "link"
-		if (isOutline) {
-			themeClassName += " link-outline"
-		}
-		switch (theme) {
-			case "primary":
-				themeClassName += " link-primary"
-				break
-			case "secondary":
-				themeClassName += " link-secondary"
-				break
-			case "danger":
-				themeClassName += " link-danger"
-				break
-			case "success":
-				themeClassName += " link-success"
-				break
-			case "warning":
-				themeClassName += " link-warning"
-				break
-			case "info":
-				themeClassName += " link-info"
-				break
-			case "dark":
-				themeClassName += " link-dark"
-				break
-			case "light":
-				themeClassName += " link-light"
-				break
-			case "link":
-				themeClassName += " link-link"
-				break
-			case "custom":
-				themeClassName = ""
-				break
-			case "ghost":
-				themeClassName += " link-ghost"
-				break
-			case "blank":
-				themeClassName = ""
-				break
-			default:
-				themeClassName += ""
-				break
+		const customClassName = useMemo(() => {
+			let themeClassName = "link"
+			if (isOutline) {
+				themeClassName += " link-outline"
+			}
+			switch (theme) {
+				case "primary":
+					themeClassName += " link-primary"
+					break
+				case "secondary":
+					themeClassName += " link-secondary"
+					break
+				case "danger":
+					themeClassName += " link-danger"
+					break
+				case "success":
+					themeClassName += " link-success"
+					break
+				case "warning":
+					themeClassName += " link-warning"
+					break
+				case "info":
+					themeClassName += " link-info"
+					break
+				case "dark":
+					themeClassName += " link-dark"
+					break
+				case "light":
+					themeClassName += " link-light"
+					break
+				case "link":
+					themeClassName += " link-link"
+					break
+				case "custom":
+					themeClassName = ""
+					break
+				case "ghost":
+					themeClassName += " link-ghost"
+					break
+				case "blank":
+					themeClassName = ""
+					break
+				default:
+					themeClassName += ""
+					break
+			}
+
+			if (className) {
+				themeClassName += " " + className
+			}
+			if (isBig) {
+				themeClassName += " btn-lg"
+			}
+			if (isSmall) {
+				themeClassName += " btn-sm"
+			}
+			if (isButton) {
+				themeClassName = themeClassName.replace(/link/g, "btn")
+			}
+			return themeClassName
+		}, [isOutline, theme, className, isBig, isSmall, isButton])
+
+		const attributes: LinkProps = {
+			...rest,
+			to: href || "#",
+			className: customClassName
 		}
 
-		if (className) {
-			themeClassName += " " + className
+		if (window.electron && href?.startsWith("http")) {
+			attributes.onClick = (e) => {
+				e.preventDefault()
+				bridgeApi.goToUrl(href)
+			}
 		}
-		if (isBig) {
-			themeClassName += " btn-lg"
-		}
-		if (isButton) {
-			themeClassName = themeClassName.replace(/link/g, "btn")
-		}
-		return themeClassName
-	}, [isOutline, theme, className, isBig, isButton])
 
-	const attributes: LinkProps = {
-		...rest,
-		to: href || "#",
-		className: customClassName
+		if (isLoading) {
+			attributes["aria-disabled"] = true
+		}
+
+		return <Link {...attributes}>{children}</Link>
 	}
-
-	if (window.electron && href?.startsWith("http")) {
-		attributes.onClick = (e) => {
-			e.preventDefault()
-			bridgeApi.goToUrl(href)
-		}
-	}
-
-	if (isLoading) {
-		attributes["aria-disabled"] = true
-	}
-
-	return <Link {...attributes}>{children}</Link>
-}

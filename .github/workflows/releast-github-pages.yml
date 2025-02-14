@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'apps/interface/**'
+      - 'apps/docs/**'
 
 jobs:
   build-and-deploy:

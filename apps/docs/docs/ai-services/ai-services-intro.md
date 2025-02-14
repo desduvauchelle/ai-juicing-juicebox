@@ -1,49 +1,74 @@
 ---
 sidebar_position: 1
 ---
-# What are AI Services? 🤖
 
-What we mean by AI services are any and all AI models available.
+# Understanding AI Services 🤖
 
-These can be cloud solutions, like OpenAI models, Anthropic, DeepSeek, or any other AI model that is available through an API.
+AI services encompass a wide range of AI models accessible for various applications.
 
-You can also run models on your own computer for full privacy, control, cost savings and control! That's our preferred way of doing things, but each their own.
+These services are often provided as cloud solutions, such as OpenAI models, Anthropic, and DeepSeek, accessible through APIs.
 
-## The Magical World of AI Services ✨
+Alternatively, you can run models locally on your own computer, offering enhanced privacy, control, and potential cost savings. While this is our preferred approach, the optimal choice depends on individual needs.
 
-Think of AI services like magical libraries created by companies such as OpenAI (creators of ChatGPT), Anthropic, and others. These companies have built incredible AI "brains" that can help us do amazing things! 🧠
+## Exploring the World of AI Services ✨
 
-## How JUICEBOX AI Works with These Services 🧃
+Think of AI services as sophisticated tools developed by companies like OpenAI (creators of ChatGPT) and Anthropic. These companies have engineered powerful AI models capable of performing complex tasks. 🧠
 
-JUICEBOX AI is like a friendly connector that helps you talk to all these different AI services. We're kind of like a universal remote control that works with many different TVs! 📺
+## How JUICEBOX AI Integrates with AI Services 🧃
+
+JUICEBOX AI acts as a seamless interface, enabling you to interact with diverse AI services effortlessly. We provide a unified platform for accessing and utilizing various AI models. 📺
 
 ## Free AI Services
 
-Some AI services, like Ollama, are completely free to use. You can think of them as magical libraries that are always open and free to visit! 📚
+Certain AI services, such as Ollama, are available for free use. These services offer open access to AI capabilities without incurring any costs. 📚
 
-This is possible because Ollama runs directly on your computer, so there are no usage costs or subscriptions. It's like having a magical book that lives in your house! 🏠
+Ollama operates directly on your computer, eliminating usage fees and subscription requirements. It's like having a personal AI model readily available on your device! 🏠
 
-## About Payments and Access 💳
+## Payments and Access Explained 💳
 
-Here's the important part: To use these AI services, you'll need two things:
+To utilize AI services, you typically need:
 
-1. An account with the AI service you want to use
-2. A special password (called an "API key") from them
+1. An account with the specific AI service provider.
+2. An API key, serving as a unique access credential.
 
-It's kind of like having a library card - you need to get your own card (API key) to check out books (use the AI)!
+This is similar to obtaining a library card, which grants you access to borrow books (use the AI).
 
-## Why Do I Need My Own Account for cloud solutions? 🤔
+## Why Use Your Own Account for Cloud Solutions? 🤔
 
-We at JUICEBOX AI want to keep everything free and open source (which means anyone can see and use our code). Instead of us handling payments and charging you extra fees, you can work directly with the AI companies. This way:
+At JUICEBOX AI, we are committed to maintaining a free and open-source platform. By allowing you to interact directly with AI service providers, we ensure transparency and avoid unnecessary fees. This approach offers several advantages:
 
-- You're in control of your own accounts 🎮
-- You pay only for what you use 💰
-- Everything stays transparent and simple! ✨
+- Direct control over your accounts. 🎮
+- Payment only for the resources you consume. 💰
+- A transparent and straightforward process. ✨
 
-Maybe in the future, we'll create a paid service so that you don't have to create an account everywhere, just use our service and pick whatever model is available. But for now, we're keeping it simple and free! 🆓
+In the future, we may introduce a paid service that streamlines access to various models, eliminating the need for multiple accounts. However, for now, we prioritize simplicity and accessibility. 🆓
 
-## What's Next? ➡️
+## Which service to choose?
 
-In the following sections, we'll show you how to get set up with different AI services. Don't worry - we'll guide you through each step! 🌟
+To be honest, it doesn't matter, they are all very very good and do virtually the same things. Depending on what's more important to you, here are some suggestions:
 
-Remember: If you can use a library card, you can handle an API key! It's that simple! 😊
+**Price sensitive:**
+
+- Install and run your own model, see the Ollama section for that
+- Google: They have a very generous free tier at the moment
+
+**Privacy:**
+
+- Run Ollama on your computer
+
+**Speed:**
+
+- Pick a cloud provider. They have the best hardware and can run the models the fastest.
+- Pick smaller models. They are faster to run.
+
+**Quality:**
+
+- Pick larger models, independent of where they are run.
+
+After that, it's open game. Try them all. See which one you like best.
+
+## Next Steps ➡️
+
+In the following sections, we will guide you through the setup process for different AI services, providing step-by-step instructions. 🌟
+
+Remember: Obtaining an API key is as simple as getting a library card! 😊

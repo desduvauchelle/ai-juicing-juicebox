@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import Input from '../components/Input'
-import Button from '../components/Button'
+import Button, { MyLink } from '../components/Button'
 import Select from '../components/Select'
 import { AiService, IAIService, IModel, services } from '../../types/IAIService'
 import { useMainContext } from '../context/MainContext'
 import { fetchOllamaModels } from '../tools/fetchOllamaModels'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCircleQuestion, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { InlineAlert } from '../components/InlineAlert'
 
 
@@ -123,6 +123,11 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 						value: service
 					}))
 				]}
+				topRight={<>
+					<MyLink theme="primary" href="https://desduvauchelle.github.io/ai-juicing-juicebox/docs/docs/ai-services/ai-services-intro">
+						<FontAwesomeIcon icon={faCircleQuestion} />
+					</MyLink>
+				</>}
 			/>
 
 			{(interfaceDestination === 'github' && ["Ollama"].includes(formData.service)) && <>

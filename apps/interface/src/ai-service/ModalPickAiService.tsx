@@ -3,9 +3,9 @@ import { useMainContext } from '../context/MainContext'
 import { IAIService } from '../../types/IAIService'
 import modelsList from '../data/modelList'
 import Select from '../components/Select'
-import Button from '../components/Button'
+import Button, { MyLink } from '../components/Button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCircle, faCog, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import Radio from '../components/Radio'
 
 interface ModalPickAiServiceProps {
@@ -134,13 +134,20 @@ export const ModalPickAiService: React.FC<ModalPickAiServiceProps> = ({ isOpen, 
 		<dialog id="modal-pick-ai" className="modal ">
 			<div className="modal-box">
 				<form method="dialog">
-					<button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => {
+					<button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-2xl" onClick={() => {
 						const modal = document.getElementById("modal-pick-ai") as HTMLDialogElement
 						modal?.close()
 						onCancel()
 					}}>✕</button>
 				</form>
-				<h3 className="font-bold text-lg mb-4">Select an AI Service</h3>
+				<div className="flex flex-row gap-2 items-center">
+					<h3 className="font-bold text-lg">
+						Select an AI Service
+					</h3>
+					<MyLink isButton isSmall theme="ghost" href="/settings/llm-configs">
+						<FontAwesomeIcon icon={faCog} />
+					</MyLink>
+				</div>
 				{Object.entries(groupedServices).map(([serviceName, configs], i) => {
 					return <ServiceDisplay key={i} serviceName={serviceName} configs={configs} onSelect={onSelect} />
 				})}
