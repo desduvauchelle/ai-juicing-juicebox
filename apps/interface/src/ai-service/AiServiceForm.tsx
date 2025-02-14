@@ -12,6 +12,11 @@ import { InlineAlert } from '../components/InlineAlert'
 
 const needsUrl: AiService[] = ["Ollama", "OpenAI Compatible"]
 const needsApiKey: AiService[] = ["OpenAI", "Anthropic", "Google", "DeepSeek", "Mistral", "xAI", "Groq", "Replicate"]
+
+
+// @ts-expect-error - This is a global variable injected in the vite builder
+const interfaceDestination = window.DESTINATION
+
 interface AiServiceFormProps {
 	initialValues?: IAIService
 	afterSubmit?: () => void
@@ -99,8 +104,14 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 	}
 	// console.log('IS_STATIC:', window.IS_STATIC ?? false)
 
+
 	return (
 		<form onSubmit={handleSubmit} className="max-w-sm mx-auto p-4 bg-base-100 rounded space-y-4 text-left">
+			{interfaceDestination === 'github' && <>
+				<InlineAlert type="warning">
+					<p>You are using the DEMO, your information is not stored, a page refresh will clear your configuration.</p>
+				</InlineAlert>
+			</>}
 			<Select
 				label="Service"
 				name="service"
@@ -113,6 +124,12 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 					}))
 				]}
 			/>
+
+			{(interfaceDestination === 'github' && ["Ollama"].includes(formData.service)) && <>
+				<InlineAlert type="warning">
+					<p>Only localhost is enabled in DEMO. Download app to try with other URLs</p>
+				</InlineAlert>
+			</>}
 
 			{needsUrl.includes(formData.service) && (
 				<>

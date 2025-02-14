@@ -104,7 +104,7 @@ const ChatMessage: React.FC<{
 								<div className="mockup-browser-toolbar">
 									<div className="input border-base-100 border">{chat.data.url.url}</div>
 								</div>
-								<div className="border-base-300 bg-base-200 flex flex-col justify-center border-t px-4 pt-4 pb-2">
+								<div className="border-base-300 bg-base-200 flex flex-col justify-center border-t px-4 pt-4 pb-0">
 
 									<div className={`w-full rl ${showWebsiteContent ? "max-h-96 overflow-y-auto" : "line-clamp-5"}`}>
 										{chat.data.url.content}
@@ -112,8 +112,7 @@ const ChatMessage: React.FC<{
 									<p className="text-center"><Button
 										theme="ghost"
 										isSmall
-										onClick={() => setShowWebsiteContent(!showWebsiteContent)}
-										className="mb-2">
+										onClick={() => setShowWebsiteContent(!showWebsiteContent)}>
 										<FontAwesomeIcon icon={faChevronDown} className={`${showWebsiteContent ? "rotate-180" : ""} mr-2`} />
 										{showWebsiteContent ? 'Show less' : 'Show more'}
 									</Button></p>
