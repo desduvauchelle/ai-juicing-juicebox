@@ -2,12 +2,107 @@ import React, { useLayoutEffect } from 'react'
 import { useMainContext } from '../context/MainContext'
 import { IAIService } from '../../types/IAIService'
 import modelsList from '../data/modelList'
+import Select from '../components/Select'
+import Button from '../components/Button'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import Radio from '../components/Radio'
 
 interface ModalPickAiServiceProps {
 	isOpen: boolean
 	onSelect: (service: IAIService, modelName?: string) => void
 	onCancel: () => void
 }
+
+
+const getModelsForService = (serviceName: string) => {
+	return modelsList.filter(model => model.service === serviceName)
+}
+
+const ServiceDisplay: React.FC<{
+	serviceName: string,
+	configs: IAIService[],
+	onSelect: (service: IAIService, modelName?: string) => void
+}> = ({ serviceName, configs, onSelect }) => {
+	const mainContext = useMainContext()
+	// const [selectedConfigId, setSelectedConfigId] = React.useState<number | null>(null)
+
+	const handleMakeDefault = (config: IAIService, modelName: string) => {
+		mainContext.actions.userSettings.update({
+			defaultAiService: {
+				configId: config.id,
+				modelName
+			}
+		})
+		onSelect(config, modelName)
+	}
+
+	return <div className='py-2'>
+		<div className="flex flex-row items-center gap-2">
+			<span className='uppercase opacity-50 font-medium tracking-wider text-sm flex-grow'>{serviceName}</span>
+			{/* {configs.length === 1 && <>
+				<span className="badge badge-sm">{configs[0].name}</span>
+			</>}
+			{configs.length > 1 && <>
+				<Select
+					options={[
+						{ label: 'Select a config', value: '' },
+						...configs.map(config => ({ label: config.name, value: config.id.toString() }))
+					]}
+					className='select-xs'
+					onChange={value => {
+						if (!value.target.value) {
+							setSelectedConfigId(null)
+							return
+						}
+						setSelectedConfigId(parseInt(value.target.value))
+					}}
+				/>
+			</>} */}
+		</div>
+		<div className="border-l border-base-300 pl-2 py-1">
+			{configs.map(config => {
+				const models = [
+					...(config.models || []),
+					...getModelsForService(config.service)
+				]
+				return <div key={config.id}>
+					{configs.length > 1 && <h3 className="uppercase opacity-50 font-medium tracking-wider text-sm">{config.name}</h3>}
+					<ul className="list-none" key={config.id}>
+						{models.map(model => {
+							const isDefault = mainContext.userSettings?.defaultAiService?.configId === config.id && mainContext.userSettings.defaultAiService?.modelName === model.name
+							return <li key={model.name} className='py-1 px-2 flex flex-row items-center gap-3 hover:bg-base-300 transition-all duration-300 ease-in-out rounded-full group'>
+								<Button
+									role="button"
+									tooltip='Make default'
+									className={isDefault ? 'text-primary' : 'text-base-200 group-hover:text-base-100'}
+									onClick={() => handleMakeDefault(config, model.name)}
+									theme="custom">
+									<FontAwesomeIcon icon={faCircle} />
+								</Button>
+
+								<Button
+									theme="custom"
+									role='button'
+									onClick={() => {
+										onSelect(config, model.name)
+										const modal = document.getElementById("modal-pick-ai") as HTMLDialogElement
+										modal?.close()
+									}}>
+									{model.displayName || model.name}
+
+								</Button>
+							</li>
+						})}
+
+					</ul>
+
+				</div>
+			})}
+		</div>
+	</div>
+}
+
 
 export const ModalPickAiService: React.FC<ModalPickAiServiceProps> = ({ isOpen, onSelect, onCancel }) => {
 	const context = useMainContext()
@@ -31,11 +126,9 @@ export const ModalPickAiService: React.FC<ModalPickAiServiceProps> = ({ isOpen, 
 			acc[service.service].push(service)
 			return acc
 		}, {} as Record<string, IAIService[]>)
-		: null
+		: {}
 
-	const getModelsForService = (serviceName: string) => {
-		return modelsList.filter(model => model.service === serviceName)
-	}
+
 
 	return (
 		<dialog id="modal-pick-ai" className="modal ">
@@ -47,80 +140,10 @@ export const ModalPickAiService: React.FC<ModalPickAiServiceProps> = ({ isOpen, 
 						onCancel()
 					}}>✕</button>
 				</form>
-				{groupedServices ? (
-					<>
-						<h3 className="font-bold text-lg mb-4">Select an AI Service</h3>
-						<ul className="menu">
-							{Object.entries(groupedServices).map(([serviceName, configs]) => (
-								<li key={serviceName}>
-									<h2 className="menu-title uppercase">{serviceName}</h2>
-									<ul>
-										{configs.map(config => (
-											<li key={config.id}>
-												{config.service === 'Ollama' ? (
-													<>
-														<h3 className="menu-title">{config.name}</h3>
-														{config.models && config.models.length > 0 && (
-															<ul>
-																{config.models.map(model => (
-																	<li key={model.name}>
-																		<a onClick={() => {
-																			onSelect(config, model.name)
-																			const modal = document.getElementById("modal-pick-ai") as HTMLDialogElement
-																			modal?.close()
-																		}}>
-																			{model.name}
-																			{model.isDefault && (
-																				<span className="badge badge-sm badge-primary ml-2">Default</span>
-																			)}
-																		</a>
-																	</li>
-																))}
-															</ul>
-														)}
-													</>
-												) : (
-													<>
-														<h3 className="menu-title">{config.name}</h3>
-														<ul>
-															{getModelsForService(config.service).map(model => (
-																<li key={model.name}>
-																	<a onClick={() => {
-																		onSelect(config, model.name)
-																		const modal = document.getElementById("modal-pick-ai") as HTMLDialogElement
-																		modal?.close()
-																	}}>
-																		{model.name}
-																		<div className="text-xs opacity-70">
-																			{model.features.isMultiModal && "MultiModal • "}
-																			{model.features.hasStructuredData && "Structured • "}
-																			{model.features.hasToolUse && "Tools"}
-																		</div>
-																	</a>
-																</li>
-															))}
-														</ul>
-													</>
-												)}
-											</li>
-										))}
-									</ul>
-								</li>
-							))}
-						</ul>
-					</>
-				) : (
-					<>
-						<h3 className="font-bold text-lg mb-4">No AI Services Configured</h3>
-						<button className="btn btn-primary" onClick={() => {
-							const modal = document.getElementById("modal-pick-ai") as HTMLDialogElement
-							modal?.close()
-							onCancel()
-						}}>
-							Close
-						</button>
-					</>
-				)}
+				<h3 className="font-bold text-lg mb-4">Select an AI Service</h3>
+				{Object.entries(groupedServices).map(([serviceName, configs], i) => {
+					return <ServiceDisplay key={i} serviceName={serviceName} configs={configs} onSelect={onSelect} />
+				})}
 			</div>
 			<form method="dialog" className="modal-backdrop">
 				<button onClick={() => {

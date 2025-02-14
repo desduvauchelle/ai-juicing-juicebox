@@ -30,7 +30,7 @@ const createWindow = (): void => {
 	const mainWindow = new BrowserWindow({
 		width: 1000,
 		height: 600,
-		titleBarStyle: 'hidden',
+		titleBarStyle: process.platform === 'darwin' ? 'hidden' : undefined,
 		webPreferences: {
 			nodeIntegration: false,
 			webSecurity: !isDev,

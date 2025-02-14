@@ -18,11 +18,7 @@ export interface IAIService {
 	service: AiService
 	url?: string
 	apiKey?: string
-	isDefault?: boolean
-	models?: Array<{
-		name: string
-		isDefault?: boolean
-	}>
+	models?: Omit<IModel, "service">[]
 }
 
 export type OllamaModel = {
@@ -35,11 +31,11 @@ export type OllamaModel = {
 export interface IModel {
 	service: AiService,
 	name: string,
-	fullName?: string,
+	displayName?: string,
+	isDefault?: boolean,
 	features: {
-		canStream?: boolean,
-		isMultiModal?: boolean,
-		hasStructuredData?: boolean,
+		context?: number,
+		hasJson?: boolean,
 		hasToolUse?: boolean,
 		forImage?: boolean,
 		forEmbedding?: boolean,

@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import ChatMessage from './components/ChatMessage'
 import { ChatInputBox } from './components/ChatInputBox'
 import useGlobalAi from '../../../hooks/useGlobalAi'
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const maxWidth = 'max-w-3xl w-full mx-2 lg:mx-auto'
 
@@ -24,6 +26,9 @@ const ChatViewBasic: React.FC = () => {
 	const initialMessageSent = React.useRef(false)
 
 	const [newMessage, setNewMessage] = useState('')
+	const [instructions, setInstructions] = useState<string>(conversation?.instruction || "You are a helpful assistant")
+	const [instructionSaved, setInstructionSaved] = useState(false)
+	const [instructionSaving, setInstructionSaving] = useState(false)
 
 	useEffect(() => {
 		// Scroll to the bottom of the chat smoothly
@@ -63,8 +68,9 @@ const ChatViewBasic: React.FC = () => {
 			alert("Invalid config")
 			return
 		}
-		try {
+		chatInputRef.current?.focus()
 
+		try {
 			setIsTyping(true)
 			isTypingRef.current = true
 			setNewMessage('')
@@ -102,12 +108,17 @@ const ChatViewBasic: React.FC = () => {
 						behavior: 'smooth'
 					})
 				}, 20)
+				chatInputRef.current?.focus()
 			}
 		} catch (error) {
 			setIsTyping(false)
 			isTypingRef.current = false
 			console.error("Failed to generate AI response", error)
-			alert("Failed to generate AI response")
+			if (error instanceof Error) {
+				alert(error.message)
+			} else {
+				alert("Failed to generate AI response")
+			}
 		}
 	}, [isTyping, newMessage, conversationContext?.actions.chat, conversationContext.selectedConfig, conversation, globalAi.actions, chats, streamCallback])
 
@@ -131,10 +142,43 @@ const ChatViewBasic: React.FC = () => {
 		await send()
 	}
 
+	const onSaveInstructions = async (e?: React.FormEvent) => {
+		if (e) e.preventDefault()
+		if (!conversation) return
+		if (instructionSaving) return
+		setInstructionSaving(true)
+		await conversationContext?.actions.update({
+			id: conversation.id,
+			instruction: instructions
+		})
+		setInstructionSaving(false)
+		setInstructionSaved(true)
+		setTimeout(() => {
+			setInstructionSaved(false)
+		}, 3000)
+	}
+
 	return <div className="w-full h-full">
 		<div className="flex flex-col h-full">
 			<div className="flex-1 overflow-y-auto space-y-1" ref={wrapperRef}>
 				<div className="h-8"></div>
+				<form onSubmit={onSaveInstructions} className={`${maxWidth} relative text-center text-sm text-gray-500 pb-6`}>
+					<ChatInputBox
+						id="chat-instruction"
+						value={instructions}
+						className="border-transparent text-center"
+						disabled={instructionSaving}
+						onChange={(e) => setInstructions(e.target.value)}
+						onSubmit={onSaveInstructions} />
+					{instructionSaved && <p className="absolute bottom-0 left-0 w-full text-center italic font-medium text-success/50">
+						<FontAwesomeIcon icon={faCheckCircle} className="mr-2" />
+						Instruction saved
+					</p>}
+					{instructionSaving && <p className="absolute bottom-0 left-0 w-full text-center italic font-medium text-primary/50 animate-pulse">
+						<FontAwesomeIcon icon={faCheckCircle} className="mr-2" />
+						Instruction saved
+					</p>}
+				</form>
 				{chats.map((chat) => {
 					const isUser = chat.role === "user"
 					return <div
@@ -171,7 +215,7 @@ const ChatViewBasic: React.FC = () => {
 						id="chat-input"
 						ref={chatInputRef}
 						autoFocus
-						disabled={isTyping}
+						// disabled={isTyping}
 						maxRows={6}
 						value={newMessage}
 						onChange={(e) => {

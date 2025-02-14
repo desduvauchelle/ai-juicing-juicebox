@@ -5,7 +5,11 @@ import Button from "../../components/Button"
 import ChatViewCoAuthor from './ChatViews/ChatViewCoAuthor'
 import { ModalPickAiService } from '../../ai-service/ModalPickAiService'
 import ChatViewRepeater from './ChatViews/ChatViewRepeater'
+import ChatViewChain from './ChatViews/ChatViewChain'
+import { IConversationTypes } from '../../../types/IConversation'
 
+
+const showAiModelFor: IConversationTypes[] = ["chat", "co-authoring", "repeater"]
 
 const ChatViewWrapper: React.FC<{
 	conversationId: string
@@ -61,28 +65,30 @@ const ChatViewWrapper: React.FC<{
 				onCancel={() => setShowAiModal(false)}
 			/>
 
-			<div className="absolute top-0 right-3 w-full flex flex-row gap-2 items-center ">
-				<div className="flex-grow"></div>
-				<Button theme="ghost"
-					onClick={() => setShowAiModal(true)}
-					className="rounded-tr-3xl rounded-b-none rounded-l-none flex flex-row gap-3 items-center">
-					{conversationContext?.selectedConfig?.service === 'Ollama' && <>
-						{conversationContext?.configChecker.isRunning && <>
-							<div className="w-4 h-4 rounded-full bg-green-500"></div>
+			{showAiModelFor.includes(conversation.type) && <>
+				<div className="absolute top-0 right-3 w-full flex flex-row gap-2 items-center ">
+					<div className="flex-grow"></div>
+					<Button theme="ghost"
+						onClick={() => setShowAiModal(true)}
+						className="rounded-tr-3xl rounded-b-none rounded-l-none flex flex-row gap-3 items-center">
+						{conversationContext?.selectedConfig?.service === 'Ollama' && <>
+							{conversationContext?.configChecker.isRunning && <>
+								<div className="w-4 h-4 rounded-full bg-green-500"></div>
+							</>}
+							{!conversationContext?.configChecker.isRunning && <>
+								<div className="w-4 h-4 rounded-full bg-red-500"></div>
+							</>}
 						</>}
-						{!conversationContext?.configChecker.isRunning && <>
-							<div className="w-4 h-4 rounded-full bg-red-500"></div>
-						</>}
-					</>}
 
-					<span>
-						{conversationContext.selectedConfig?.name || "No config"}
-					</span>
-					{conversationContext.conversation?.modelName && <span>
-						{conversationContext.conversation?.modelName}
-					</span>}
-				</Button>
-			</div>
+						<span>
+							{conversationContext.selectedConfig?.name || "No config"}
+						</span>
+						{conversationContext.conversation?.modelName && <span>
+							{conversationContext.conversation?.modelName}
+						</span>}
+					</Button>
+				</div>
+			</>}
 
 			{conversation.type === "chat" && <>
 				<ChatViewBasic />
@@ -93,6 +99,10 @@ const ChatViewWrapper: React.FC<{
 
 			{conversation.type === "repeater" && <>
 				<ChatViewRepeater />
+			</>}
+
+			{conversation.type === "chain" && <>
+				<ChatViewChain />
 			</>}
 
 		</>

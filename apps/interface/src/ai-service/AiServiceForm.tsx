@@ -2,13 +2,12 @@ import React, { useState } from 'react'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import Select from '../components/Select'
-import { AiService, IAIService, services } from '../../types/IAIService'
+import { AiService, IAIService, IModel, services } from '../../types/IAIService'
 import { useMainContext } from '../context/MainContext'
 import { fetchOllamaModels } from '../tools/fetchOllamaModels'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRefresh } from '@fortawesome/free-solid-svg-icons'
+import { faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { InlineAlert } from '../components/InlineAlert'
-import Radio from '../components/Radio'
 
 
 const needsUrl: AiService[] = ["Ollama", "OpenAI Compatible"]
@@ -41,15 +40,7 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 		setFormData({ ...formData, [e.target.name]: e.target.value })
 	}
 
-	const handleModelDefaultChange = (modelName: string) => {
-		setFormData(prev => ({
-			...prev,
-			models: prev.models?.map(model => ({
-				...model,
-				isDefault: model.name === modelName
-			}))
-		}))
-	}
+
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
@@ -61,14 +52,9 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 					updates: formData
 				})
 			} else {
-				// Check if this is the first config for this service
-				const isFirstForService = !existingConfigs.some(
-					config => config.service === formData.service
-				)
 
 				await actions.aiServices.create({
-					...formData,
-					isDefault: isFirstForService
+					...formData
 				})
 			}
 			if (afterSubmit) afterSubmit()
@@ -93,14 +79,12 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 				return
 			}
 
-			const modelList = result.models.map(m => ({
+			const modelList: IModel[] = result.models.map(m => ({
 				name: m.name,
-				isDefault: false
+				service: formData.service,
+				features: {} // Ensure features match the IModel interface
 			}))
-			// Set first model as default if no default is set
-			if (modelList.length > 0) {
-				modelList[0].isDefault = true
-			}
+
 
 			setFormData(prev => ({
 				...prev,
@@ -171,13 +155,17 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 						{formData.models && formData.models.length > 0 && (
 							<ul className="space-y-2 max-h-60 overflow-y-auto">
 								{formData.models.map(model => (
-									<li key={model.name}>
-										<button
+									<li key={model.name} className='w-full flex items-center gap-2 p-2 hover:bg-base-200 rounded-lg group'>
+										<span className="flex-grow text-left">{model.name}</span>
+										<Button
+											theme="danger"
+											isOutline
+											isSmall
 											type="button"
-											onClick={() => handleModelDefaultChange(model.name)}
-											className="w-full flex items-center gap-2 p-2 hover:bg-base-200 rounded-lg">
-											<span className="flex-grow text-left">{model.name}</span>
-										</button>
+											className='opacity-0 group-hover:opacity-100'
+											onClick={() => { }}>
+											<FontAwesomeIcon icon={faTrash} />
+										</Button>
 									</li>
 								))}
 							</ul>
@@ -207,9 +195,16 @@ const AiServiceForm: React.FC<AiServiceFormProps> = ({ initialValues, configId, 
 				onChange={handleChange}
 			/>
 
-			<Button type="submit" theme="primary">
-				Save
-			</Button>
+			<div className="flex flex-row gap-4 items-center">
+				<Button type="submit" theme="primary">
+					Save
+				</Button>
+				<Button type="button" theme="primary" isOutline onClick={() => {
+					if (afterSubmit) afterSubmit()
+				}}>
+					Cancel
+				</Button>
+			</div>
 		</form>
 	)
 }

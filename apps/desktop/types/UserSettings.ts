@@ -6,4 +6,8 @@ export interface UserSettings {
 	notificationsEnabled?: boolean
 	aiServices?: IAIService[]
 	folders?: IFileExplorerFolder[]
+	defaultAiService?: {
+		configId: number | string,
+		modelName: string
+	}
 }

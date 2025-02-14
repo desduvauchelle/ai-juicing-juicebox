@@ -4,11 +4,6 @@ import aiStreamObject from '../ai-tools/aiStreamObject'
 
 const useGlobalAi = () => {
 
-
-
-
-
-
 	return {
 		actions: {
 			streamMessage: aiStreamMessage,

@@ -1,6 +1,8 @@
-.markdown{
-	@apply  break-all;
+
+.markdown {
+	@apply break-words;
 }
+
 .markdown h1 {
 	@apply text-4xl font-bold my-4;
 }
@@ -38,7 +40,7 @@
 	@apply bg-gray-900 text-white p-2 my-2 max-w-full overflow-x-auto;
 }
 .markdown code {
-	@apply  p-1 break-words overflow-x-scroll;
+	@apply  p-1 break-all overflow-x-scroll;
 }
 .markdown a {
 	@apply text-blue-500 underline;

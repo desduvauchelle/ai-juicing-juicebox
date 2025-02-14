@@ -4,7 +4,6 @@ import { IAIService, services } from '../../../types/IAIService'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AlertModal, showModal, hideModal } from '../../components/AlertModal'
-import Radio from '../../components/Radio'
 import AiServiceForm from '../../ai-service/AiServiceForm'
 import { useMainContext } from '../../context/MainContext'
 
@@ -21,13 +20,7 @@ const AiServicesPage: React.FC = () => {
 		await actions.aiServices.delete({ configId: id })
 	}
 
-	const handleDefaultChange = async (configId: number) => {
-		try {
-			await actions.aiServices.setDefault({ configId })
-		} catch (error) {
-			console.error('Error setting default config:', error)
-		}
-	}
+
 
 	// Group configs by service and filter out services with no configs
 	const groupedConfigs = [...services]
@@ -67,20 +60,7 @@ const AiServicesPage: React.FC = () => {
 									</Button>
 									<div className="flex-grow"></div>
 
-									<Radio
-										name="default-config"
-										label="Default"
-										theme={config.isDefault ? 'primary' : 'custom'}
-										isSmall
-										setTextToLeft
-										checked={!!config.isDefault}
-										onChange={(e) => {
-											if (e.target.checked) {
-												handleDefaultChange(config.id)
-											}
-										}}
-										value={config.id.toString()}
-									/>
+
 
 								</div>
 							</li>

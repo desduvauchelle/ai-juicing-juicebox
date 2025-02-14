@@ -10,7 +10,8 @@ const aiStreamMessage = async ({
 	streamingCallback,
 	chatHistory = 20,
 	aiService,
-	modelName
+	modelName,
+	systemPrompt
 }: {
 	chats: IConversationChat[],
 	text?: string,
@@ -69,14 +70,23 @@ const aiStreamMessage = async ({
 			throw new Error("No SDK found")
 		}
 
+		const formattedChats = chats.slice(-chatHistory).map(c => {
+			return {
+				role: c.role,
+				content: c.text
+			}
+		})
+
+		if (systemPrompt) {
+			formattedChats.unshift({
+				role: "system",
+				content: systemPrompt
+			})
+		}
+
 		const response = streamText({
 			model: sdk,
-			messages: chats.slice(-chatHistory).map(c => {
-				return {
-					role: c.role,
-					content: c.text
-				}
-			}),
+			messages: formattedChats,
 		})
 		let streamString = ""
 		for await (const textPart of response.textStream) {

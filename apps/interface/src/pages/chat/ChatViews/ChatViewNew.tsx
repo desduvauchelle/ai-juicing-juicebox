@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../components/Button'
 import { useRef, useState, useEffect } from 'react'
-import { faArrowRight, faFileLines, faInfinity, faRobot, IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faChain, faFileLines, faInfinity, faRobot, IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ChatInputBox } from './components/ChatInputBox'
 import { IAIService } from '../../../../types/IAIService'
@@ -36,6 +36,13 @@ const chatViewsList: IChatView[] = [
 		icon: faInfinity,
 		description: "Same prompt everytime, perfect for customer support emails, or any task you repeat all the time.",
 		type: "repeater"
+	},
+	{
+		id: 4,
+		name: "Chain",
+		icon: faChain,
+		description: "Chain multiple AI requests together to a greater output.",
+		type: "chain"
 	}
 ]
 
@@ -63,24 +70,25 @@ const ChatViewNew: React.FC = () => {
 
 	// Add useEffect to set default service on load
 	useEffect(() => {
-		if (!selectedConfig && aiServices.length > 0) {
-			// Try to find a default service
-			const defaultService = aiServices.find(service => service.isDefault)
-			if (defaultService) {
-				setSelectedConfig(defaultService.id)
-				// If it's an Ollama service with models, select the default model
-				if (defaultService.service === 'Ollama' && defaultService.models?.length) {
-					const defaultModel = defaultService.models.find(m => m.isDefault)
-					if (defaultModel) {
-						setSelectedModel(defaultModel.name)
-					}
+		if (selectedConfig) return
+		if (aiServices.length === 0) return
+		const userDefaultSettings = mainContext.userSettings?.defaultAiService
+		if (!userDefaultSettings) return
+
+		const defaultService = aiServices.find(service => service.id === userDefaultSettings.configId)
+		if (defaultService) {
+			setSelectedConfig(defaultService.id)
+			// If it's an Ollama service with models, select the default model
+			if (defaultService.service === 'Ollama' && defaultService.models?.length) {
+				const defaultModel = defaultService.models.find(m => m.name === userDefaultSettings.modelName)
+				if (defaultModel) {
+					setSelectedModel(defaultModel.name)
 				}
-			} else {
-				// If no default, just use the first service
-				setSelectedConfig(aiServices[0].id)
 			}
 		}
-	}, [aiServices, selectedConfig])
+
+
+	}, [aiServices, mainContext.userSettings?.defaultAiService, selectedConfig])
 
 	const createChat = async (type: IConversationTypes) => {
 		if (!selectedConfig) {
