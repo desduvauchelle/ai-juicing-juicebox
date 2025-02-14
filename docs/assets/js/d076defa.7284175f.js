@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdocs=self.webpackChunkdocs||[]).push([[474],{3476:e=>{e.exports=JSON.parse('{"tags":[{"label":"Feature","permalink":"/ai-juicing-juicebox/docs/blog/tags/feature","description":"Feature updates","count":1}]}')}}]);

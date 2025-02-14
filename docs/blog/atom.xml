@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="atom.xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://desduvauchelle.github.io/ai-juicing-juicebox/docs/blog</id>
+    <title>JUICEBOX AI Blog</title>
+    <updated>2025-02-14T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://desduvauchelle.github.io/ai-juicing-juicebox/docs/blog"/>
+    <subtitle>JUICEBOX AI Blog</subtitle>
+    <icon>https://desduvauchelle.github.io/ai-juicing-juicebox/docs/img/favicon/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[First blog post]]></title>
+        <id>https://desduvauchelle.github.io/ai-juicing-juicebox/docs/blog/first</id>
+        <link href="https://desduvauchelle.github.io/ai-juicing-juicebox/docs/blog/first"/>
+        <updated>2025-02-14T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[This is the first blog post on our site! 🎉]]></summary>
+        <content type="html"><![CDATA[<p>This is the first blog post on our site! 🎉</p>]]></content>
+        <author>
+            <name>Denis Duvauchelle</name>
+            <uri>https://github.com/desduvauchelle</uri>
+        </author>
+        <category label="Feature" term="Feature"/>
+    </entry>
+</feed>

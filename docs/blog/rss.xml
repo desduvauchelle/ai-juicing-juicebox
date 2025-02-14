@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="rss.xsl"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>JUICEBOX AI Blog</title>
+        <link>https://desduvauchelle.github.io/ai-juicing-juicebox/docs/blog</link>
+        <description>JUICEBOX AI Blog</description>
+        <lastBuildDate>Fri, 14 Feb 2025 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[First blog post]]></title>
+            <link>https://desduvauchelle.github.io/ai-juicing-juicebox/docs/blog/first</link>
+            <guid>https://desduvauchelle.github.io/ai-juicing-juicebox/docs/blog/first</guid>
+            <pubDate>Fri, 14 Feb 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[This is the first blog post on our site! 🎉]]></description>
+            <content:encoded><![CDATA[<p>This is the first blog post on our site! 🎉</p>]]></content:encoded>
+            <category>Feature</category>
+        </item>
+    </channel>
+</rss>
