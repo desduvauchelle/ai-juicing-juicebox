@@ -1,6 +1,6 @@
 {
-	"label": "AI",
-	"position": 2,
+	"label": "AI services",
+	"position": 3,
 	"link": {
 		"type": "doc",
 		"id": "ai-services-intro"

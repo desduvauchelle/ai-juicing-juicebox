@@ -5,36 +5,36 @@ import styles from './styles.module.css'
 
 type FeatureItem = {
 	title: string
-	Svg: React.ComponentType<React.ComponentProps<'svg'>>
+	Svg?: React.ComponentType<React.ComponentProps<'svg'>>
 	description: ReactNode
 }
 
 const FeatureList: FeatureItem[] = [
 	{
-		title: 'Use any AI',
-		Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+		title: 'Industry standard Chat',
+		// Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
 		description: (
 			<>
-				We're AI agnostic. Use any AI you want with JUICEBOX AI.
+				Our chat interface is designed to compete with the best in the industry, making it easy to adopt, and easy to use.
 			</>
 		),
 	},
 	{
-		title: 'Best experiences',
-		Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+		title: 'Use any AI model',
+		// Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
 		description: (
 			<>
-				We've recreated the experiences you already love like chat, and added a bunch more to fill some annoying holes.
+				Whatever is the best today, won't be tomorrows. That's why we let you use any AI model you want.
+				Change it, update it, or even create your own. No lockin.
 			</>
 		),
 	},
 	{
-		title: 'Powered by local AI',
-		Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+		title: 'Extended experiences',
+		// Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
 		description: (
 			<>
-				We think local AI is the future. That's AI that runs on your device, not in the cloud.
-				It's faster, more private, and more reliable.
+				Chatting is fun, but it's also limited. We are developing new interfaces and functionalities for you to juice every last drop of value out of AI.
 			</>
 		),
 	},
@@ -43,9 +43,9 @@ const FeatureList: FeatureItem[] = [
 function Feature({ title, Svg, description }: FeatureItem) {
 	return (
 		<div className={clsx('col col--4')}>
-			<div className="text--center">
+			{Svg && <div className="text--center">
 				<Svg className={styles.featureSvg} role="img" />
-			</div>
+			</div>}
 			<div className="text--center padding-horiz--md">
 				<Heading as="h3">{title}</Heading>
 				<p>{description}</p>

@@ -22,7 +22,7 @@ const config: Config = {
 	organizationName: 'desduvauchelle', // Usually your GitHub org/user name.
 	projectName: 'JUICEBOX', // Usually your repo name.
 
-	onBrokenLinks: 'throw',
+	onBrokenLinks: 'warn',
 	onBrokenMarkdownLinks: 'warn',
 
 	// Even if you don't use internationalization, you can use this field to set
@@ -72,7 +72,7 @@ const config: Config = {
 		navbar: {
 			title: 'JUICEBOX AI docs',
 			logo: {
-				alt: 'My Site Logo',
+				alt: 'AI Juicing docs',
 				src: 'img/logo.png',
 			},
 			items: [
@@ -81,8 +81,9 @@ const config: Config = {
 					sidebarId: 'tutorialSidebar',
 					position: 'left',
 					label: 'Docs',
+					to: '/docs',
 				},
-				// { to: '/blog', label: 'Blog', position: 'left' },
+				{ to: '/blog', label: 'Blog', position: 'left' },
 				{
 					href: 'https://github.com/desduvauchelle/ai-juicing-juicebox',
 					label: 'GitHub',

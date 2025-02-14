@@ -16,4 +16,6 @@ It's a place to experiment and improve. We're totally AI agnostic, and in any ca
 
 In the near future, you'll be able to access it from anywhere. But for now, you can install the app manually on your computer or try the demo.
 
-[![Demo](https://desduvauchelle.github.io/ai-juicing-juicebox)](DEMO)
+[Demo the webapp](https://desduvauchelle.github.io/ai-juicing-juicebox)
+
+The demo is limited for security reasons. You can't save your work, and you can't access the full power of the app. But you can get a taste of what's to come.

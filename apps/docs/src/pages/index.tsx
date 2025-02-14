@@ -17,10 +17,15 @@ function HomepageHeader() {
 					{siteConfig.title}
 				</Heading>
 				<p className="hero__subtitle">{siteConfig.tagline}</p>
-				<div className={styles.buttons}>
+				<div className={styles.buttons} style={{ display: 'flex', gap: '1rem' }}>
+					<a
+						className="button button--secondary button--lg"
+						href="https://desduvauchelle.github.io/ai-juicing-juicebox/">
+						Demo
+					</a>
 					<Link
 						className="button button--secondary button--lg"
-						to="/docs/intro">
+						to="/docs/welcome">
 						Get started
 					</Link>
 				</div>
