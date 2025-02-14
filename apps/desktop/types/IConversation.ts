@@ -10,6 +10,11 @@ export type IConversationChat = {
 	createdAt: number
 	conversationId: number
 	data?: {
+		// For URL
+		url?: {
+			url: string
+			content?: string
+		},
 		// For canvas
 		currentText?: string
 		text?: string
@@ -32,4 +37,5 @@ export interface IConversation {
 	updatedAt: number
 	order?: number
 	aiGeneratedTitle?: boolean
+
 }

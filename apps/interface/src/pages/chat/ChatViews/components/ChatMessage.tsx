@@ -1,4 +1,4 @@
-import { faSpinner, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faChevronDown, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useMemo, useState } from "react"
 import Markdown from "react-markdown"
@@ -15,7 +15,7 @@ const ChatMessage: React.FC<{
 }> = ({ chat, maxWidth }) => {
 	const [showThinking, setShowThinking] = useState(true)
 	const conversationContext = useConversation()
-
+	const [showWebsiteContent, setShowWebsiteContent] = useState(false)
 
 
 	const parsedText = useMemo<{ thinking?: string, response?: string, isThinking?: boolean }>(() => {
@@ -89,6 +89,54 @@ const ChatMessage: React.FC<{
 			</div>
 		</div>
 	}
+
+	if (chat.role === "assistant" && chat.data?.url) {
+		return <div className={`${maxWidth || ""} group px-4 lg:px-1`}>
+
+			<div className="flex flex-row gap-2 items-start">
+				<div className="flex-grow">
+					<div className="markdown">
+						{!chat.data.url.content && <>
+							<InlineLoader />
+						</>}
+						{chat.data.url.content && <div>
+							<div className="mockup-browser border-base-100 border">
+								<div className="mockup-browser-toolbar">
+									<div className="input border-base-100 border">{chat.data.url.url}</div>
+								</div>
+								<div className="border-base-300 bg-base-200 flex flex-col justify-center border-t px-4 pt-4 pb-2">
+
+									<div className={`w-full rl ${showWebsiteContent ? "max-h-96 overflow-y-auto" : "line-clamp-5"}`}>
+										{chat.data.url.content}
+									</div>
+									<p className="text-center"><Button
+										theme="ghost"
+										isSmall
+										onClick={() => setShowWebsiteContent(!showWebsiteContent)}
+										className="mb-2">
+										<FontAwesomeIcon icon={faChevronDown} className={`${showWebsiteContent ? "rotate-180" : ""} mr-2`} />
+										{showWebsiteContent ? 'Show less' : 'Show more'}
+									</Button></p>
+								</div>
+							</div>
+
+						</div>}
+					</div>
+				</div>
+				<div className="">
+					<Button
+						theme="custom"
+						isOutline
+						isSmall
+						className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 p-2 hover:text-red-500"
+						onClick={() => conversationContext?.actions.chat.delete(chat.id)}>
+						<FontAwesomeIcon icon={faTrash} />
+					</Button>
+				</div>
+			</div>
+		</div>
+	}
+
 
 	return <div className={`${maxWidth || ""} group px-4 lg:px-0`}>
 

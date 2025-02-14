@@ -66,6 +66,7 @@ export interface ElectronAPI {
 	systemInfoGet: () => Promise<SystemInfo>
 	ollamaModelRemote: () => Promise<OllamaRemoteModel[]>
 	goToUrl: (url: string) => void
+	urlScrape: (url: string) => Promise<string>
 }
 
 declare global {

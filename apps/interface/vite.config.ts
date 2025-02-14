@@ -45,14 +45,23 @@ if (destination === "github") {
 	config.plugins.push({
 		name: 'html-transform',
 		transformIndexHtml(html) {
+			let newHtml = html
 			if (process.env.DESTINATION === 'github') {
-				return html.replace(
+				newHtml = newHtml.replace(
 					/<head>/i,
 					`<head>
               <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src 'self' ${allowedSources.join(" ")}">`
 				)
 			}
-			return html
+			// Also add a global var called DESTINATION
+			newHtml = newHtml.replace(
+				/<head>/i,
+				`<head>
+					<script>
+						window.DESTINATION = '${destination}';
+					</script>`
+			)
+			return newHtml
 		},
 	})
 }

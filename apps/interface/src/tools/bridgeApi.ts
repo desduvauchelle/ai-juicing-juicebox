@@ -34,5 +34,9 @@ export const bridgeApi: ElectronAPI = {
 	goToUrl: (url: string): void => {
 		console.log('goToUrl', url, electron)
 		electron?.goToUrl(url)
+	},
+
+	urlScrape: async (url: string): Promise<string> => {
+		return electron?.urlScrape(url) ?? 'Error: Electron bridge not available'
 	}
 }

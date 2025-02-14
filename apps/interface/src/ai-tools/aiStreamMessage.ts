@@ -71,6 +71,12 @@ const aiStreamMessage = async ({
 		}
 
 		const formattedChats = chats.slice(-chatHistory).map(c => {
+			if (c.role === "assistant" && c.data?.url) {
+				return {
+					role: c.role,
+					content: c.data.url.content || c.data.url.url
+				}
+			}
 			return {
 				role: c.role,
 				content: c.text

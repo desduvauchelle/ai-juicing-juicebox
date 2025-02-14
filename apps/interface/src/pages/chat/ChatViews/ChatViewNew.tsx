@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../components/Button'
 import { useRef, useState, useEffect } from 'react'
-import { faArrowRight, faChain, faFileLines, faInfinity, faRobot, IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faChain, faFileLines, faGlobe, faInfinity, faRobot, faTimes, faTrash, IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ChatInputBox } from './components/ChatInputBox'
 import { IAIService } from '../../../../types/IAIService'
@@ -66,6 +66,9 @@ const ChatViewNew: React.FC = () => {
 	const mainContext = useMainContext()
 	const aiServices = mainContext.aiServices
 
+	const [showUrlInput, setShowUrlInput] = useState<boolean>(false)
+	const [urls, setUrls] = useState<string[]>(['']) // Changed to array with one empty string
+
 	const currentConfig = aiServices.find((config) => config.id === selectedConfig)
 
 	// Add useEffect to set default service on load
@@ -109,13 +112,20 @@ const ChatViewNew: React.FC = () => {
 			createdAt: Date.now(),
 			updatedAt: Date.now()
 		}
+
+
 		try {
 			const fullConversation = await mainContext.actions.conversations.create(newConversation)
 			if (!fullConversation?.id) {
 				alert("Failed to create chat")
 				return
 			}
-			navigate(`/chat/${fullConversation.id}`, { state: { initialMessage: text } })
+			navigate(`/chat/${fullConversation.id}`, {
+				state: {
+					initialMessage: text,
+					urls: urls.filter(url => url.length > 0).map(url => ({ url }))
+				}
+			})
 		} catch (error) {
 			console.error("Failed to create chat", error)
 		}
@@ -130,6 +140,42 @@ const ChatViewNew: React.FC = () => {
 	const openPicker = (e: React.MouseEvent) => {
 		e.preventDefault()
 		setShowAiModal(true)
+	}
+
+
+
+	const handleUrlChange = (index: number, value: string) => {
+		const newUrls = [...urls]
+		newUrls[index] = value
+
+		// If the current input has content and it's the last one, add a new empty input
+		if (value && index === urls.length - 1) {
+			newUrls.push('')
+		}
+
+		// If the current input is empty and it's not the last one, remove it
+		if (!value && index !== urls.length - 1) {
+			newUrls.splice(index, 1)
+		}
+
+		setUrls(newUrls)
+	}
+
+	const removeUrl = (index: number) => {
+		const newUrls = [...urls]
+		newUrls.splice(index, 1)
+		if (newUrls.length === 0) {
+			newUrls.push('')
+		}
+		setUrls(newUrls)
+	}
+
+	let webButtonIsDisabled = false
+	let webButtonTooltip = ''
+	// @ts-expect-error I didn't type the global
+	if (window.DESTINATION === 'github') {
+		webButtonIsDisabled = true
+		webButtonTooltip = 'This feature is disabled in the web version. Please use the desktop version.'
 	}
 
 	return <div className="w-full h-full flex flex-col items-center justify-center">
@@ -148,18 +194,59 @@ const ChatViewNew: React.FC = () => {
 					onChange={(e) => setText(e.target.value)}
 					onSubmit={handleSubmit}
 				/>
-				<div className="flex flex-row gap-4 items-center">
+				{showUrlInput && (
+					<div className="space-y-2">
+						{urls.map((url, index) => (
+							<div key={index} className="flex flex-row gap-2 items-center">
+								<label className="input focus:ring-0 focus:outline-none border-base-300 w-full flex items-center gap-3">
+									<FontAwesomeIcon icon={faGlobe} />
+									<input
+										type="url"
+										className="grow "
+										placeholder="Enter a URL"
+										value={url}
+										onChange={(e) => handleUrlChange(index, e.target.value)}
+									/>
+								</label>
+								{url.trim() && (
+									<Button
+										theme="custom"
+										type="button"
+										onClick={() => removeUrl(index)}
+										className="p-2 opacity-50 hover:opacity-100 hover:text-red-400"
+									>
+										<FontAwesomeIcon icon={faTimes} />
+									</Button>
+								)}
+							</div>
+						))}
+					</div>
+				)}
+				<div className="flex flex-row gap-2 items-center">
+					<Button
+						theme="ghost"
+						type="button"
+						onClick={() => setShowUrlInput(!showUrlInput)}
+						tabIndex={3}
+						disabled={webButtonIsDisabled}
+						data-tip={webButtonTooltip}
+						className="bg-base-100 flex flex-row gap-3 items-center"
+					>
+						<FontAwesomeIcon icon={faGlobe} />
+					</Button>
+
 					<Button theme="ghost"
 						type="button"
 						onClick={openPicker}
 						tabIndex={3}
 						className="bg-base-100 flex flex-row gap-3 items-center">
-						<span className="relative">
+						{/* <span className="relative">
 							<FontAwesomeIcon icon={faRobot} />
-						</span>
+						</span> */}
 						<span>
 							{currentConfig?.name}
-							{selectedModel ? ` (${selectedModel})` : ''} {/* Show selected model */}
+							{selectedModel ? ` (${selectedModel})` : ''}
+							{!currentConfig && "Select AI service"}
 						</span>
 					</Button>
 
