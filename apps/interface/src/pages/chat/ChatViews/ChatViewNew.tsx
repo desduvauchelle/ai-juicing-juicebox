@@ -43,14 +43,14 @@ const chatViewsList: IChatView[] = [
 	// 	icon: faChain,
 	// 	description: "Chain multiple AI requests together to a greater output.",
 	// 	type: "chain"
-	// }
-	{
-		id: 5,
-		name: "Image",
-		icon: faImage,
-		description: "Generate images",
-		type: "image"
-	}
+	// },
+	// {
+	// 	id: 5,
+	// 	name: "Image",
+	// 	icon: faImage,
+	// 	description: "Generate images",
+	// 	type: "image"
+	// },
 ]
 
 const styleList = [
@@ -88,16 +88,10 @@ const ChatViewNew: React.FC = () => {
 		const defaultService = aiServices.find(service => service.id === userDefaultSettings.configId)
 		if (defaultService) {
 			setSelectedConfig(defaultService.id)
-			// If it's an Ollama service with models, select the default model
-			if (defaultService.service === 'Ollama' && defaultService.models?.length) {
-				const defaultModel = defaultService.models.find(m => m.name === userDefaultSettings.modelName)
-				if (defaultModel) {
-					setSelectedModel(defaultModel.name)
-				}
+			if (userDefaultSettings.modelName) {
+				setSelectedModel(userDefaultSettings.modelName)
 			}
 		}
-
-
 	}, [aiServices, mainContext.userSettings?.defaultAiService, selectedConfig])
 
 	const createChat = async (type: IConversationTypes) => {

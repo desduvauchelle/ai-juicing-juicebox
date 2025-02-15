@@ -9,7 +9,7 @@ export const anthropicDefaultModelsList: IModel[] = [
 		features: {
 			hasJson: true,
 			hasToolUse: true,
-			context: 200.000
+			context: 200_000
 		},
 		costs: {
 			tokensIn: 0.80,  // $0.80/MTok
@@ -23,7 +23,7 @@ export const anthropicDefaultModelsList: IModel[] = [
 		features: {
 			hasJson: true,
 			hasToolUse: true,
-			context: 200.000
+			context: 200_000
 		},
 		costs: {
 			tokensIn: 3,  // $3/MTok
@@ -38,7 +38,7 @@ export const anthropicDefaultModelsList: IModel[] = [
 		features: {
 			hasJson: true,
 			hasToolUse: true,
-			context: 200.000
+			context: 200_000
 		},
 		costs: {
 			tokensIn: 15,   // $15/MTok
@@ -52,7 +52,7 @@ export const anthropicDefaultModelsList: IModel[] = [
 	// 	features: {
 	// 		hasJson: true,
 	// 		hasToolUse: true,
-	// 		context: 200.000
+	// 		context: 200_000
 	// 	},
 	// 	costs: {
 	// 		tokensIn: 0.000003,  // $3/MTok
@@ -66,7 +66,7 @@ export const anthropicDefaultModelsList: IModel[] = [
 	// 	features: {
 	// 		hasJson: true,
 	// 		hasToolUse: true,
-	// 		context: 200.000
+	// 		context: 200_000
 	// 	},
 	// 	costs: {
 	// 		tokensIn: 0.0000008,  // $0.80/MTok
@@ -80,7 +80,7 @@ export const anthropicDefaultModelsList: IModel[] = [
 	// 	features: {
 	// 		hasJson: true,
 	// 		hasToolUse: true,
-	// 		context: 200.000
+	// 		context: 200_000
 	// 	},
 	// 	costs: {
 	// 		tokensIn: 0.000015,   // $15/MTok
@@ -94,7 +94,7 @@ export const anthropicDefaultModelsList: IModel[] = [
 	// 	features: {
 	// 		hasJson: true,
 	// 		hasToolUse: true,
-	// 		context: 200.000
+	// 		context: 200_000
 	// 	},
 	// 	costs: {
 	// 		tokensIn: 0.000003,  // $3/MTok

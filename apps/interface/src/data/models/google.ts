@@ -11,7 +11,8 @@ export const googleModelsList: IModel[] = [
 		displayName: "Gemini 2.0 Flash",
 		features: {
 			hasJson: true,
-			hasToolUse: true
+			hasToolUse: true,
+			context: 1_000_000
 		},
 		costs: {
 			tokensIn: 0.15,    // $0.15/MTok
@@ -35,9 +36,9 @@ export const googleModelsList: IModel[] = [
 		service: "Google",
 		name: "gemini-1.5-flash",
 		features: {
-
 			hasJson: true,
-			hasToolUse: true
+			hasToolUse: true,
+			context: 1_000_000
 		},
 		costs: {
 			tokensIn: 0,
@@ -61,9 +62,9 @@ export const googleModelsList: IModel[] = [
 		service: "Google",
 		name: "gemini-1.5-pro",
 		features: {
-
 			hasJson: true,
-			hasToolUse: true
+			hasToolUse: true,
+			context: 1_000_000
 		},
 		costs: {
 			tokensIn: 0,
@@ -86,8 +87,8 @@ export const googleModelsList: IModel[] = [
 		service: "Google",
 		name: "imagegen-3.0",
 		features: {
-
 			forImage: true,
+			context: 1_000_000
 		},
 		costs: {
 			perImage: 0.03

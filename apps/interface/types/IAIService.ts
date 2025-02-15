@@ -18,7 +18,7 @@ export interface IAIService {
 	service: AiService
 	url?: string
 	apiKey?: string
-	models?: Omit<IModel, "service">[]
+	models?: IModel[]
 }
 
 export type OllamaModel = {

@@ -1,13 +1,11 @@
 import React, { useLayoutEffect } from 'react'
 import { useMainContext } from '../context/MainContext'
-import { IAIService } from '../../types/IAIService'
+import { IAIService, IModel } from '../../types/IAIService'
 import modelsList from '../data/modelList'
-import Select from '../components/Select'
 import Button, { MyLink } from '../components/Button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle, faCog, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
-import Radio from '../components/Radio'
-import AIModelPrice from './AIModelPrice'
+import { faCircle, faCog } from '@fortawesome/free-solid-svg-icons'
+import AiModelTypes from './AiModelTypes'
 
 interface ModalPickAiServiceProps {
 	isOpen: boolean
@@ -15,16 +13,40 @@ interface ModalPickAiServiceProps {
 	onCancel: () => void
 }
 
+const filterOptions = [
+	{ value: 'text' as const, label: 'Text' },
+	{ value: 'structured' as const, label: 'Structured Output' },
+	{ value: 'tools' as const, label: 'Tool Calling' },
+	{ value: 'embedding' as const, label: 'Embedding' }
+] as const
 
-const getModelsForService = (serviceName: string) => {
+type ModelFilter = typeof filterOptions[number]['value']
+
+const isModelMatchingFilter = (model: IModel, filter: ModelFilter): boolean => {
+	switch (filter) {
+		case 'text':
+			return !model.features.forEmbedding && !model.features.forImage
+		case 'structured':
+			return !!model.features.hasJson
+		case 'tools':
+			return !!model.features.hasToolUse
+		case 'embedding':
+			return !!model.features.forEmbedding
+		default:
+			return true
+	}
+}
+
+const getModelsForService = (serviceName: string): IModel[] => {
 	return modelsList.filter(model => model.service === serviceName)
 }
 
 const ServiceDisplay: React.FC<{
 	serviceName: string,
 	configs: IAIService[],
-	onSelect: (service: IAIService, modelName?: string) => void
-}> = ({ serviceName, configs, onSelect }) => {
+	onSelect: (service: IAIService, modelName?: string) => void,
+	activeFilter: ModelFilter
+}> = ({ serviceName, configs, onSelect, activeFilter }) => {
 	const mainContext = useMainContext()
 	// const [selectedConfigId, setSelectedConfigId] = React.useState<number | null>(null)
 
@@ -66,7 +88,10 @@ const ServiceDisplay: React.FC<{
 				const models = [
 					...(config.models || []),
 					...getModelsForService(config.service)
-				]
+				].filter(model => isModelMatchingFilter(model, activeFilter))
+
+				if (models.length === 0) return null
+
 				return <div key={config.id}>
 					{configs.length > 1 && <h3 className="uppercase opacity-50 font-medium tracking-wider text-sm">{config.name}</h3>}
 					<ul className="list-none" key={config.id}>
@@ -94,7 +119,8 @@ const ServiceDisplay: React.FC<{
 									{model.displayName || model.name}
 
 								</Button>
-								<AIModelPrice
+
+								<AiModelTypes
 									model={model}
 									modelList={modelsList} />
 							</li>
@@ -111,6 +137,7 @@ const ServiceDisplay: React.FC<{
 
 export const ModalPickAiService: React.FC<ModalPickAiServiceProps> = ({ isOpen, onSelect, onCancel }) => {
 	const context = useMainContext()
+	const [activeFilter, setActiveFilter] = React.useState<ModelFilter>('text')
 
 	// show dialog when isOpen becomes true
 	useLayoutEffect(() => {
@@ -145,17 +172,40 @@ export const ModalPickAiService: React.FC<ModalPickAiServiceProps> = ({ isOpen, 
 						onCancel()
 					}}>✕</button>
 				</form>
-				<div className="flex flex-row gap-2 items-center">
-					<h3 className="font-bold text-lg">
-						Select an AI Service
-					</h3>
-					<MyLink isButton isSmall theme="ghost" href="/settings/llm-configs">
-						<FontAwesomeIcon icon={faCog} />
-					</MyLink>
+				<div className="flex flex-col gap-4">
+					<div className="flex flex-row gap-2 items-center">
+						<h3 className="font-bold text-lg">
+							Select an AI Service
+						</h3>
+						<MyLink isButton isSmall theme="ghost" href="/settings/ai-services">
+							<FontAwesomeIcon icon={faCog} />
+						</MyLink>
+					</div>
+
+
+					<div className="join mx-auto">
+						{filterOptions.map(option => (
+							<input
+								key={option.value}
+								className={`join-item btn ${activeFilter === option.value ? 'btn-secondary' : ''} btn-sm`}
+								type="radio"
+								name="filter-options"
+								checked={activeFilter === option.value}
+								onChange={() => setActiveFilter(option.value)}
+								aria-label={option.label} />
+						))}
+					</div>
+
+					{Object.entries(groupedServices).map(([serviceName, configs], i) => {
+						return <ServiceDisplay
+							key={i}
+							serviceName={serviceName}
+							configs={configs}
+							onSelect={onSelect}
+							activeFilter={activeFilter}
+						/>
+					})}
 				</div>
-				{Object.entries(groupedServices).map(([serviceName, configs], i) => {
-					return <ServiceDisplay key={i} serviceName={serviceName} configs={configs} onSelect={onSelect} />
-				})}
 			</div>
 			<form method="dialog" className="modal-backdrop">
 				<button onClick={() => {
