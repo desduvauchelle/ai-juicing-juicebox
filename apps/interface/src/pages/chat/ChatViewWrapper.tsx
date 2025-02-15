@@ -7,6 +7,7 @@ import { ModalPickAiService } from '../../ai-service/ModalPickAiService'
 import ChatViewRepeater from './ChatViews/ChatViewRepeater'
 import ChatViewChain from './ChatViews/ChatViewChain'
 import { IConversationTypes } from '../../../types/IConversation'
+import ChatViewImage from './ChatViews/ChatViewImage'
 
 
 const showAiModelFor: IConversationTypes[] = ["chat", "co-authoring", "repeater"]
@@ -103,6 +104,10 @@ const ChatViewWrapper: React.FC<{
 
 			{conversation.type === "chain" && <>
 				<ChatViewChain />
+			</>}
+
+			{conversation.type === "image" && <>
+				<ChatViewImage />
 			</>}
 
 		</>
