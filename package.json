@@ -25,7 +25,7 @@
 	"scripts": {
 		"types-watch": "node scripts/types-watch.js",
 		"types-copy": "node scripts/types-copy.js",
-		"interface:dev": "concurrently \"yarn types-watch\" \"DESTINATION=github yarn workspace interface dev\"",
+		"interface:dev": "concurrently \"yarn types-watch\" \"cross-env DESTINATION=desktop yarn workspace interface dev\"",
 		"desktop:dev": "concurrently \"yarn types-watch\" \"DESTINATION=desktop yarn workspace interface dev\" \"wait-on http://localhost:5173 && yarn workspace desktop dev\"",
 		"desktop:package": "yarn types-copy && cross-env DESTINATION=desktop yarn workspace interface build && yarn workspace desktop package",
 		"desktop:make": "yarn types-copy && cross-env DESTINATION=desktop yarn workspace interface build && yarn workspace desktop make --verbose",

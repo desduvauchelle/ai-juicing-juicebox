@@ -8,10 +8,11 @@ import Logo from '../components/Logo'
 import SettingsConfig from './settings/SettingsPage'
 import SettingsTheme from './settings/ThemePage'
 import AiServicesPage from './settings/AiServicesPage'
+import SettingsAccount from './settings/SettingsAccount'
 
 const Settings: React.FC = () => {
 	const location = useLocation()
-	const page = location.pathname.split('/settings/')[1] || 'theme'
+	const page = location.pathname.split('/settings/')[1] || ''
 
 	return <div className="flex h-screen">
 		<nav className="min-w-3xs max-w-[250px] w-full bg-base-200 pt-8 flex flex-col gap-4">
@@ -23,22 +24,28 @@ const Settings: React.FC = () => {
 				{
 					[
 						{
-							href: "/settings/theme",
-							text: "Theme"
+							href: "/settings/",
+							text: "Account"
 						},
+
 						{
-							href: "/settings/llm-configs",
+							href: "/settings/ai-services",
 							text: "Your AI services"
 						},
 						{
-							href: "/settings/settings",
-							text: "General options"
+							href: "/settings/theme",
+							text: "Theme"
 						},
-						{
-							href: "/settings/ollama",
-							text: "Local Ollama"
-						}
+						// {
+						// 	href: "/settings/settings",
+						// 	text: "General options"
+						// },
+						// {
+						// 	href: "/settings/ollama",
+						// 	text: "Local Ollama"
+						// }
 					].map(({ href, text }) => {
+						console.log(page, href.replace("/settings/", ""))
 						const isActive = page === href.replace("/settings/", "")
 						return <li key={href}>
 							<MyLink theme="custom" href={href} className={isActive ? "bg-primary/30" : ""}>{text}</MyLink>
@@ -49,9 +56,9 @@ const Settings: React.FC = () => {
 		</nav>
 		<main className="w-full p-4 h-full bg-base-100 overflow-y-auto">
 			<Routes>
-				<Route path="/" element={<SettingsTheme />} />
+				<Route path="/" element={<SettingsAccount />} />
 				<Route path="/theme" element={<SettingsTheme />} />
-				<Route path="/llm-configs" element={<AiServicesPage />} />
+				<Route path="/ai-services" element={<AiServicesPage />} />
 				<Route path="/settings" element={<SettingsConfig />} />
 				<Route path="/ollama" element={<OllamaPage />} />
 			</Routes>

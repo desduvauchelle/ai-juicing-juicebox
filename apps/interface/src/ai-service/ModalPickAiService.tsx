@@ -7,6 +7,7 @@ import Button, { MyLink } from '../components/Button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faCog, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import Radio from '../components/Radio'
+import AIModelPrice from './AIModelPrice'
 
 interface ModalPickAiServiceProps {
 	isOpen: boolean
@@ -84,6 +85,7 @@ const ServiceDisplay: React.FC<{
 								<Button
 									theme="custom"
 									role='button'
+									className='flex-grow text-left'
 									onClick={() => {
 										onSelect(config, model.name)
 										const modal = document.getElementById("modal-pick-ai") as HTMLDialogElement
@@ -92,6 +94,9 @@ const ServiceDisplay: React.FC<{
 									{model.displayName || model.name}
 
 								</Button>
+								<AIModelPrice
+									model={model}
+									modelList={modelsList} />
 							</li>
 						})}
 

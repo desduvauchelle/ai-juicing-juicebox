@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../components/Button'
 import { useRef, useState, useEffect } from 'react'
-import { faArrowRight, faChain, faFileLines, faGlobe, faInfinity, faRobot, faTimes, faTrash, IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faChain, faFileLines, faGlobe, faImage, faInfinity, faRobot, faTimes, faTrash, IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ChatInputBox } from './components/ChatInputBox'
 import { IAIService } from '../../../../types/IAIService'
@@ -37,12 +37,19 @@ const chatViewsList: IChatView[] = [
 		description: "Same prompt everytime, perfect for customer support emails, or any task you repeat all the time.",
 		type: "repeater"
 	},
+	// {
+	// 	id: 4,
+	// 	name: "Chain",
+	// 	icon: faChain,
+	// 	description: "Chain multiple AI requests together to a greater output.",
+	// 	type: "chain"
+	// }
 	{
-		id: 4,
-		name: "Chain",
-		icon: faChain,
-		description: "Chain multiple AI requests together to a greater output.",
-		type: "chain"
+		id: 5,
+		name: "Image",
+		icon: faImage,
+		description: "Generate images",
+		type: "image"
 	}
 ]
 

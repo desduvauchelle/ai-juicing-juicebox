@@ -13,7 +13,7 @@ const Input: React.FC<InputProps> = ({
 	topRight,
 	...props }) => {
 	return <div className={className || ""}>
-		<div className="flex flex-row w-full items-center items-center mb-1">
+		<div className="flex flex-row w-full items-center mb-1">
 			<label className="flex-grow text-sm font-bold">
 				{label}
 			</label>

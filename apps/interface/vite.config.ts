@@ -1,7 +1,6 @@
 import { defineConfig, UserConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import type { Globals } from './interface.d.ts'
 
 const config: UserConfig = {
 	base: './',
@@ -12,7 +11,8 @@ const config: UserConfig = {
 	build: {
 		outDir: "./dist-interface",
 		emptyOutDir: true
-	}
+	},
+	envDir: '.',  // This ensures Vite looks for .env files in the interface directory
 }
 config.build = config.build || {}
 config.plugins = config.plugins || []

@@ -12,8 +12,8 @@ export const anthropicDefaultModelsList: IModel[] = [
 			context: 200.000
 		},
 		costs: {
-			tokensIn: 0.0000008,  // $0.80/MTok
-			tokensOut: 0.000004   // $4/MTok
+			tokensIn: 0.80,  // $0.80/MTok
+			tokensOut: 4  // $4/MTok
 		}
 	},
 	{
@@ -26,8 +26,8 @@ export const anthropicDefaultModelsList: IModel[] = [
 			context: 200.000
 		},
 		costs: {
-			tokensIn: 0.000003,  // $3/MTok
-			tokensOut: 0.000015  // $15/MTok
+			tokensIn: 3,  // $3/MTok
+			tokensOut: 15  // $15/MTok
 		}
 	},
 
@@ -41,8 +41,8 @@ export const anthropicDefaultModelsList: IModel[] = [
 			context: 200.000
 		},
 		costs: {
-			tokensIn: 0.000015,   // $15/MTok
-			tokensOut: 0.000075   // $75/MTok
+			tokensIn: 15,   // $15/MTok
+			tokensOut: 75   // $75/MTok
 		}
 	},
 	// {
