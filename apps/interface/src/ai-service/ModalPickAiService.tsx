@@ -25,13 +25,13 @@ type ModelFilter = typeof filterOptions[number]['value']
 const isModelMatchingFilter = (model: IModel, filter: ModelFilter): boolean => {
 	switch (filter) {
 		case 'text':
-			return !model.features.forEmbedding && !model.features.forImage
+			return !model.features?.forEmbedding && !model.features?.forImage
 		case 'structured':
-			return !!model.features.hasJson
+			return !!model.features?.hasJson
 		case 'tools':
-			return !!model.features.hasToolUse
+			return !!model.features?.hasToolUse
 		case 'embedding':
-			return !!model.features.forEmbedding
+			return !!model.features?.forEmbedding
 		default:
 			return true
 	}

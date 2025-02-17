@@ -60,31 +60,32 @@ const AiModelTypes: React.FC<AiModelTypesProps> = ({ model, modelList }) => {
 		</span>
 	}
 
+
 	return <div className="flex gap-2 items-center text-sm">
 		{renderIcon(
 			faBrain,
-			!!model.features.context,
-			model.features.context ? `Context ${model.features.context / 1_000}K` : 'No context window specified'
+			!!model.features?.context,
+			model.features?.context ? `Context ${model.features?.context / 1_000}K` : 'No context window specified'
 		)}
 		{renderIcon(
 			faCode,
-			!!model.features.hasJson,
-			model.features.hasJson ? 'Structured Output' : 'No structured output'
+			!!model.features?.hasJson,
+			model.features?.hasJson ? 'Structured Output' : 'No structured output'
 		)}
 		{renderIcon(
 			faWrench,
-			!!model.features.hasToolUse,
-			model.features.hasToolUse ? 'Tool Usage' : 'No tool usage'
+			!!model.features?.hasToolUse,
+			model.features?.hasToolUse ? 'Tool Usage' : 'No tool usage'
 		)}
 		{renderIcon(
 			faImage,
-			!!model.features.forImage,
-			model.features.forImage ? 'Image Generation' : 'No image generation'
+			!!model.features?.forImage,
+			model.features?.forImage ? 'Image Generation' : 'No image generation'
 		)}
 		{renderIcon(
 			faDatabase,
-			!!model.features.forEmbedding,
-			model.features.forEmbedding ? 'Embedding' : 'No embedding'
+			!!model.features?.forEmbedding,
+			model.features?.forEmbedding ? 'Embedding' : 'No embedding'
 		)}
 
 		{/* Pricing */}
