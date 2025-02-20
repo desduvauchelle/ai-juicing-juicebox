@@ -140,7 +140,7 @@ const ChatMessage: React.FC<{
 	return <div className={`${maxWidth || ""} group px-4 lg:px-0`}>
 
 		<div className="flex flex-row gap-2 items-start">
-			<div className="flex-grow">
+			<div className="flex-grow w-full">
 				<div className="markdown">
 					{!chat.text && <>
 						<InlineLoader />
