@@ -11,6 +11,7 @@ const Input: React.FC<InputProps> = ({
 	description,
 	className,
 	topRight,
+
 	...props }) => {
 	return <div className={className || ""}>
 		<div className="flex flex-row w-full items-center mb-1">

@@ -6,8 +6,6 @@ import { ChatInputBox } from './components/ChatInputBox'
 import useGlobalAi from '../../../hooks/useGlobalAi'
 import { z } from 'zod'
 import DiffView from '../../../components/DiffView'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import InlineLoader from '../../../components/InlineLoader'
 
 
@@ -39,6 +37,7 @@ const ChatViewCoAuthor: React.FC = () => {
 	const canvasRef = useRef<HTMLTextAreaElement>(null)
 	const chatInputRef = useRef<HTMLTextAreaElement>(null)
 	const canvasInitiated = useRef(false)
+	const [highlightedText, setHighlightedText] = useState<TextSelection | null>(null)
 
 	const originalChat = useMemo(() => {
 		return chats?.find(c => c.data?.currentText !== undefined)
@@ -282,6 +281,14 @@ ${selection && `You change edit and return only the selected text of the user, n
 		setSelection(null)
 	}
 
+	const getHighlightedContent = (text: string) => {
+		if (!highlightedText) return text
+		const before = text.slice(0, highlightedText.start)
+		const selected = text.slice(highlightedText.start, highlightedText.end)
+		const after = text.slice(highlightedText.end)
+		return <>{before}<span className="bg-primary/20">{selected}</span>{after}</>
+	}
+
 	return <div className="w-full h-full flex">
 		{/* TEXT EDITOR */}
 		<div className="flex-1 h-full rounded-r-6xl border-l border-base-100">
@@ -295,19 +302,36 @@ ${selection && `You change edit and return only the selected text of the user, n
 					</div>
 				</>}
 				{!incomingMessage && <>
-					<textarea
-						ref={canvasRef}
-						value={canvasText}
-						disabled={isTyping}
-						onChange={(e) => {
-							if (isTyping) return
-							setCanvasText(e.target.value)
-							if (selection) setSelection(null)
-						}}
-						onSelect={handleCanvasSelection}
-						className="w-full h-full resize-none p-4 pt-12 focus:outline-none border-0"
-						placeholder="Enter or paste your text here..."
-					/>
+					<div className="relative w-full h-full">
+						<div
+							className="absolute inset-0 whitespace-pre-wrap p-4 pt-12"
+							style={{ zIndex: 1 }}>
+							{getHighlightedContent(canvasText)}
+						</div>
+						<textarea
+							ref={canvasRef}
+							value={canvasText}
+							disabled={isTyping}
+							onChange={(e) => {
+								if (isTyping) return
+								setCanvasText(e.target.value)
+								if (selection) setSelection(null)
+								setHighlightedText(null)
+							}}
+							onSelect={(e) => {
+								handleCanvasSelection()
+								const textArea = e.currentTarget
+								setHighlightedText({
+									text: textArea.value.substring(textArea.selectionStart, textArea.selectionEnd),
+									start: textArea.selectionStart,
+									end: textArea.selectionEnd
+								})
+							}}
+							className="w-full h-full resize-none p-4 pt-12 focus:outline-none border-0 bg-transparent relative"
+							style={{ zIndex: 2 }}
+							placeholder="Enter or paste your text here..."
+						/>
+					</div>
 				</>}
 			</div>
 		</div>

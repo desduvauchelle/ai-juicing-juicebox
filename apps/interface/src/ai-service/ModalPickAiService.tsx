@@ -63,25 +63,7 @@ const ServiceDisplay: React.FC<{
 	return <div className='py-2'>
 		<div className="flex flex-row items-center gap-2">
 			<span className='uppercase opacity-50 font-medium tracking-wider text-sm flex-grow'>{serviceName}</span>
-			{/* {configs.length === 1 && <>
-				<span className="badge badge-sm">{configs[0].name}</span>
-			</>}
-			{configs.length > 1 && <>
-				<Select
-					options={[
-						{ label: 'Select a config', value: '' },
-						...configs.map(config => ({ label: config.name, value: config.id.toString() }))
-					]}
-					className='select-xs'
-					onChange={value => {
-						if (!value.target.value) {
-							setSelectedConfigId(null)
-							return
-						}
-						setSelectedConfigId(parseInt(value.target.value))
-					}}
-				/>
-			</>} */}
+
 		</div>
 		<div className="border-l border-base-300 pl-2 py-1">
 			{configs.map(config => {
@@ -162,58 +144,57 @@ export const ModalPickAiService: React.FC<ModalPickAiServiceProps> = ({ isOpen, 
 
 
 
-	return (
-		<dialog id="modal-pick-ai" className="modal ">
-			<div className="modal-box">
-				<form method="dialog">
-					<button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-2xl" onClick={() => {
-						const modal = document.getElementById("modal-pick-ai") as HTMLDialogElement
-						modal?.close()
-						onCancel()
-					}}>✕</button>
-				</form>
-				<div className="flex flex-col gap-4">
-					<div className="flex flex-row gap-2 items-center">
-						<h3 className="font-bold text-lg">
-							Select an AI Service
-						</h3>
-						<MyLink isButton isSmall theme="ghost" href="/settings/ai-services">
-							<FontAwesomeIcon icon={faCog} />
-						</MyLink>
-					</div>
-
-
-					<div className="join mx-auto">
-						{filterOptions.map(option => (
-							<input
-								key={option.value}
-								className={`join-item btn ${activeFilter === option.value ? 'btn-secondary' : ''} btn-sm`}
-								type="radio"
-								name="filter-options"
-								checked={activeFilter === option.value}
-								onChange={() => setActiveFilter(option.value)}
-								aria-label={option.label} />
-						))}
-					</div>
-
-					{Object.entries(groupedServices).map(([serviceName, configs], i) => {
-						return <ServiceDisplay
-							key={i}
-							serviceName={serviceName}
-							configs={configs}
-							onSelect={onSelect}
-							activeFilter={activeFilter}
-						/>
-					})}
-				</div>
-			</div>
-			<form method="dialog" className="modal-backdrop">
-				<button onClick={() => {
+	return <dialog id="modal-pick-ai" className="modal ">
+		<div className="modal-box">
+			<form method="dialog">
+				<button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-2xl" onClick={() => {
 					const modal = document.getElementById("modal-pick-ai") as HTMLDialogElement
 					modal?.close()
 					onCancel()
-				}}>close</button>
+				}}>✕</button>
 			</form>
-		</dialog>
-	)
+			<div className="flex flex-col gap-4">
+				<div className="flex flex-row gap-2 items-center">
+					<h3 className="font-bold text-lg">
+						Select an AI Service
+					</h3>
+					<MyLink isButton isSmall theme="ghost" href="/settings/ai-services">
+						<FontAwesomeIcon icon={faCog} />
+					</MyLink>
+				</div>
+
+
+				<div className="join mx-auto">
+					{filterOptions.map(option => (
+						<input
+							key={option.value}
+							className={`join-item btn ${activeFilter === option.value ? 'btn-secondary' : ''} btn-sm`}
+							type="radio"
+							name="filter-options"
+							checked={activeFilter === option.value}
+							onChange={() => setActiveFilter(option.value)}
+							aria-label={option.label} />
+					))}
+				</div>
+
+				{Object.entries(groupedServices).map(([serviceName, configs], i) => {
+					return <ServiceDisplay
+						key={i}
+						serviceName={serviceName}
+						configs={configs}
+						onSelect={onSelect}
+						activeFilter={activeFilter}
+					/>
+				})}
+			</div>
+		</div>
+		<form method="dialog" className="modal-backdrop">
+			<button onClick={() => {
+				const modal = document.getElementById("modal-pick-ai") as HTMLDialogElement
+				modal?.close()
+				onCancel()
+			}}>close</button>
+		</form>
+	</dialog>
+
 }

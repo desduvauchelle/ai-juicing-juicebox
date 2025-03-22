@@ -1,13 +1,16 @@
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../components/Button'
 import { useRef, useState, useEffect } from 'react'
-import { faArrowRight, faChain, faFileLines, faGlobe, faImage, faInfinity, faRobot, faTimes, faTrash, IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faBrain, faFile, faFileLines, faGlobe, faInfinity, faTimes, IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ChatInputBox } from './components/ChatInputBox'
 import { IAIService } from '../../../../types/IAIService'
 import { ModalPickAiService } from '../../../ai-service/ModalPickAiService'
 import { useMainContext } from '../../../context/MainContext'
 import { IConversation, IConversationTypes } from '../../../../types/IConversation'
+import ModalUserPrompts from '../../../components/user-prompts/ModalUserPrompts'
+import ModalUserContexts from '../../../components/user-contexts/ModalUserContexts'
+import { UserSettingsContext } from '../../../../types/UserSettings'
 
 type IChatView = {
 	id: number
@@ -67,6 +70,10 @@ const ChatViewNew: React.FC = () => {
 	const [selectedConfig, setSelectedConfig] = useState<number | null>(null)
 	const [selectedModel, setSelectedModel] = useState<string | null>(null)
 	const [text, setText] = useState<string>('')
+	const [instructions, setInstructions] = useState<string>("You are a helpful assistant")
+	const [showUserPrompts, setShowUserPrompts] = useState<boolean>(false)
+	const [showContextModal, setShowContextModal] = useState<boolean>(false)
+	const [contextInfo, setContextInfo] = useState<UserSettingsContext | null>(null)
 
 	// new state to control embedded modal
 	const [showAiModal, setShowAiModal] = useState<boolean>(false)
@@ -77,6 +84,7 @@ const ChatViewNew: React.FC = () => {
 	const [urls, setUrls] = useState<string[]>(['']) // Changed to array with one empty string
 
 	const currentConfig = aiServices.find((config) => config.id === selectedConfig)
+	console.log(contextInfo)
 
 	// Add useEffect to set default service on load
 	useEffect(() => {
@@ -108,7 +116,7 @@ const ChatViewNew: React.FC = () => {
 			name: text.split('\n')[0].substring(0, 50),
 			aiServiceId: selectedConfig,
 			modelName: selectedModel || undefined, // Add model name if selected
-			instruction: "You are a helpful assistant",
+			instruction: instructions,
 			type: type || "chat",
 			createdAt: Date.now(),
 			updatedAt: Date.now()
@@ -121,9 +129,12 @@ const ChatViewNew: React.FC = () => {
 				alert("Failed to create chat")
 				return
 			}
+
+
 			navigate(`/chat/${fullConversation.id}`, {
 				state: {
 					initialMessage: text,
+					context: contextInfo?.context,
 					urls: urls.filter(url => url.length > 0).map(url => ({ url }))
 				}
 			})
@@ -183,6 +194,19 @@ const ChatViewNew: React.FC = () => {
 		<div className="max-w-2xl w-full mx-auto text-center space-y-6">
 			<h2 className="text-2xl logo font-bold">What can I help with?</h2>
 			<form onSubmit={handleSubmit} className="bg-base-100 p-6 py-4 space-y-4 rounded-xl mx-2">
+
+				{instructions !== "You are a helpful assistant" && <div className='flex flex-row gap-2 items-center'>
+					<Button
+						theme="ghost"
+
+						type="button"
+						onClick={() => setInstructions("You are a helpful assistant")}
+						className="btn-xs opacity-50 hover:opacity-100 hover:text-red-400">
+						<FontAwesomeIcon icon={faTimes} />
+					</Button>
+					<p className="line-clamp-1 w-full text-left opacity-50 italic">{instructions}</p>
+
+				</div>}
 				<ChatInputBox
 					ref={textareaRef}
 					autoFocus
@@ -195,6 +219,19 @@ const ChatViewNew: React.FC = () => {
 					onChange={(e) => setText(e.target.value)}
 					onSubmit={handleSubmit}
 				/>
+
+				{contextInfo && <button className='flex flex-row gap-2 items-center relative'>
+					<FontAwesomeIcon icon={faFile} />
+					<span>{contextInfo.context}</span>
+					<Button
+						theme="ghost"
+						type="button"
+						onClick={() => setContextInfo(null)}
+						className="btn-xs opacity-50 hover:opacity-100 hover:text-red-400">
+						<FontAwesomeIcon icon={faTimes} />
+					</Button>
+				</button>}
+
 				{showUrlInput && (
 					<div className="space-y-2">
 						{urls.map((url, index) => (
@@ -214,8 +251,7 @@ const ChatViewNew: React.FC = () => {
 										theme="custom"
 										type="button"
 										onClick={() => removeUrl(index)}
-										className="p-2 opacity-50 hover:opacity-100 hover:text-red-400"
-									>
+										className="p-2 opacity-50 hover:opacity-100 hover:text-red-400">
 										<FontAwesomeIcon icon={faTimes} />
 									</Button>
 								)}
@@ -223,24 +259,14 @@ const ChatViewNew: React.FC = () => {
 						))}
 					</div>
 				)}
-				<div className="flex flex-row gap-2 items-center">
-					<Button
-						theme="ghost"
-						type="button"
-						onClick={() => setShowUrlInput(!showUrlInput)}
-						tabIndex={3}
-						disabled={webButtonIsDisabled}
-						data-tip={webButtonTooltip}
-						className="bg-base-100 flex flex-row gap-3 items-center"
-					>
-						<FontAwesomeIcon icon={faGlobe} />
-					</Button>
-
+				<div className="flex flex-row items-center">
 					<Button theme="ghost"
 						type="button"
 						onClick={openPicker}
 						tabIndex={3}
-						className="bg-base-100 flex flex-row gap-3 items-center">
+						tooltip='Select an AI'
+						tooltipPosition='bottom'
+						className="bg-base-100 btn-sm flex flex-row gap-3 items-center">
 						{/* <span className="relative">
 							<FontAwesomeIcon icon={faRobot} />
 						</span> */}
@@ -250,6 +276,44 @@ const ChatViewNew: React.FC = () => {
 							{!currentConfig && "Select AI service"}
 						</span>
 					</Button>
+
+					<Button
+						theme="ghost"
+						type="button"
+						onClick={() => setShowUrlInput(!showUrlInput)}
+						tabIndex={3}
+						tooltip='Fetch content from a URL'
+						tooltipPosition='bottom'
+						disabled={webButtonIsDisabled}
+						data-tip={webButtonTooltip}
+						className="bg-base-100 btn-sm flex flex-row gap-3 items-center">
+						<FontAwesomeIcon icon={faGlobe} />
+					</Button>
+
+
+					<Button
+						theme="ghost"
+						type="button"
+						onClick={() => setShowUserPrompts(true)}
+						tabIndex={3}
+						tooltip='Set system prompt'
+						tooltipPosition='bottom'
+						className="bg-base-100 btn-sm flex flex-row gap-3 items-center">
+						<FontAwesomeIcon icon={faBrain} />
+					</Button>
+
+					<Button
+						theme="ghost"
+						type="button"
+						onClick={() => setShowContextModal(true)}
+						tabIndex={3}
+						tooltip='Attach context'
+						tooltipPosition='bottom'
+						className="bg-base-100 btn-sm flex flex-row gap-3 items-center">
+						<FontAwesomeIcon icon={faFile} />
+					</Button>
+
+
 
 					<div className="flex-grow"></div>
 					<Button theme="primary"
@@ -289,6 +353,22 @@ const ChatViewNew: React.FC = () => {
 			}}
 			onCancel={() => setShowAiModal(false)}
 		/>
+
+		<ModalUserPrompts
+			isOpen={showUserPrompts}
+			onSelect={(prompt) => {
+				setInstructions(prompt)
+				setShowUserPrompts(false)
+			}}
+			onCancel={() => setShowUserPrompts(false)} />
+
+		<ModalUserContexts
+			isOpen={showContextModal}
+			onSelect={(context) => {
+				setContextInfo(context)
+				setShowContextModal(false)
+			}}
+			onCancel={() => setShowContextModal(false)} />
 	</div>
 }
 

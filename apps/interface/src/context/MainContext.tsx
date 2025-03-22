@@ -8,6 +8,7 @@ import createMainContextActionsAiServices, { MainContextActionsAiServices } from
 import { IConversation } from "../../types/IConversation"
 import createMainContextActionsConversations, { MainContextActionsConversations } from "./actions/mainContextActionsConversations"
 import ConversationService from "../services/ConversationService"
+import { UserSettingsContext, UserSettingsSystemPrompt } from "../../types/UserSettings"
 
 
 
@@ -25,8 +26,19 @@ export interface IMainContext {
 		folders: MainContextActionsFolders,
 		userSettings: MainContextActionsSettings,
 		aiServices: MainContextActionsAiServices,
-		conversations: MainContextActionsConversations
-	}
+		conversations: MainContextActionsConversations,
+		systemPrompts: {
+			create: (_prompt: Omit<UserSettingsSystemPrompt, 'id'>) => Promise<{ error?: string, prompt?: UserSettingsSystemPrompt }>,
+			update: (_id: string, _prompt: Partial<UserSettingsSystemPrompt>) => Promise<{ error?: string, prompt?: UserSettingsSystemPrompt }>,
+			delete: (_id: string) => Promise<{ error?: string }>
+		},
+		contexts: {
+			create: (_context: Omit<UserSettingsContext, 'id'>) => Promise<{ error?: string, context?: UserSettingsContext }>,
+			update: (_id: string, _context: Partial<UserSettingsContext>) => Promise<{ error?: string, context?: UserSettingsContext }>,
+			delete: (_id: string) => Promise<{ error?: string }>
+		}
+	},
+
 }
 
 const defaultMainContext: IMainContext = {
@@ -39,6 +51,16 @@ const defaultMainContext: IMainContext = {
 		folders: createMainContextActionsFolders({ setFolders: setActions }),
 		aiServices: createMainContextActionsAiServices({ setAiServices: setActions }),
 		conversations: createMainContextActionsConversations({ setConversations: setActions }),
+		systemPrompts: {
+			create: async () => { return { error: "Not implemented" } },
+			update: async () => { return { error: "Not implemented" } },
+			delete: async () => { return { error: "Not implemented" } }
+		},
+		contexts: {
+			create: async () => { return { error: "Not implemented" } },
+			update: async () => { return { error: "Not implemented" } },
+			delete: async () => { return { error: "Not implemented" } }
+		}
 	},
 }
 
@@ -138,6 +160,60 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 		},
 		[])
 
+	const systemPromptsCreate = useCallback(async (_prompt: Omit<UserSettingsSystemPrompt, 'id'>) => {
+		const newPrompt = { id: crypto.randomUUID(), ..._prompt }
+		setUserSettings(prev => ({
+			...prev,
+			systemPrompts: [...(prev?.systemPrompts || []), newPrompt]
+		}))
+		return { prompt: newPrompt }
+	}, [])
+
+	const systemPromptsUpdate = useCallback(async (_id: string, _prompt: Partial<UserSettingsSystemPrompt>) => {
+		setUserSettings(prev => ({
+			...prev,
+			systemPrompts: prev?.systemPrompts?.map(p =>
+				p.id === _id ? { ...p, ..._prompt } : p
+			) || []
+		}))
+		return { prompt: { id: _id, ..._prompt } as UserSettingsSystemPrompt }
+	}, [])
+
+	const systemPromptsDelete = useCallback(async (_id: string) => {
+		setUserSettings(prev => ({
+			...prev,
+			systemPrompts: prev?.systemPrompts?.filter(p => p.id !== _id) || []
+		}))
+		return {}
+	}, [])
+
+	const userContextsCreate = useCallback(async (_context: Omit<UserSettingsContext, 'id'>) => {
+		const newContext = { id: crypto.randomUUID(), ..._context }
+		setUserSettings(prev => ({
+			...prev,
+			contexts: [...(prev?.contexts || []), newContext]
+		}))
+		return { context: newContext }
+	}, [])
+
+	const userContextsUpdate = useCallback(async (_id: string, _context: Partial<UserSettingsContext>) => {
+		setUserSettings(prev => ({
+			...prev,
+			contexts: prev?.contexts?.map(c =>
+				c.id === _id ? { ...c, ..._context } : c
+			) || []
+		}))
+		return { context: { id: _id, ..._context } as UserSettingsContext }
+	}, [])
+
+	const userContextsDelete = useCallback(async (_id: string) => {
+		setUserSettings(prev => ({
+			...prev,
+			contexts: prev?.contexts?.filter(c => c.id !== _id) || []
+		}))
+		return {}
+	}, [])
+
 	const contextValue: IMainContext = useMemo(
 		() => ({
 			userSettings,
@@ -148,10 +224,20 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 				userSettings: userSettingActions(),
 				folders: folderActions(),
 				aiServices: llmConfigActions(),
-				conversations: conversationActions()
+				conversations: conversationActions(),
+				systemPrompts: {
+					create: systemPromptsCreate,
+					update: systemPromptsUpdate,
+					delete: systemPromptsDelete
+				},
+				contexts: {
+					create: userContextsCreate,
+					update: userContextsUpdate,
+					delete: userContextsDelete
+				}
 			}
 		}),
-		[userSettings, folders, aiServices, conversations, userSettingActions, folderActions, llmConfigActions, conversationActions])
+		[userSettings, folders, aiServices, conversations, userSettingActions, folderActions, llmConfigActions, conversationActions, systemPromptsCreate, systemPromptsUpdate, systemPromptsDelete, userContextsCreate, userContextsUpdate, userContextsDelete])
 
 	return <MainContext.Provider value={contextValue}>
 		{children}

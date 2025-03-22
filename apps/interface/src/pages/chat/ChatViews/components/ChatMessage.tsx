@@ -136,6 +136,30 @@ const ChatMessage: React.FC<{
 		</div>
 	}
 
+	if (chat.role === "system") {
+		return <div className={`${maxWidth || ""} group px-4 lg:px-0`}>
+
+			<div className="flex flex-row gap-2 items-start opacity-40 hover:opacity-100 transition-all duration-300 ease-in-out">
+				<div className="flex-grow w-full">
+					<div className="markdown">
+						<p className="font-black text-sm uppercase">SYSTEM</p>
+						<Markdown>{chat.text}</Markdown>
+					</div>
+				</div>
+				<div className="">
+					<Button
+						theme="custom"
+						isOutline
+						isSmall
+						className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 p-2 hover:text-red-500"
+						onClick={() => conversationContext?.actions.chat.delete(chat.id)}>
+						<FontAwesomeIcon icon={faTrash} />
+					</Button>
+				</div>
+			</div>
+		</div>
+	}
+
 
 	return <div className={`${maxWidth || ""} group px-4 lg:px-0`}>
 

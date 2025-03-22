@@ -43,6 +43,7 @@ const ChatViewBasic: React.FC = () => {
 		return (wrapper.scrollHeight - wrapper.scrollTop - wrapper.clientHeight) <= threshold
 	}, [])
 
+	console.log(chats)
 	const handleUrlChange = (index: number, value: string) => {
 		const newUrls = [...urls]
 		newUrls[index] = value
@@ -97,6 +98,9 @@ const ChatViewBasic: React.FC = () => {
 			role: "user",
 			text: messageToSend
 		})
+		setTimeout(() => {
+			scrollToBottom()
+		}, 200)
 		if (!fullMessage) {
 			alert("Failed to send message")
 			return
@@ -111,6 +115,7 @@ const ChatViewBasic: React.FC = () => {
 		}
 		chatInputRef.current?.focus()
 
+
 		try {
 			setIsTyping(true)
 			isTypingRef.current = true
@@ -124,6 +129,7 @@ const ChatViewBasic: React.FC = () => {
 				aiService: conversationContext.selectedConfig,
 				modelName: conversation.modelName || '',
 				text: messageToSend,
+				systemPrompt: instructions,
 				chats: [
 					...chats,
 					fullMessage
@@ -141,7 +147,6 @@ const ChatViewBasic: React.FC = () => {
 					role: "assistant",
 					text: response
 				})
-				scrollToBottom()
 				chatInputRef.current?.focus()
 			}
 		} catch (error) {
@@ -154,7 +159,7 @@ const ChatViewBasic: React.FC = () => {
 				alert("Failed to generate AI response")
 			}
 		}
-	}, [isTyping, newMessage, conversationContext?.actions.chat, conversationContext.selectedConfig, conversation, globalAi.actions, chats, streamCallback, scrollToBottom])
+	}, [isTyping, newMessage, conversationContext?.actions.chat, conversationContext.selectedConfig, conversation, scrollToBottom, globalAi.actions, instructions, chats, streamCallback])
 
 	const createAssistantUrlMessage = useCallback(async (url: string) => {
 		if (!conversation) {
@@ -229,12 +234,20 @@ ${response}
 				}
 			}
 			navigate(location.pathname, { replace: true })
+			// If context, add it as a system chat
+			if (location.state.context) {
+				await conversationContext?.actions.chat.add({
+					role: "system",
+					text: location.state.context
+				})
+			}
+			// Send the initial message
 			send(location.state.initialMessage)
 		}
 
 		setup()
 
-	}, [conversation, conversationContext.isLoading, createAssistantUrlMessage, location.pathname, location.state, navigate, send])
+	}, [conversation, conversationContext?.actions.chat, conversationContext.isLoading, createAssistantUrlMessage, location.pathname, location.state, navigate, send])
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
@@ -325,7 +338,7 @@ ${response}
 							))}
 						</div>
 					)}
-					<div className="flex gap-2 bg-base-100 rounded-xl relative">
+					<div className="flex flex-col gap-2 bg-base-100 rounded-xl relative">
 						<ChatInputBox
 							id="chat-input"
 							ref={chatInputRef}
@@ -359,14 +372,8 @@ ${response}
 							className={`flex-1 border-transparent ${isTyping ? "opacity-50" : ""}`}
 							placeholder="Type your message..."
 						/>
-						<div className="absolute right-0 top-2 flex gap-2">
-							{/* <Button
-								isLoading={isTyping}
-								type="submit"
-								theme="custom"
-								className="opacity-0 absolute right-52">
-								Send
-							</Button> */}
+						<div className="flex gap-2">
+
 							<Button
 								theme="ghost"
 								type="button"
