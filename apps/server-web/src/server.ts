@@ -1,13 +1,30 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import express, { Request, Response } from 'express'
 import path from 'path'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 
 const app = express()
 const port = process.env.PORT || 3000
 
+console.log(process.env.ENV)
+
 const frontendCodePath = path.join(__dirname, '../dist-interface')
 
-// Serve static files from the 'public' directory
-app.use(express.static(frontendCodePath))
+// Conditional serving of static files or proxy to Vite server
+if (process.env.ENV === 'development') {
+	// Proxy all non-API requests to Vite dev server
+	app.use('/', createProxyMiddleware({
+		target: 'http://localhost:5173',
+		changeOrigin: true,
+		ws: true, // Enable websocket proxy for HMR
+		pathFilter: (path) => !path.includes('/api')  // Proxy all non-API requests
+	}))
+} else {
+	// Serve static files in production
+	app.use(express.static(frontendCodePath))
+}
 
 // Example API endpoint
 app.get('/api/data', (req: Request, res: Response) => {

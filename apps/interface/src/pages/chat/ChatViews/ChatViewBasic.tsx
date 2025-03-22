@@ -8,6 +8,7 @@ import useGlobalAi from '../../../hooks/useGlobalAi'
 import { faCheckCircle, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { bridgeApi } from '../../../tools/bridgeApi'
+import { useMainContext } from '../../../context/MainContext'
 
 const maxWidth = 'max-w-3xl w-full mx-2 lg:mx-auto'
 
@@ -36,6 +37,8 @@ const ChatViewBasic: React.FC = () => {
 
 	const [hasLoadedInitially, setHasLoadedInitially] = useState(false)
 
+	const mainContext = useMainContext()
+
 	const isNearBottom = useCallback(() => {
 		if (!wrapperRef.current) return true
 		const wrapper = wrapperRef.current
@@ -43,7 +46,9 @@ const ChatViewBasic: React.FC = () => {
 		return (wrapper.scrollHeight - wrapper.scrollTop - wrapper.clientHeight) <= threshold
 	}, [])
 
-	console.log(chats)
+	const chatLimitCount = conversation?.chatHistoryCount || mainContext.userSettings?.defaultChatHistoryCount || 20
+
+	console.log(chats.length, chatLimitCount)
 	const handleUrlChange = (index: number, value: string) => {
 		const newUrls = [...urls]
 		newUrls[index] = value
@@ -125,15 +130,30 @@ const ChatViewBasic: React.FC = () => {
 				chatInputRef.current?.focus()
 			}, 0)
 
+			let allChats = [
+				...chats,
+				fullMessage
+			]
+
+
+			if (allChats.length > chatLimitCount) {
+				// Get the system prompts
+				const historySystemPrompts = allChats.filter((chat) => chat.role === "system")
+				const remainingChats = allChats.filter((chat) => chat.role !== "system")
+				const newChats = [
+					...historySystemPrompts,
+					...remainingChats.slice(-chatLimitCount)
+				]
+				allChats = newChats
+			}
+
+
 			const response = await globalAi.actions.streamMessage({
 				aiService: conversationContext.selectedConfig,
 				modelName: conversation.modelName || '',
 				text: messageToSend,
 				systemPrompt: instructions,
-				chats: [
-					...chats,
-					fullMessage
-				],
+				chats: allChats,
 				streamingCallback: streamCallback
 			})
 			isTypingRef.current = false
@@ -159,7 +179,7 @@ const ChatViewBasic: React.FC = () => {
 				alert("Failed to generate AI response")
 			}
 		}
-	}, [isTyping, newMessage, conversationContext?.actions.chat, conversationContext.selectedConfig, conversation, scrollToBottom, globalAi.actions, instructions, chats, streamCallback])
+	}, [isTyping, newMessage, conversationContext?.actions.chat, conversationContext.selectedConfig, conversation, scrollToBottom, chats, chatLimitCount, globalAi.actions, instructions, streamCallback])
 
 	const createAssistantUrlMessage = useCallback(async (url: string) => {
 		if (!conversation) {
@@ -291,13 +311,20 @@ ${response}
 						Instruction saved
 					</p>}
 				</form>
-				{chats.map((chat) => {
+				{chats.map((chat, i) => {
 					const isUser = chat.role === "user"
+					let isForgotten = false
+					if (chat.role !== "system") {
+						// If it's outside the chatLimitCount, it's forgotten, use the index to determine
+						if (chats.length - i > chatLimitCount) {
+							isForgotten = true
+						}
+					}
 					return <div
 						key={chat.id}
 						className={isUser ? "pt-12" : "pt-4"}>
 						<ChatMessage
-
+							isForgotten={isForgotten}
 							chat={chat}
 							maxWidth={maxWidth} />
 					</div>

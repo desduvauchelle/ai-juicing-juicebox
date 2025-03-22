@@ -26,5 +26,6 @@ export interface UserSettings {
 		modelName: string
 	},
 	systemPrompts?: UserSettingsSystemPrompt[],
-	contexts?: UserSettingsContext[]
+	contexts?: UserSettingsContext[],
+	defaultChatHistoryCount?: number
 }

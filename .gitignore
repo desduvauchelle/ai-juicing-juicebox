@@ -30,3 +30,4 @@ apps/interface/dist-interface/**
 apps/server-web/dist-interface/**
 dist-interface-github/**
 apps/desktop/certs/
+apps/server-web/.env

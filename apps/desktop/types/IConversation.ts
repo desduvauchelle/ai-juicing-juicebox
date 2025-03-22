@@ -39,5 +39,5 @@ export interface IConversation {
 	updatedAt: number
 	order?: number
 	aiGeneratedTitle?: boolean
-
+	chatHistoryCount?: number
 }

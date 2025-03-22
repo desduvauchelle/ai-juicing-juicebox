@@ -1,4 +1,4 @@
-import { faChevronDown, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faChevronDown, faTrash, faWarning } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useMemo, useState } from "react"
 import Markdown from "react-markdown"
@@ -11,8 +11,9 @@ import InlineLoader from "../../../../components/InlineLoader"
 
 const ChatMessage: React.FC<{
 	chat: IConversationChat,
-	maxWidth?: string
-}> = ({ chat, maxWidth }) => {
+	maxWidth?: string,
+	isForgotten?: boolean
+}> = ({ chat, maxWidth, isForgotten }) => {
 	const [showThinking, setShowThinking] = useState(true)
 	const conversationContext = useConversation()
 	const [showWebsiteContent, setShowWebsiteContent] = useState(false)
@@ -51,9 +52,17 @@ const ChatMessage: React.FC<{
 		}
 	}, [chat.text])
 
-	if (chat.role === "user") {
-		return <div className={`${maxWidth || ""} group px-4 lg:px-0`}>
+	const messageWrapperClasses = `${maxWidth || ""} group px-4 lg:px-0 relative ${isForgotten ? 'opacity-50' : ''}`
+	const showForgottenWarning = isForgotten && (
+		<div className="absolute -bottom-8 right-0 flex items-center gap-2 mb-2 text-yellow-500 text-xs group">
 
+			<span className="opacity-0 group-hover:opacity-50">Forgotten: No longer part of the chat history</span>
+			<FontAwesomeIcon icon={faWarning} />
+		</div>
+	)
+
+	if (chat.role === "user") {
+		return <div className={messageWrapperClasses}>
 			<div className="flex justify-end items-start gap-4">
 				<div className="">
 					<Button
@@ -87,12 +96,13 @@ const ChatMessage: React.FC<{
 					</div>
 				</div>
 			</div>
+			{showForgottenWarning}
+
 		</div>
 	}
 
 	if (chat.role === "assistant" && chat.data?.url) {
-		return <div className={`${maxWidth || ""} group px-4 lg:px-1`}>
-
+		return <div className={messageWrapperClasses}>
 			<div className="flex flex-row gap-2 items-start">
 				<div className="flex-grow">
 					<div className="markdown">
@@ -133,12 +143,13 @@ const ChatMessage: React.FC<{
 					</Button>
 				</div>
 			</div>
+			{showForgottenWarning}
 		</div>
 	}
 
 	if (chat.role === "system") {
-		return <div className={`${maxWidth || ""} group px-4 lg:px-0`}>
-
+		return <div className={messageWrapperClasses}>
+			{showForgottenWarning}
 			<div className="flex flex-row gap-2 items-start opacity-40 hover:opacity-100 transition-all duration-300 ease-in-out">
 				<div className="flex-grow w-full">
 					<div className="markdown">
@@ -161,8 +172,8 @@ const ChatMessage: React.FC<{
 	}
 
 
-	return <div className={`${maxWidth || ""} group px-4 lg:px-0`}>
-
+	return <div className={messageWrapperClasses}>
+		{showForgottenWarning}
 		<div className="flex flex-row gap-2 items-start">
 			<div className="flex-grow w-full">
 				<div className="markdown">

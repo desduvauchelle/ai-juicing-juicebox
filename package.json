@@ -30,6 +30,7 @@
 		"desktop:package": "yarn types-copy && cross-env DESTINATION=desktop yarn workspace interface build && yarn workspace desktop package",
 		"desktop:make": "yarn types-copy && cross-env DESTINATION=desktop yarn workspace interface build && yarn workspace desktop make --verbose",
 		"desktop:publish": "./scripts/tag-release.sh",
+		"server-web:dev": "concurrently \"yarn types-watch\" \"cross-env DESTINATION=server-web yarn workspace interface dev\" \"yarn workspace server-web dev\"",
 		"server-web:run": "yarn types-copy && cross-env DESTINATION=server-web yarn workspace interface build && yarn workspace server-web build && yarn workspace server-web start",
 		"lint": "eslint .",
 		"test": "jest",

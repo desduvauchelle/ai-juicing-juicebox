@@ -91,6 +91,7 @@ export const MainContextProvider = ({ children }: { children: React.ReactNode })
 				console.log("User settings loaded", settings)
 				if (!settings) return
 				const { folders, aiServices, ...rest } = settings
+				if (!rest.defaultChatHistoryCount) rest.defaultChatHistoryCount = 20
 				setUserSettings(rest)
 				setFolders(folders || [])
 				setAiServices(aiServices || [])
