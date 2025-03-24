@@ -21,7 +21,7 @@ const config: ForgeConfig = {
 	packagerConfig: {
 		asar: true,
 		appBundleId: 'com.ai-juicing.juicebox',
-		name: process.platform === 'linux' ? 'juicebox-ai' : 'Juicebox AI',
+		name: process.platform === 'linux' ? 'juicebox-ai' : 'AI Juicebar',
 		executableName: process.platform === 'linux' ? 'juicebox-ai' : 'juicebox-ai',
 		icon: path.join(process.cwd(), 'public', 'icons', 'icon'), // Ensure this path is correct
 		extraResource: ['./src/dist-interface', './public'],  // Update path to match source location

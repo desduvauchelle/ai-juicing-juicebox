@@ -4,7 +4,7 @@ export const LogoImage: React.FC<{ className?: string }> = ({ className }) => {
 }
 
 export const LogoText: React.FC<{ className?: string }> = ({ className }) => {
-	return <span className={`font-black uppercase tracking-wide logo text-2xl ${className || ""}`}>Juicebox</span>
+	return <span className={`font-black uppercase tracking-wide logo text-2xl ${className || ""}`}>Juicebar</span>
 }
 const Logo: React.FC<{ className?: string, imgClassName?: string }> = ({
 	className,

@@ -1,8 +1,8 @@
 <div align="center">
-  <img alt="Juicebox by AI Juicing" src="logo.png" width="200" />
+  <img alt="AI Juicebar by AI Juicing" src="logo.png" width="200" />
 </div>
 
-# AI Juicebox
+# AI Juicebar
 
 A collection of local AI tools to get things done. Chat is useful but not enough, check out our other tools. I find it unfair that the big guys have tools and not the open source ones. This is an attempt to make a collection of tools that are useful and private.
 
@@ -17,7 +17,7 @@ A collection of local AI tools to get things done. Chat is useful but not enough
 
 [TRY IT OUT HERE](https://desduvauchelle.github.io/ai-juicing-juicebox)
 
-## Why AI Juicebox?
+## Why AI Juicebar?
 
 An extendable experimentation of using AI to accomplish tasks. From the chat interface that you probably already know, to document searching, web searching, co-authoring text, prompt sequences, and more. All this using local models, keeping the information private and secure on your computer.
 
