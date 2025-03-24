@@ -18,6 +18,7 @@ export interface UserSettingsContext {
 export interface UserSettings {
 	theme?: string
 	language?: string
+	cloudSyncEnabled?: boolean
 	notificationsEnabled?: boolean
 	aiServices?: IAIService[]
 	folders?: IFileExplorerFolder[]

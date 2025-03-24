@@ -20,9 +20,9 @@ const htmlPath = isDev ? '../web/index.html' : './src/dist-interface/index.html'
 const config: ForgeConfig = {
 	packagerConfig: {
 		asar: true,
-		appBundleId: 'com.ai-juicing.juicebox',
-		name: process.platform === 'linux' ? 'juicebox-ai' : 'AI Juicebar',
-		executableName: process.platform === 'linux' ? 'juicebox-ai' : 'juicebox-ai',
+		appBundleId: 'com.ai-juicing.juicebar',
+		name: process.platform === 'linux' ? 'juicebar-ai' : 'AI Juicebar',
+		executableName: process.platform === 'linux' ? 'juicebar-ai' : 'juicebar-ai',
 		icon: path.join(process.cwd(), 'public', 'icons', 'icon'), // Ensure this path is correct
 		extraResource: ['./src/dist-interface', './public'],  // Update path to match source location
 		osxSign: {
